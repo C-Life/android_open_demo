@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/ll_bind_scanning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y81"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.het.sdk.demo.widget.BindProgressBar
+            android:id="@+id/bar_scanning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layerType="software" />
+
+        <TextView
+            android:id="@+id/tv_show_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="@string/bind_scanning"
+            android:textColor="#919191"
+            android:textSize="@dimen/item_text_size" />
+    </LinearLayout>
+
+    <com.het.sdk.demo.widget.RippleBackground
+        android:id="@+id/rl_ripple"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="107dp"
+        android:visibility="gone"
+        app:rb_color="#E6F3FF"
+        app:rb_duration="3000"
+        app:rb_radius="25dp"
+        app:rb_rippleAmount="3"
+        app:rb_scale="6">
+
+        <ImageView
+            android:id="@+id/centerImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/bind_ripple_bg" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_caption"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:text=""
+                android:textColor="@color/bind_blue"
+                android:textSize="@dimen/item_text_size" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="66px"
+                android:text=""
+                android:textColor="@color/bind_gray"
+                android:textSize="@dimen/item_text_size" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/centerImage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="48sp"
+            android:layout_marginTop="69px"
+            android:text="@string/bind_register_to_service"
+            android:textColor="@color/bind_gray"
+            android:textSize="@dimen/item_text_size" />
+
+    </com.het.sdk.demo.widget.RippleBackground>
+
+    <LinearLayout
+        android:id="@+id/ll_bind_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/bind_success_notice" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="35dp"
+            android:text="@string/bind_bindding_success"
+            android:textSize="@dimen/item_text_size" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_bind_fail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="@string/bind_device_fail"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen30"
+            android:gravity="center"
+            android:text="@string/bind_device_fail_2"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <com.het.recyclerview.XRecyclerView
+        android:visibility="gone"
+        android:background="@color/white"
+        android:id="@+id/device_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+
+</RelativeLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.het.recyclerview.swipemenu.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/smContentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        >
+        <View
+            style="@style/HetUi.Style.Line.Horizontal"
+            android:layout_alignParentTop="true" />
+
+        <View
+            style="@style/HetUi.Style.Line.Horizontal"
+            android:layout_alignParentBottom="true" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sv_msg_item"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="24dp"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:placeholderImage="@mipmap/img_invi"
+            fresco:placeholderImageScaleType="focusCrop"
+            fresco:roundAsCircle="false"
+            fresco:roundingBorderWidth="0dp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignTop="@id/sv_msg_item"
+            android:layout_marginLeft="19.5dp"
+            android:layout_marginTop="18dp"
+            android:layout_toRightOf="@id/sv_msg_item"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_alignLeft="@+id/tv_title"
+            android:layout_marginTop="13.5dp"
+            android:layout_toRightOf="@id/sv_msg_item"
+            android:maxLines="2"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="#808080"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/item_icon_view_right_image"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="24dp"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/common_icon_arrow_right" />
+
+    </RelativeLayout>
+
+
+    <include
+        android:id="@+id/smMenuView"
+        layout="@layout/het_message_item_swipe_menu" />
+
+</com.het.recyclerview.swipemenu.SwipeMenuLayout>

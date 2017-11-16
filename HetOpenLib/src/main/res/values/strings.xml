@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">HetOpenLib</string>
+
+
+    <!--第三方登录-->
+    <string name="three_login_weixin">微信登录</string>
+    <string name="three_login_weibo">微博登录</string>
+    <string name="three_login_qq">QQ登录</string>
+    <string name="three_login_cancel">取消登录</string>
+    <string name="three_login_failure">登录失败</string>
+    <string name="three_login_auth_failure">认证失败</string>
+    <string name="weixin_logining">正在跳转微信登录……</string>
+    <string name="sinaweibo_logining">正在跳转微博登录……</string>
+
+    <string name="common_third_wx_logining">微信登录中...</string>
+    <string name="common_third_sina_logining">微博登录中...</string>
+    <string name="common_third_qq_logining">QQ登录中...</string>
+
+    <string name="modif_passwad_succee">密码修改成功</string>
+    <string name="modif_passwad_fail">密码修改失败</string>
+    <string name="modif_passwad_cancel">密码修改取消</string>
+
+
+    <string name="three_login_cancel_auth">取消授权</string>
+    <string name="sina_auth_success">微博授权成功</string>
+    <string name="sina_auth_failure">微博授权失败</string>
+    <string name="TencentAPPID_Toast">请先初始化腾讯开放平台app_id</string>
+    <string name="WechatAppID_Toast">请先初始化微信登录授权app_id 及 app_secret</string>
+    <string name="SinaAppID_Toast">请先初始化微博登录授权app_id 及 app_secret</string>
+
+    <string name="share_not_supported">未安装客户端或SDK版本太低</string>
+    <string name="share_plat_wechatmoments">朋友圈</string>
+    <string name="share_plat_wechat">微信</string>
+    <string name="share_plat_qqzone">QQ空间</string>
+    <string name="share_plat_qq">QQ好友</string>
+    <string name="share_plat_sina">微博</string>
+    <string name="share_result_success">发送成功</string>
+    <string name="share_result_failure">发送失败</string>
+    <string name="share_result_cancel">发送取消</string>
+    <string name="share_result_refused">发送被拒绝</string>
+    <string name="share_result_sina_success">微博授权成功</string>
+    <string name="share_result_sina_canel">取消授权</string>
+
+    <string name="network_error">网络异常，请稍后再试</string>
+
+</resources>

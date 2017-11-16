@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base_content_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <RadioGroup
+        android:id="@+id/tab_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_auth"
+            style="@style/main_bottom_text_style"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/auth" />
+
+        <RadioButton
+            android:id="@+id/rb_bind"
+            style="@style/main_bottom_text_style"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="@string/bind" />
+
+        <RadioButton
+            android:id="@+id/rb_device"
+            style="@style/main_bottom_text_style"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="@string/device" />
+
+        <RadioButton
+            android:id="@+id/rb_common"
+            style="@style/main_bottom_text_style"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="@string/common" />
+    </RadioGroup>
+
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tab_bottom"
+        android:layout_alignParentTop="true">
+
+    </FrameLayout>
+</RelativeLayout>

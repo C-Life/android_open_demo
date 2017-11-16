@@ -1,0 +1,170 @@
+/*
+ * Copyright 2016.11.17 szhittech
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// https://oss.sonatype.org/#welcome
+apply plugin: 'maven'
+//becase het is not sigining
+apply plugin: 'signing'
+
+
+def isHet() {
+    def has = hasProperty('NEXUS_TYPE');
+    if (has) {
+        return NEXUS_TYPE.contains("maven") ? false : true;
+    } else {
+        return true;
+    }
+}
+
+def isSourceCode() {
+    def has = hasProperty('SOURCESCODE');
+    if (has) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+def isReleaseBuild() {
+    return rootProject.ext.libsversion["${project.modulename}"].contains("SNAPSHOT") == false
+}
+
+def getReleaseRepositoryUrl() {
+    if (isHet()) {
+        return rootProject.ext.config.HET_NEXUS_RELEASES
+    } else {
+        return rootProject.ext.config.JCENTER_NEXUS_RELEASES
+    }
+}
+
+def getSnapshotRepositoryUrl() {
+    if (isHet()) {
+        return rootProject.ext.config.HET_NEXUS_SNAPSHOTS
+    } else {
+        return rootProject.ext.config.JCENTER_NEXUS_SNAPSHOTS
+    }
+}
+
+def getRepositoryUsername() {
+    if (isHet()) {
+        return rootProject.ext.config.NEXUS_USERNAME_HET
+    } else {
+        return rootProject.ext.config.NEXUS_USERNAME
+    }
+
+}
+
+def getRepositoryPassword() {
+    if (isHet()) {
+        return rootProject.ext.config.NEXUS_PASSWORD_HET
+    } else {
+        return rootProject.ext.config.NEXUS_PASSWORD
+    }
+}
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                if (isReleaseBuild()) {
+                    //becase het is not sigining pad POM_ARTIFACT_ID VERSION_NAME
+                    beforeDeployment {
+                        MavenDeployment deployment -> signing.signPom(deployment)
+                    }
+                    if (isHet()) {
+                        logger.lifecycle("==正在打Release版到HeT Center===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getReleaseRepositoryUrl())
+                    } else {
+                        logger.lifecycle("==正在打Release版到JCenter===" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getReleaseRepositoryUrl())
+                    }
+                } else {
+                    if (isHet()) {
+                        logger.lifecycle("==正在打SNAPSHOT版到HeTCenter=" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getSnapshotRepositoryUrl())
+                    } else {
+                        logger.lifecycle("==正在打SNAPSHOT版到JCenter=" + rootProject.ext.config.GROUP + ":" + rootProject.ext.libsname["${project.modulename}"] + ":" + rootProject.ext.libsversion["${project.modulename}"] + " URL:"+getSnapshotRepositoryUrl())
+                    }
+                }
+
+
+                pom.groupId = rootProject.ext.config.GROUP
+                pom.artifactId = rootProject.ext.libsname["${project.modulename}"]
+                pom.version = rootProject.ext.libsversion["${project.modulename}"]
+
+                repository(url: getReleaseRepositoryUrl()) {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
+                snapshotRepository(url: getSnapshotRepositoryUrl()) {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
+
+                pom.project {
+                    name project.modulename
+                    packaging rootProject.ext.config.POM_PACKAGING
+                    description rootProject.ext.config.POM_DESCRIPTION
+                    url rootProject.ext.config.POM_URL
+
+                    scm {
+                        url rootProject.ext.config.POM_SCM_URL
+                        connection rootProject.ext.config.POM_SCM_CONNECTION
+                        developerConnection rootProject.ext.config.POM_SCM_DEV_CONNECTION
+                    }
+                    licenses {
+                        license {
+                            name rootProject.ext.config.POM_LICENCE_NAME
+                            url rootProject.ext.config.POM_LICENCE_URL
+                            distribution rootProject.ext.config.POM_LICENCE_DIST
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id rootProject.ext.config.POM_DEVELOPER_ID
+                            name rootProject.ext.config.POM_DEVELOPER_NAME
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (isReleaseBuild()) {
+        //becase het is not sigining
+        signing {
+            required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+            sign configurations.archives
+        }
+    }
+
+    //all right,add this code will result in the unreadable code
+    task androidJavadocs(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+        classifier = 'javadoc'
+        from androidJavadocs.destinationDir
+    }
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
+    }
+    artifacts {
+        //boolean isSource = isSourceCode()
+        //if (isSource) {
+        //   logger.lifecycle('#### 正在上传源代码')
+        // archives androidSourcesJar
+        // }
+        //archives androidJavadocsJar
+    }
+}

@@ -1,0 +1,379 @@
+<resources>
+    <string name="app_name">ClifeOpenApp_Kit</string>
+
+    <string name="aroma_notification">保证水量，肚子饱饱的才能更好的服务您哦~</string>
+    <string name="ignore">忽略</string>
+    <string name="all_bright">全亮灯</string>
+    <string name="half_bright">半亮灯</string>
+    <string name="light_close">关闭灯</string>
+    <string name="timing">定时</string>
+    <string name="close">关闭</string>
+    <string name="twenty_minute">20分钟</string>
+    <string name="forty_minute">40分钟</string>
+    <string name="sixty_minute">60分钟</string>
+    <string name="color">颜色</string>
+    <string name="water_shortage_notification1">加湿器已经因缺水自动暂停了,注意加水不能超过最高刻度线</string>
+    <string name="press_again">再按一次退出程序</string>
+    <!--!自定义场景字符串-->
+    <string name="custom_scene_add_diy_summary">DIY一套属于自己的场景</string>
+    <string name="custom_scene_add_diy_title">添加自定义场景</string>
+    <string name="custom_scene_help_sleep">助眠场景</string>
+    <string name="custom_scene_add">新建场景</string>
+    <string name="custom_scene_add_scene_name">添加场景名称</string>
+    <string name="custom_scene_please_input_describe">请输入场景描述</string>
+    <string name="custom_scene_describe_max_num">支持最多输入60个字符</string>
+    <string name="custom_scene_describe">场景描述</string>
+    <string name="custom_scene_name">场景名称</string>
+    <string name="custom_scene_please_add_scene_name">请输入您的场景名称</string>
+    <string name="custom_scene_picture">场景图片</string>
+    <string name="custom_scene_nameedit_max_num">支持最多输入16个中文字符，32个英文字符</string>
+
+    <string name="add_preset">添加触发条件</string>
+    <string name="add_preset_device">添加设备执行</string>
+    <string name="preset">触发条件</string>
+    <string name="preset_device">设备执行</string>
+    <string name="preset1">触发条件一</string>
+    <string name="preset2">触发条件二</string>
+    <string name="preset3">触发条件三</string>
+    <string name="preset4">触发条件四</string>
+    <string name="preset5">触发条件五</string>
+    <string name="preset_device1">设备执行一</string>
+    <string name="preset_device2">设备执行二</string>
+    <string name="preset_device3">设备执行三</string>
+    <string name="preset_device4">设备执行四</string>
+    <string name="preset_device5">设备执行五</string>
+    <string name="preset_add">亲，我们支持多条件场景哦</string>
+    <string name="start_now">立即开启</string>
+    <string name="start_time">定时启动</string>
+    <string name="tape_number">睡眠带子检测值</string>
+    <string name="tosleep_state">就寝状态</string>
+    <string name="getup_state">起床状态</string>
+    <string name="repeat">重复</string>
+    <string name="start">启动</string>
+    <string name="set_time">定时</string>
+    <string name="start_no_condition">（免条件启动）</string>
+    <string name="add_condition">已设置的条件（最多可选两个）</string>
+    <string name="condition_choose">可选添加条件</string>
+    <string name="set_time_new">定时时间</string>
+    <string name="scene_relation">条件关系</string>
+    <string name="scene_a_huo_b">a或b</string>
+    <string name="scene_a_he_b">a和b</string>
+
+    <string name="once">只执行一次</string>
+    <string name="everyday">每天</string>
+    <string name="workday">工作日</string>
+    <string name="custom">自定义</string>
+    <string name="have_condition">已有预设</string>
+    <string name="new_condition">可选预设</string>
+
+
+    <string name="custom_scene_draft">草稿</string>
+    <string name="custom_scene_add_diy_please_choose_pic">请添加本场景图片</string>
+    <string name="custom_scene_add_diy_please_input_summary">请输入场景描述</string>
+    <string name="custom_scene_add_diy_please_input_name">请先填写场景名称</string>
+
+    <string name="edit_text">编辑</string>
+    <string name="edit_scene">场景编辑</string>
+    <string name="scene_information">基本信息</string>
+
+    <string name="repeat_text">重复：</string>
+    <string name="gotobed">上床</string>
+    <string name="getup">起床</string>
+    <string name="repetition_everyday">0,1,2,3,4,5,6,</string>
+    <string name="repetition_workday">1,2,3,4,5,</string>
+
+    <string name="monday"> 星期一 </string>
+    <string name="tuesday"> 星期二 </string>
+    <string name="wednesday"> 星期三 </string>
+    <string name="thursday"> 星期四 </string>
+    <string name="friday"> 星期五 </string>
+    <string name="saturday"> 星期六 </string>
+    <string name="sunday"> 星期日 </string>
+    <string name="comma">,</string>
+    <string name="notset_condition">您还没有设置触发条件</string>
+
+    <string name="custom_scene_expression_symbol">字符中不能包含表情符号</string>
+    <string name="custom_scene_nocondition">您还没有设置触发条件</string>
+    <string name="custom_scene_nodevicepreset">您还没有添加执行任务</string>
+
+    <string name="custom_scene_detai_tip">亲，系统推荐的智能场景，编辑后创建为您专属的场景哦</string>
+    <string name="custom_scene_toadd">去添加</string>
+    <string name="custom_scene_condition_tip">您当前没有设备，请先添加设备</string>
+    <string name="custom_scene_device_tip">您当前没有可预设的设备，请先添加设备</string>
+    <string name="custom_scene_delete_tip">确认删除该场景？</string>
+    <string name="custom_scene_deletesub_tip">确认删除该子场景？</string>
+    <string name="custom_scene_delay">延迟</string>
+    <string name="post_picture_more">亲，一个帖子只支持9张图片哦！</string>
+    <string name="read">阅读</string>
+    <string name="rest">休息</string>
+    <string name="night_light">夜灯</string>
+    <string name="brightness">亮度</string>
+    <string name="set_false_notification">设置失败，请稍后重试!</string>
+    <string name="read_color_not_change">阅读模式颜色不能调节哦！</string>
+    <string name="led"> 舒眠灯</string>
+    <string name="timing_set_success">定时关机设置成功！</string>
+    <string name="timing_set_false">定时关机设置失败，请稍后重试！</string>
+    <string name="timing_open_set_success">定时开机设置成功！</string>
+    <string name="timing_open_set_false">定时开机设置失败，请稍后重试！</string>
+    <string name="aroma">香薰机</string>
+    <string name="water_shortage_notification">%1$s已经因缺水自动暂停了,注意加水不能超过最高刻度线</string>
+    <string name="load_false">加载失败，请稍后重试！</string>
+    <string name="humidifier">加湿器</string>
+
+    <string name="common_not_login">当前未登录状态</string>
+    <string name="common_login">登录</string>
+    <string name="common_login_cloud">云登录</string>
+
+    <string name="common_loading">请求中</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_sure">确定</string>
+    <string name="common_next">下一步</string>
+    <string name="common_no_network">网络不可用，请检查网络设置</string>
+
+    <string name="common_loading_prompt">加载中……</string>
+
+    <string name="common_left_click">topbar左边按钮</string>
+    <string name="common_right_click">topbar右边按钮</string>
+
+    <string name="about_not_to_update">暂不升级</string>
+
+    <string name="delete_msg">删除</string>
+
+    <string name="conenct_auto_linkage_promt">关闭后，将不会根据睡眠状态自动\n开启、关闭喷雾功能</string>
+
+    <string name="next">下一步</string>
+
+    <string name="scene_detail">场景详情</string>
+    <string name="scene_log">场景日志</string>
+    <string name="scence_test">体验场景</string>
+
+    <string name="custom_scene_add_title">快速添加（添加后可以自己修改）</string>
+    <string name="scene_edit_tile">退出编辑</string>
+    <string name="scene_edit_tip">退出后，编辑的内容将丢失，是否退出</string>
+
+    <string name="scene_edit_information">编辑基本信息</string>
+    <string name="scene_edit_set">编辑场景设置</string>
+
+    <string name="scene_choosecondition">请先选择条件</string>
+    <string name="scene_condition_more">条件数已超出数量，请先取消勾选</string>
+    <string name="title_activity_test_scene">TestSceneActivity</string>
+    <string name="scene_stopscene">用户场景运行中，请先终止场景</string>
+    <string name="scene_device_limit">子场景限制5个设备之内</string>
+    <string name="delete">删除</string>
+    <string name="auth">授权</string>
+    <string name="bind">绑定</string>
+    <string name="device">设备</string>
+    <string name="common">通用</string>
+    <string name="auth_intro">授权登录采用auth授权的形式，用户需有clife开放平台帐号，若没有，需注册</string>
+    <string name="auth_auto_intro">自动登录，传入用户手机号，一键登录clife开放平台</string>
+    <string name="get_user_mess">登录后，获取用户信息</string>
+    <string name="btn_auth">授权登录</string>
+    <string name="btn_auto_auth">一键登录</string>
+    <string name="btn_device_bind">设备绑定</string>
+    <string name="btn_get_user_mess">获取用户信息</string>
+    <string name="btn_ok_bind">直接绑定</string>
+    <string name="btn_third_ble_bind">第三方蓝牙设备绑定</string>
+    <string name="bind_device_intro">绑定设备，用户需在开放平台添加自己的设备，并与帐号关联</string>
+    <string name="bind_ok_intro">直接绑定，用户需传入deviceModel的相关信息绑定</string>
+    <string name="bind_third_ble_intro">第三方蓝牙设备绑定，用户自己控制设备连接控制，将设备数据传给clife开发平台</string>
+    <string name="btn_scene">设备场景</string>
+    <string name="http_get_intro">访问clife通用get</string>
+    <string name="http_post_intro">访问clife通用</string>
+    <string name="btn_message">我的消息</string>
+    <string name="message_intro">获取clife平台的相关消息</string>
+    <string name="btn_device_unbind">解绑设备</string>
+    <string name="device_unbind_intro">解除和设备的绑定关系</string>
+    <string name="btn_device_change_message">修改设备基本信息</string>
+    <string name="get_data_histroyy">获取历史数据</string>
+    <string name="btn_get_data_histroy">获取历史数据</string>
+    <string name="device_change_message">修改设备基本信息,比如修改设备名称</string>
+    <string name="btn_device_rom_upload">固件升级</string>
+    <string name="device_rom_upload_intro">升级设备的固件信息</string>
+    <string name="btn_device_share">分享设备</string>
+    <string name="device_share_intro">将设备分享给其它用户（家人），其它用户无需绑定设备</string>
+    <string name="btn_device_control">控制设备</string>
+    <string name="device_control_intro">用户下发命令，可以控制设备</string>
+    <string name="btn_get_protocol">获取协议</string>
+    <string name="get_protocol_intro">获取设备的协议（包括控制，运行，异常）</string>
+    <string name="share_device_qr_intro">clife授权用户扫描以下二维码，同意分享设备</string>
+    <string name="share_to_invite_intro">输入被邀请者的用户id（该用户需登录clife开放平台），邀请用户</string>
+    <string name="btn_to_invite">确认邀请</string>
+    <string name="et_invite_tip">请输入被邀请者手机号</string>
+    <string name="et_friend_tip">请输入好友手机号或者（id）</string>
+    <string name="et_share_del_tip">请输入要取消分享用户的手机号</string>
+    <string name="share_device_qr_agree_intro">扫描clife授权好友分享的设备</string>
+    <string name="btn_scan">扫一扫</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="data_histroy_run">获取设备运行数据列表（七天之内）</string>
+    <string name="data_histroy_config">获取设备控制数据列表（七天之内）</string>
+    <string name="data_histroy_error">获取设备异常数据列表（七天之内）</string>
+    <string name="btn_data_histroy_run">运行数据</string>
+    <string name="btn_data_histroy_config">控制数据</string>
+    <string name="btn_data_histroy_error">异常数据</string>
+    <string name="btn_http_get">通用GET</string>
+    <string name="btn_http_post">通用POST</string>
+    <string name="appID_Toast">请替换 assets/h5UIConfig.json 中的参数定义为您申请到的开放平台app_id、app_secret</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="logout">退出登录</string>
+    <string name="confirm_logout">确定要退出登录吗</string>
+    <string name="other_login">您的账号在其他设备上登录，如果不是您的操作，请注意修改密码</string>
+    <string name="logout_sure">确定</string>
+    <string name="logout_cancel">取消</string>
+
+
+    <!--bind-->
+    <string name="ap_nodevice_helps">如搜索不到设备，请尝试将设备重新上电</string>
+    <string name="bind_ap_hand_add">手动添加</string>
+    <string name="bind_ap_scan_title">选择添加方式</string>
+    <string name="bind_ap_search">正在搜索附近设备</string>
+    <string name="bind_bindding_bindded">已绑</string>
+    <string name="bind_bindding_input_password">请输入密码</string>
+    <string name="bind_cancel">取消</string>
+    <string name="bind_chage_wifi">更换WiFi</string>
+    <string name="bind_change_wifi">更换其他WiFi</string>
+    <string name="bind_change_wifi_cur">请确认您当前的WiFi或使用其他WiFi绑定</string>
+    <string name="bind_jump">跳过</string>
+    <string name="bind_never_searchout">还是搜索不到？</string>
+    <string name="bind_re_search">重新搜索</string>
+    <string name="bind_search_result">搜索到的设备</string>
+    <string name="bind_server_sanning">搜索本地服务器</string>
+    <string name="bind_start">开始绑定</string>
+    <string name="bindding_text">绑定中...</string>
+    <string name="scanning_text">扫描中...</string>
+    <string name="bind_qrcode_scan_name">扫一扫</string>
+    <string name="bind_ble_device">蓝牙设备</string>
+    <string name="bind_ble_scan_name">蓝牙扫描</string>
+    <string name="bind_type_top_name">添加设备</string>
+    <string name="bind_hot_devices">热门添加设备</string>
+    <string name="bind_scanning">扫描设备...</string>
+    <string name="bind_light">灯光</string>
+    <string name="bind_top_sanning_tittle">设备添加</string>
+    <string name="bind_register_to_service">设备注册云端......</string>
+    <string name="bind_bindding_success">绑定成功</string>
+    <string name="bind_top_sanning">扫描中</string>
+    <string name="bind_top_binding">绑定中</string>
+    <string name="bind_no_data">无数据</string>
+    <string name="bind_scanning_text">扫描中(%1$d%2$s)...</string>
+    <string name="bind_bindding_text">绑定中...%1$d%2$s</string>
+    <string name="bind_bindding_sucess">绑定成功！</string>
+    <string name="bind_bindding_yes">好的</string>
+    <string name="bind_scanning_failed">扫描失败</string>
+    <string name="bind_scanning_finish">扫描完成</string>
+    <string name="bind_scanning_do_rescan">是否重新扫描？</string>
+    <string name="bind_scanning_rescan">重新扫描</string>
+    <string name="bind_exit">退出</string>
+    <string name="bind_bindding_failed">绑定失败</string>
+    <string name="bind_over_bind">结束绑定</string>
+    <string name="bind_bindding_do_rebind">是否重新绑定？</string>
+    <string name="bind_bindding_over">是否结束绑定？</string>
+    <string name="bind_bindding_rebind">重新绑定</string>
+    <string name="bind_remember_pass">记住密码</string>
+    <string name="bind_input_pass">请输入8位WiFi密码</string>
+    <string name="bind_next">下一步</string>
+    <string name="bind_readme">绑定说明</string>
+    <string name="bind_wifi_pass_no_chinese">密码不允许中文，请输入密码!</string>
+    <string name="bind_wifi_pass_no_null">密码不能为空!</string>
+    <string name="bind_wifi_tips">温馨提醒</string>
+    <string name="bind_wifi_turn_on_gps">请开启GPS</string>
+    <string name="bind_wifi_check_wifi">请检查WiFi是否正常连接</string>
+    <string name="bind_wifi_check_wifi_not_ap">请检查当前连接WiFi不是热点</string>
+    <string name="bind_wifi_oh_yes">好的</string>
+    <string name="bind_wifi_network">网络不给力，请检查网络设置</string>
+    <string name="bind_wifi_qrcode">将二维码/条码放入框内，即可自动扫描</string>
+    <string name="bind_wifi_barcode">将条码放入框内，即可自动扫描</string>
+    <string name="bind_type_brand_noproduct">抱歉，该品牌下没有设备!</string>
+
+    <string name="login_security">安全登录</string>
+    <string name="login_out">退出登录</string>
+    <string name="copyright">版权声明</string>
+    <string name="privacy">隐私政策</string>
+    <string name="feedback">意见反馈</string>
+    <string name="setting_questions">常见问题</string>
+    <string name="share_device_user">好友设备权限管理</string>
+    <string name="face_to_faca">面对面分享</string>
+    <string name="share_remind">其他人将通过分享获得设备的控制权限，请勿将设备分享给陌生人</string>
+    <string name="feedback_num">0/300</string>
+
+    <string name="update_password">修改密码</string>
+    <string name="current_count">当前账户</string>
+    <string name="commit">提交</string>
+
+    <string name="suggestion_question_input">请提出您的宝贵意见</string>
+    <string name="suggestion_question">意见建议</string>
+    <string name="tab_my_msg">我的消息</string>
+    <string name="tab_my">我的</string>
+    <string name="my_info">我的信息</string>
+
+
+    <string name="empty_view_hint">没有发现数据哦!</string>
+    <string name="error_view_hint">加载失败,点击重试</string>
+    <string name="no_network_view_hint">网络异常</string>
+    <string name="device_class_bind">设备分类绑定</string>
+    <string name="qr_code_error">二维码错误</string>
+    <string name="no_support_this_product">不支持次设备类型</string>
+
+
+    <string name="device_statue_online">在线</string>
+    <string name="device_statue_offline">离线</string>
+
+
+    <string name="find_device_ing">努力搜索设备中</string>
+
+    <string name="bind_device_fail">常见失败原因</string>
+    <string name="bind_device_fail_1">1. 设备是否处于绑定状态\n\n 2. WIFI密码是否输入正确\n\n 3. 设备型号是否选择正确\n\n 4. APP是否适配此WIFI模组</string>
+
+    <string name="bind_device_fail_2">1. 设备是否处于绑定状态\n\n 2. 设备型号是否选择正确\n\n 3. APP是否适配此蓝牙模组</string>
+
+    <!--消息中心-->
+    <string name="common_msg_title_msg_center">消息中心</string>
+    <string name="common_msg_title_device">设备消息</string>
+    <string name="common_msg_title_friend">好友消息</string>
+    <string name="common_msg_title_invitation">帖子消息</string>
+    <string name="common_msg_title_sys">系统消息</string>
+    <string name="common_msg_title_operate">运营消息</string>
+    <string name="common_msg_detail">消息详情</string>
+
+    <string name="common_msg_invite_control_device">邀请控制设备</string>
+    <string name="common_msg_agree_invite_share_device">您已经同意对方的设备邀请</string>
+    <string name="common_msg_share_device_fail">设备授权失败</string>
+    <string name="common_msg_update_fail">信息更新失败</string>
+    <string name="common_msg_agree_friend_fail">同意好友失败</string>
+
+    <string name="common_msg_no_msg">没有消息!</string>
+    <string name="common_msg_check">立即查看</string>
+    <string name="common_msg_dialog_title">标题</string>
+
+    <string name="common_msg_agree">同意</string>
+    <string name="common_msg_accept">接受</string>
+    <string name="common_msg_delete">删除</string>
+    <string name="commin_msg_deleting">删除中...</string>
+    <string name="common_msg_already_accept">已接受</string>
+    <string name="common_msg_is_delete_msg">确认删除这条消息?</string>
+    <string name="common_msg_delete_fail">删除失败</string>
+    <string name="common_msg_delete_success">删除成功</string>
+    <string name="common_msg_sure">确认</string>
+    <string name="common_msg_cancel">取消</string>
+
+    <string name="common_msg_just">刚刚</string>
+    <string name="common_msg_one_min_ago">1 分钟前</string>
+    <string name="common_msg_min_ago">分钟前</string>
+    <string name="common_msg_one_hour_ago">1 小时前</string>
+    <string name="common_msg_hour_ago">小时前</string>
+
+    <string name="connect_device">连接设备</string>
+    <string name="chear_log">清除日志</string>
+    <string name="device_info">设备信息</string>
+    <string name="device_bind">绑定</string>
+    <string name="get_date">获取时间</string>
+    <string name="set_date">设置时间</string>
+    <string name="real_time_data">实时数据</string>
+    <string name="send_control_data">发送控制数据</string>
+    <string name="history_data">历史数据</string>
+
+
+    <string name="code_auth">验证码三方授权</string>
+
+
+</resources>

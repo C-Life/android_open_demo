@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:itemview="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.het.ui.sdk.CommonTopBar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color9"
+            android:orientation="vertical">
+
+            <com.het.sdk.demo.widget.ItemView
+                android:id="@+id/v_current_count"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen48"
+                android:layout_marginTop="@dimen/dimen20"
+                android:background="@drawable/item_selector"
+                android:clickable="true"
+                android:text="@string/current_count"
+                itemview:item_left_text_color_string="#333333"
+                itemview:item_right_show="false" />
+
+            <com.het.sdk.demo.widget.ItemView
+                android:id="@+id/v_update_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen48"
+                android:layout_marginTop="@dimen/dimen10"
+                android:background="@drawable/item_selector"
+                android:clickable="true"
+                android:text="@string/update_password"
+                itemview:item_left_text_color_string="#333333"
+                itemview:item_right_img_res="@mipmap/arrow_right" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <com.het.sdk.demo.widget.ItemView
+                    android:id="@+id/itemview_mymsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen48"
+                    android:background="@drawable/item_selector"
+                    android:clickable="true"
+                    android:text="@string/tab_my_msg"
+                    itemview:item_left_text_color_string="#333333"
+                    itemview:item_right_img_res="@mipmap/arrow_right"/>
+
+                <ImageView
+                    android:id="@+id/iv_unread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/circle_red"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <com.het.sdk.demo.widget.ItemView
+                android:id="@+id/v_normal_question"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen48"
+                android:layout_marginTop="@dimen/dimen20"
+                android:background="@drawable/item_selector"
+                android:clickable="true"
+                android:text="@string/setting_questions"
+                itemview:item_left_text_color_string="#333333"
+                itemview:item_right_img_res="@mipmap/arrow_right"/>
+
+
+            <com.het.sdk.demo.widget.ItemView
+                android:id="@+id/v_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen48"
+                android:background="@drawable/item_selector"
+                android:clickable="true"
+                android:text="@string/feedback"
+                itemview:item_left_text_color_string="#333333"
+                itemview:item_right_img_res="@mipmap/arrow_right" />
+
+            <com.het.sdk.demo.widget.ItemView
+                android:id="@+id/v_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen48"
+                android:background="@drawable/item_selector"
+                android:clickable="true"
+                android:text="@string/privacy"
+                itemview:item_left_text_color_string="#333333"
+                itemview:item_right_img_res="@mipmap/arrow_right" />
+
+            <com.het.sdk.demo.widget.ItemView
+                android:id="@+id/v_copyright"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen48"
+                android:background="@drawable/item_selector"
+                android:clickable="true"
+                android:text="@string/copyright"
+                itemview:item_left_text_color_string="#333333"
+                itemview:item_right_img_res="@mipmap/arrow_right" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen48"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="@dimen/dimen30"
+                android:background="@drawable/btn_white_selector"
+                android:gravity="center"
+                android:text="@string/login_out"
+                android:textColor="@color/red_ec5962"
+                android:textSize="@dimen/textSize18" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</android.support.design.widget.NavigationView>

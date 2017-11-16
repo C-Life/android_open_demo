@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>绑定说明</title>
+<link rel="stylesheet" href="./static/css/reset.css">
+<link rel="stylesheet" href="./static/css/bindHelp.css">
+</head>
+<body>
+<section class="default-wrap">
+    <dl class="bluetooth">
+        <dt>蓝牙设备添加说明</dt>
+        <dd>您可以通过蓝牙搜索的方式添加蓝牙设备</dd>
+    </dl>
+    <dl class="wifi">
+        <dt>WiFi设备添加说明</dt>
+        <dd>
+            <span class="mark">1.</span>
+            路由器WiFi名称最好不使用中文，密码不要有数字和字母以外的字符。确保WiFi密码正确无误。
+        </dd>
+        <dd>
+            <span class="mark">2.</span>
+            路由器保持较好信号，设备不要离路由器太远。请保持您的路由器尽量不要连接超过8个以上智能设备，包括手机和电脑。
+        </dd>
+        <dd>
+            <span class="mark">3.</span>
+            请不要使用公共WiFi网络连接设备。
+        </dd>
+        <dd>
+            <span class="mark">4.</span>
+            对于双频路由器，手机要连接
+            <span class="mark">2.4G频段</span>
+            网络。
+            <div class='wrap'>
+            <img src='./static/img/ico-3.png' width="90%" height="90%" />
+            <i class="icon1"></i>
+            <i class="icon2"></i>
+            </div>
+        </dd>
+        <dd>
+            <span class="mark">5.</span>
+            路由器无线模式建议使用
+            <span class="mark">11bg</span>
+            模式<br />
+            <label>无线设置&nbsp&gt&nbsp基本设置&nbsp&gt&nbsp模式</label>
+            <img src='./static/img/ico-6.png' width="90%" height="90%" />
+        </dd>
+    </dl>
+</section>
+</body>
+</html>
