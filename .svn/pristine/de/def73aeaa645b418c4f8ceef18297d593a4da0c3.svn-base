@@ -1,0 +1,152 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '25.0.2'
+    defaultConfig {
+        applicationId "com.het.sdk.demo"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 2
+        versionName "1.0.5"
+
+        ndk {
+            abiFilters 'armeabi'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : "com.het.sdk.demo",
+                JPUSH_APPKEY : "b870a5ac7f2ab2442598b68b", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+
+        multiDexEnabled true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+    }
+
+    signingConfigs {
+        HetConfig {
+            storeFile file("het_key.jks")
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                File outputDirectory = new File(outputFile.parent);
+                def fileName
+                if (variant.buildType.name == "release") {
+                    fileName = "HetSdkDemo_v${defaultConfig.versionName}_release.apk"
+                } else {
+                    fileName = "HetSdkDemo_v${defaultConfig.versionName}_beta_debug.apk"
+                }
+                output.outputFile = new File(outputDirectory, fileName)
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            //Zipalign优化
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.HetConfig
+        }
+        release {
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.HetConfig
+        }
+    }
+
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+
+
+    lintOptions {
+        abortOnError false
+    }
+
+    dexOptions {
+        preDexLibraries false
+    }
+
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+
+    compile files('libs/pushservice-5.9.0.59.jar')
+    //引用库形式
+    //compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.0-SNAPSHOT'
+    compile project(':HetOpenLib')
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.github.szhittech:hetrecyclersdk:1.0.8-SNAPSHOT'
+
+
+    //乐鑫信息科技(esptouchmodule) 模组ID：7
+    compile 'com.github.szhittech:esptouchmodule:1.0.1-SNAPSHOT'
+
+    //和而泰AP绑定(hetapmodule) 模组ID：28
+    compile 'com.github.szhittech:hetapmodule:1.0.1-SNAPSHOT'
+
+    //和而泰smartlink绑定(在庆科基础上修改 hetsmartlink) 模组ID：10
+    compile 'com.github.szhittech:hetsmartlink:1.0.1-SNAPSHOT'
+
+    //科中龙(realtekmodule) 模组ID：4
+    compile 'com.github.szhittech:realtekmodule:1.0.1-SNAPSHOT'
+
+    //新力维_NL6621底层库(xlwmodule) 模组ID：6
+    compile 'com.github.szhittech:xlwmodule:1.0.1-SNAPSHOT'
+
+    //双驰达(sctechmodule) 模组ID：15
+    compile 'com.github.szhittech:sctechmodule:1.0.1-SNAPSHOT'
+
+    //信驰达_MTK7681底层库(elianmodule) 模组ID：5
+    compile 'com.github.szhittech:elianmodule:1.0.1-SNAPSHOT'
+
+    //Marvell(marvellmodule) 模组ID：v1=8，v2=27
+    compile 'com.github.szhittech:marvellmodule:1.0.2-SNAPSHOT'
+
+    //博通(cooeemodule) 模组ID：20
+    compile 'com.github.szhittech:cooeemodule:1.0.1-SNAPSHOT'
+
+    //二维码扫描
+    compile 'com.google.zxing:core:3.3.0'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.8@aar'
+    compile 'cn.bingoogolapple:bga-zxing:1.1.8@aar'
+
+    compile 'com.android.support:multidex:1.0.0'
+
+    compile 'cn.jiguang.sdk:jpush:3.0.5'
+    compile 'cn.jiguang.sdk:jcore:1.1.2'
+
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}

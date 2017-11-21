@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <cn.bingoogolapple.qrcode.zxing.ZXingView
+        android:id="@+id/zbarview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qrcv_animTime="1000"
+        app:qrcv_barCodeTipText="@string/bind_wifi_barcode"
+        app:qrcv_barcodeRectHeight="60dp"
+        app:qrcv_borderColor="@android:color/white"
+        app:qrcv_borderSize="0.0dp"
+        app:qrcv_cornerColor="@color/color6"
+        app:qrcv_cornerLength="10dp"
+        app:qrcv_cornerSize="1dp"
+        app:qrcv_customScanLineDrawable="@mipmap/custom_scan_line"
+        app:qrcv_isBarcode="false"
+        app:qrcv_isShowTipBackground="true"
+        app:qrcv_isShowTipTextAsSingleLine="true"
+        app:qrcv_isTipTextBelowRect="true"
+        app:qrcv_maskColor="#33FFFFFF"
+        app:qrcv_qrCodeTipText="@string/bind_wifi_qrcode"
+        app:qrcv_rectWidth="250dp"
+        app:qrcv_scanLineColor="@color/colorPrimaryDark"
+        app:qrcv_toolbarHeight="50dp"
+        app:qrcv_topOffset="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>

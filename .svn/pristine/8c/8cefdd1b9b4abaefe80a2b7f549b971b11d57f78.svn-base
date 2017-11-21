@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="@string/bind_device_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/Style.Text.Tag.Tip"
+      />
+
+    <Button
+        android:id="@+id/btn_device_bind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:text="@string/btn_device_bind"
+        android:textSize="16sp"
+        style="@android:style/Widget.Button" />
+
+    <TextView
+        android:text="@string/bind_ok_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/Style.Text.Tag.Tip"
+        />
+
+    <Button
+        android:id="@+id/btn_ok_bind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:text="@string/btn_ok_bind"
+        android:textSize="16sp"
+        style="@android:style/Widget.Button" />
+
+    <TextView
+        android:text="@string/bind_third_ble_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/Style.Text.Tag.Tip"
+        />
+
+    <Button
+        android:id="@+id/btn_third_ble_bind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:text="@string/btn_third_ble_bind"
+        android:textSize="16sp"
+        style="@android:style/Widget.Button" />
+
+
+</LinearLayout>

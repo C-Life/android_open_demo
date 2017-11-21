@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="@string/http_get_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/Style.Text.Tag.Tip"
+        />
+
+    <Button
+        android:id="@+id/btn_http_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:text="@string/btn_http_get"
+        android:textSize="16sp"
+        style="@android:style/Widget.Button" />
+
+
+    <TextView
+        android:text="@string/http_post_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/Style.Text.Tag.Tip"
+        />
+
+    <Button
+        android:id="@+id/btn_http_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:text="@string/btn_http_post"
+        android:textSize="16sp"
+        style="@android:style/Widget.Button" />
+
+    <TextView
+        android:text="@string/share_device_qr_agree_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/Style.Text.Tag.Tip"
+        />
+
+    <Button
+        android:id="@+id/btn_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:text="@string/btn_scan"
+        android:textSize="16sp"
+        style="@android:style/Widget.Button" />
+
+
+
+
+</LinearLayout>
