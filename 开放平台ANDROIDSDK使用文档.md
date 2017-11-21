@@ -13,30 +13,19 @@
 	allprojects {
 	    repositories {
 	        jcenter()
-	        //clife对外仓库
-	        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 	    }
-	}
-	
-	dependencies {
-	    //clifesdk库
-	     compile 'com.github.szhittech:HetOpenSdk:1.0.7-SNAPSHOT'
 	}
 
 ### 1.3.引用SDK到工程
-	 dependencies {
-	    compile fileTree(include: ['*.jar'], dir: 'libs')
-	    testCompile 'junit:junit:4.12'
-	    compile project(':HetOpenLib')
-	    compile 'com.android.support:appcompat-v7:23.0.1'
-	    compile 'com.android.support:support-v4:23.0.1'
-	    compile 'com.android.support:design:23.1.1'
-	    compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
-	    compile 'com.facebook.fresco:fresco:0.8.1+'
-	    compile 'com.google.code.gson:gson:2.5'
-	    compile 'org.greenrobot:eventbus:3.0.0'
-	    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-	    compile 'com.github.szhittech:hetrecyclersdk:1.0.9-SNAPSHOT'
+
+
+SDK引用
+
+    	//引用库形式
+    	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.0-SNAPSHOT'
+
+模组注册
+
 	    //乐鑫信息科技(esptouchmodule) 模组ID：7
 	    compile 'com.github.szhittech:esptouchmodule:1.0.1-SNAPSHOT'
 	    //clifeAP绑定(hetapmodule) 模组ID：28
@@ -55,11 +44,7 @@
 	    compile 'com.github.szhittech:marvellmodule:1.0.1-SNAPSHOT'
 	    //博通(cooeemodule) 模组ID：20
 	    compile 'com.github.szhittech:cooeemodule:1.0.1-SNAPSHOT'
-	    //二维码扫描
-	    compile 'com.google.zxing:core:3.3.0'
-	    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.8@aar'
-	    compile 'cn.bingoogolapple:bga-zxing:1.1.8@aar'
-	}
+
 
 查看开放平台产品模组类型，选择模组的依赖包。 
 
