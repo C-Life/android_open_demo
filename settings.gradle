@@ -1,6 +1,6 @@
 //include ':bindlogicllib'
 
-include ':HetOpenLib'
+//include ':HetOpenLib'
 
 include ':HetSdkDemo'
 
