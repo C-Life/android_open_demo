@@ -5,3 +5,7 @@
 /.idea/libraries
 /build
 /HetOpenSdk_New2.0.iml
+/.idea/
+.idea/
+gradle/
+gradlew.bat
