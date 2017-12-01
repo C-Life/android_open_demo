@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
-
 import com.broadcom.cooee.CooeeModuleImpl;
 import com.espressif.iot.esptouch.EsptouchModuleImpl;
 import com.ezconnect.marvell.MarvellV1WiFiImpl;
@@ -85,7 +84,7 @@ public class AppApplication extends MultiDexApplication {
     private void configApplication(String appId, String appSecret) {
         ConfigModel configModel = new ConfigModel();
         configModel.setLog(true); //是否开启log信息
-        configModel.setHost(HetCodeConstants.TYPE_LOCAL_HOST); //环境设置TYPE_LOCAL_HOST
+        configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //环境设置TYPE_LOCAL_HOST
         configModel.setH5UIconfig(UIJsonConfig.getInstance(this).getJsonString(UIJsonConfig.fileName, this));
         //配置第三方登录
         mLoginDelegate = new HetSdkThirdDelegateBuilder(this)
@@ -95,8 +94,7 @@ public class AppApplication extends MultiDexApplication {
                 .create();
         HetSdk.getInstance().init(this, appId, appSecret, configModel);
 
-//        初始化极光推送服务   百度推送不能在application里面初始化 极光推送可以
-//        HetPushManager.getInstance().init(new JpushService(this));
+
 
     }
 

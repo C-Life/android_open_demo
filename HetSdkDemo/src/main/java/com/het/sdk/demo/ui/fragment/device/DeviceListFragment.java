@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
 import com.google.gson.reflect.TypeToken;
 import com.het.basic.base.RxManage;
 import com.het.basic.utils.GsonUtil;
@@ -14,11 +15,13 @@ import com.het.recyclerview.XRecyclerView;
 import com.het.recyclerview.swipemenu.SwipeMenuRecyclerView;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.adapter.AdapterDeviceList;
+import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.base.BaseHetFragment;
 import com.het.sdk.demo.event.DeviceStatusEvent;
 import com.het.sdk.demo.event.HetShareEvent;
 import com.het.sdk.demo.ui.activity.MainActivity;
-import com.het.sdk.demo.ui.activity.device.H5ControlLedActivity;
+import com.het.sdk.demo.ui.activity.device.BleCommonControlActivity;
+import com.het.sdk.demo.ui.activity.device.ControlLedActivity;
 import com.het.sdk.demo.ui.activity.sidebarlayout.SidebarMainActivity;
 import com.het.sdk.demo.utils.Constants;
 import com.het.sdk.demo.widget.MultipleStatusView;
@@ -72,53 +75,17 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
             DeviceModel deviceModel = (DeviceModel) o;
             Bundle bundle = new Bundle();
             bundle.putSerializable("DeviceModel", (DeviceModel) o);
-//<<<<<<< .mine
-            H5ControlLedActivity.startH5ControlLedActivity(mContext, (DeviceModel) o);
-//            if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {
-//
-//                if (((DeviceModel) o).getModuleType() == 2) {
-//                    ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
-//                } else {
-//                    //原生 控制
-//                    ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
-//                    //H5 控制
-////                    H5ControlLedActivity.startH5ControlLedActivity(mContext, (DeviceModel) o);
-//                }
-//            } else if (deviceModel.getDeviceTypeId() == 70 && deviceModel.getDeviceSubtypeId() == 1) {
-//                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
-//            } else {
-//                ToastUtil.showToast(mContext, "DEMO暂时只支持舒眠灯和土壤检测仪的控制");
-//            }
-
-//||||||| .r123072
-//            if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {
-//
-//                if (((DeviceModel) o).getModuleType() == 2) {
-//                    ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
-//                } else {
-//                    //原生 控制
-//                    ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
-//                    //H5 控制
-////                    H5ControlLedActivity.startH5ControlLedActivity(mContext, (DeviceModel) o);
-//                }
-//            } else if (deviceModel.getDeviceTypeId() == 70 && deviceModel.getDeviceSubtypeId() == 1) {
-//                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
-//            } else {
-//                ToastUtil.showToast(mContext, "DEMO暂时只支持舒眠灯和土壤检测仪的控制");
-//            }
-//
-//=======
-//            if (((DeviceModel) o).getModuleType() == 2) {//蓝牙控制
-//                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
-//            } else if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {//WIFI -- 舒眠灯原生控制
-//                //原生 控制
-//                ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
-//            } else {//WIFI -- H5控制
-//                //H5 控制
+            if (((DeviceModel) o).getModuleType() == 2) {//蓝牙控制
+                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
+            } else if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {//WIFI -- 舒眠灯原生控制
+                //原生 控制
+                ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
+            } else {//WIFI -- H5控制
+                //H5 控制
+                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
 //                H5ControlLedActivity.startH5ControlLedActivity(mContext, (DeviceModel) o);
-//            }
+            }
 
-//>>>>>>> .r123680
         });
         mAdapter.setISwipeMenuClickListener((var1, var2) -> {
             mPresenter.delDevice(deviceModels.get(var2), new IHetCallback() {

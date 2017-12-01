@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.het.bluetoothbase.callback.IBleCallback;
 import com.het.bluetoothbase.callback.IConnectCallback;
 import com.het.bluetoothbase.callback.IHookCallBack;
@@ -68,63 +69,63 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SYSTEM_ID,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SYSTEM_ID, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SYSTEM_ID));
                     break;
                 case 2:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_FIRMWARE_REVISION,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_FIRMWARE_REVISION, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_FIRMWARE_REVISION));
                     break;
                 case 3:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_HARDWARE_REVISION,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_HARDWARE_REVISION, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_HARDWARE_REVISION));
                     break;
                 case 4:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SOFTWARE_REVISION,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SOFTWARE_REVISION, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SOFTWARE_REVISION));
                     break;
                 case 5:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SERIAL_NUMBER,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SERIAL_NUMBER, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_SERIAL_NUMBER));
                     break;
                 case 6:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_MANUFACTURE_NAME,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_MANUFACTURE_NAME, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_MANUFACTURE_NAME));
                     break;
                 case 7:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_MODEL_NUMBER,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_MODEL_NUMBER, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_MODEL_NUMBER));
                     break;
                 case 8:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_PNP_ID,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_PNP_ID, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
 //                                    .setCmd(CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_PNP_ID));
                     break;
                 case 9:
-                    HetCommonBleControlApi.getInstance().read(macAddress,CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_BATTERY,readCallback);
+                    HetCommonBleControlApi.getInstance().read(macAddress, CmdIndexConstant.DeviceInfoConstant.HET_COMMAND_BATTERY, readCallback);
 //                    manager.read(
 //                            new HetOpenPlatformCmdInfo(readCallback)
 //                                    .setMac(bluetoothLeDevice.getAddress())
@@ -139,9 +140,8 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
     };
 
 
-
     private void connect() {
-        HetCommonBleControlApi.getInstance().connect(macAddress,connectCallback);
+        HetCommonBleControlApi.getInstance().connect(macAddress, connectCallback);
         conDevice.setText("connecting");
     }
 
@@ -173,6 +173,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        hetFirewareUpgradeApi.stop();
         HetCommonBleControlApi.getInstance().disConnect(macAddress);
     }
 
@@ -183,12 +184,68 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
 
     @Override
     protected void initData() {
-        DeviceModel deviceModel = (DeviceModel)getIntent().getSerializableExtra("DeviceModel");
-        if (deviceModel!=null){
-            macAddress= deviceModel.getMacAddress();
+        DeviceModel deviceModel = (DeviceModel) getIntent().getSerializableExtra("DeviceModel");
+        if (deviceModel != null) {
+            macAddress = deviceModel.getMacAddress();
         }
         HetCommonBleControlApi.getInstance().init(this);
+
+// 升级测试
+//        deviceModel = new DeviceModel();
+//        deviceModel.setMacAddress("D6:61:3D:DD:FA:23");
+//        String  file =  Environment.getExternalStorageDirectory() + File.separator + "WQM3H_AP.bin";
+//        Logc.e("file =" + file);
+//        if (SDKIOUtil.fileIsExists(file)){
+//            hetFirewareUpgradeApi = new HetFirewareUpgradeApi.BleUpgradeBuilder()
+//                    .setContext(this)
+//                    .setFilePath(file)
+//                    .setDeviceModel(deviceModel)
+//                    .setiUpInterface(iFirwareUpCallback).build();
+//            hetFirewareUpgradeApi.init();
+//            hetFirewareUpgradeApi.check();
+//        }
+
     }
+
+//    private HetFirewareUpgradeApi hetFirewareUpgradeApi;
+//
+//    private IFirwareUpCallback iFirwareUpCallback = new IFirwareUpCallback() {
+//        @Override
+//        public void checkHasNewVersion(UpgradeType upgradeType, DeviceVersionUpgradeModel deviceVersionUpgradeModel) {
+//            Logc.e("---->" + deviceVersionUpgradeModel.toString());
+//            //开始检查新版本
+//        }
+//
+//        @Override
+//        public void checkNoVersion(UpgradeType upgradeType, DeviceVersionUpgradeModel deviceVersionUpgradeModel) {
+//            Logc.e("---->" + deviceVersionUpgradeModel.toString());
+//        }
+//
+//        @Override
+//        public void upgradeReady(UpgradeType upgradeType) {
+//            hetFirewareUpgradeApi.start();
+//        }
+//
+//        @Override
+//        public void onStartUpgrade(UpgradeType upgradeType) {
+//            Logc.e("--onStartUpgrade-->");
+//        }
+//
+//        @Override
+//        public void onUpgradeProgress(UpgradeType upgradeType, int progress) {
+//            Logc.e("--onProgress-->" + progress);
+//        }
+//
+//        @Override
+//        public void onUpgradeSuccess(UpgradeType upgradeType) {
+//            Logc.e("--onUpgradeSuccess-->");
+//        }
+//
+//        @Override
+//        public void onUpgradeFail(UpgradeType upgradeType, Throwable var1) {
+//            Logc.e("--onUpgradeFail-->" + var1.getMessage());
+//        }
+//    };
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -221,7 +278,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
                 tv_info.setText("");
                 break;
             case R.id.bind:
-                    HetCommonBleControlApi.getInstance().write(macAddress,CmdIndexConstant.HET_COMMAND_BIND_APP,writeCallback);
+                HetCommonBleControlApi.getInstance().write(macAddress, CmdIndexConstant.HET_COMMAND_BIND_APP, writeCallback);
 //                manager.write(
 //                        new HetOpenPlatformCmdInfo(writeCallback)
 //                                .setMac(bluetoothLeDevice.getAddress())
@@ -229,7 +286,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
 //                );
                 break;
             case R.id.getDeviceTime:
-                HetCommonBleControlApi.getInstance().write(macAddress,CmdIndexConstant.HET_COMMAND_GET_TIME_APP,writeCallback);
+                HetCommonBleControlApi.getInstance().write(macAddress, CmdIndexConstant.HET_COMMAND_GET_TIME_APP, writeCallback);
 //                manager.write(
 //                        new HetOpenPlatformCmdInfo(writeCallback)
 //                                .setMac(bluetoothLeDevice.getAddress())
@@ -237,7 +294,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
 //                );
                 break;
             case R.id.setDeviceTime:
-                HetCommonBleControlApi.getInstance().write(macAddress,CmdIndexConstant.HET_COMMAND_SET_TIME_APP,new byte[]{1},writeCallback);
+                HetCommonBleControlApi.getInstance().write(macAddress, CmdIndexConstant.HET_COMMAND_SET_TIME_APP, new byte[]{1}, writeCallback);
 //                manager.write(
 //                        new HetOpenPlatformCmdInfo(writeCallback)
 //                                .setMac(bluetoothLeDevice.getAddress())
@@ -246,7 +303,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
 //                );
                 break;
             case R.id.getRealData:
-                HetCommonBleControlApi.getInstance().write(macAddress,CmdIndexConstant.HET_COMMAND_GET_REAL_TIME_DATA_APP,writeCallback);
+                HetCommonBleControlApi.getInstance().write(macAddress, CmdIndexConstant.HET_COMMAND_GET_REAL_TIME_DATA_APP, writeCallback);
 //                manager.write(
 //                        new HetOpenPlatformCmdInfo(writeCallback)
 //                                .setMac(bluetoothLeDevice.getAddress())
@@ -254,7 +311,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
 //                );
                 break;
             case R.id.sendConfigData:
-                byte[]  bytes;
+                byte[] bytes;
                 colorLamp++;
                 if (colorLamp > 8) {
                     colorLamp = 0;
@@ -262,7 +319,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
                 } else
                     bytes = new byte[]{0x0, 0x01, colorLamp};//0x03关灯，0x01开灯。
                 showColor();
-                HetCommonBleControlApi.getInstance().write(macAddress,CmdIndexConstant.HET_COMMAND_CONFIG_DATA_APP,bytes,writeCallback);
+                HetCommonBleControlApi.getInstance().write(macAddress, CmdIndexConstant.HET_COMMAND_CONFIG_DATA_APP, bytes, writeCallback);
 //                manager.write(
 //                        new HetOpenPlatformCmdInfo(writeCallback)
 //                                .setMac(bluetoothLeDevice.getAddress())
@@ -287,7 +344,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
                         Logc.i("history:" + progress);
                     }
                 };
-                HetCommonBleControlApi.getInstance().writeHistroy(macAddress,CmdIndexConstant.HET_COMMAND_GET_HISTORY_DATA_APP,writeCallback,listener);
+                HetCommonBleControlApi.getInstance().writeHistroy(macAddress, CmdIndexConstant.HET_COMMAND_GET_HISTORY_DATA_APP, writeCallback, listener);
 //                manager.write(
 //                        new HetOpenPlatformCmdInfo(writeCallback)
 //                                .setMac(bluetoothLeDevice.getAddress())

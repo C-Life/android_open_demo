@@ -83,7 +83,7 @@ public class ControlLedActivity extends BaseHetActivity {
 
         if (deviceModel != null) {
 
-           // HetWifiDeviceControlApi.getInstance().init(mContext, iWifiDeviceData);
+
 
             HetWifiDeviceControlApi.getInstance().start(deviceModel.getDeviceId(),iWifiDeviceData);
         }
@@ -175,7 +175,7 @@ public class ControlLedActivity extends BaseHetActivity {
         }
         ledConfigModel.setUpdateFlag("1");
 
-        //HetWifiDeviceControApi.getInstance().
+
 
         HetDeviceWifiControlApi.getInstance().setDataToDevice(new IHetCallback() {
             @Override

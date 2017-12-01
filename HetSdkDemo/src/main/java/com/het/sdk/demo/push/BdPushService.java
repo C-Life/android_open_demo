@@ -28,6 +28,7 @@ public class BdPushService implements BasePushService {
 
     @Override
     public void initPush() {
+        //开启百度推送服务
         PushManager.startWork(context, PushConstants.LOGIN_TYPE_API_KEY, SDKAppUtil.getMetaValue(context, "api_key"));
         PushSettings.enableDebugMode(context, true);
     }
@@ -43,8 +44,11 @@ public class BdPushService implements BasePushService {
         Logc.e(" Baidu_ChannelId = " + BaiduPushReceiver.Baidu_ChannelId);
     }
 
+    /**
+     * 停止百度推送服务
+     */
     @Override
     public void pushUnBindService() {
-        PushManager.stopWork(context);
+//        PushManager.stopWork(context);
     }
 }

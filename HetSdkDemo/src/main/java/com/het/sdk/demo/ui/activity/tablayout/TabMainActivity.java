@@ -17,7 +17,7 @@ import java.util.List;
 
 public class TabMainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
-    private List<String> mTitles = Arrays.asList("Fragment-->微信","Fragment-->通讯录","Fragment-->发现","Fragment-->我");
+    private List<String> mTitles = Arrays.asList("Fragment-->智能","Fragment-->发现","Fragment-->我的");
 
     private List<SimpleFragment> mFragments = new ArrayList<>();
     private FragmentPagerAdapter mPagerAdapter;

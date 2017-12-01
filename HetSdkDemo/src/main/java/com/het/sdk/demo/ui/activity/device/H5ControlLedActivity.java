@@ -42,7 +42,12 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
     @Override
     protected void initH5Page() {
         super.initH5Page();
-        (new DeviceH5Persenter()).loadUrlFromDeviceBean(2,mContext,deviceModel,mHtmlFiveManager);
+        (new DeviceH5Persenter()).loadUrlFromDeviceBean(mContext, deviceModel, mHtmlFiveManager);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
 }

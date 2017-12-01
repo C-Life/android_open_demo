@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -66,13 +67,15 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
     Button btnRight;
     @Bind(R.id.tv_toolbar)
     TextView tvToolbar;
+    @Bind(R.id.container)
+    FrameLayout container;
 
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Fragment mCurrentFragment;
     public static final int FRAGMENT_SHOW_LIST = 1;
     public static final int FRAGMENT_NO_SHOW_LIST = 2;
-    private DeviceListFragment deviceListFragment = DeviceListFragment.newInstance();
+    private DeviceListFragment deviceListFragment;
     private NoLoginFragment noLoginFragment = NoLoginFragment.newInstance();
 
     @Override
@@ -135,40 +138,57 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
     /**
      * 初始化 fragment
      *
-     * @param savedInstanceState
+     * @param savedInstanceState 这里处理Activity被系统回收之后，Fragment重叠的问题。 需要再再次启动的时候初始化Fragment
      */
     private void initFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             // Add the fragment on initial activity setup
-            if (!deviceListFragment.isAdded()) { // 先判断是否被add过
-                getSupportFragmentManager().beginTransaction().add(R.id.container, deviceListFragment)
-                        .commitAllowingStateLoss();
+            if (deviceListFragment == null) {
+                deviceListFragment = DeviceListFragment.newInstance();
             }
-            if (!noLoginFragment.isAdded()) { // 先判断是否被add过
-                getSupportFragmentManager().beginTransaction().add(R.id.container, noLoginFragment)
-                        .commitAllowingStateLoss();
+            if (noLoginFragment == null) {
+                noLoginFragment = NoLoginFragment.newInstance();
             }
+            getSupportFragmentManager().beginTransaction().add(R.id.container, deviceListFragment, "device").add(R.id.container, noLoginFragment, "login")
+                    .commitAllowingStateLoss();
+
             if (HetSdk.getInstance().isAuthLogin()) {
-                getSupportFragmentManager().beginTransaction().hide(noLoginFragment).show(deviceListFragment).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().hide(noLoginFragment).show(deviceListFragment)
+                        .commitAllowingStateLoss();
                 mCurrentFragment = deviceListFragment;
             } else {
-                getSupportFragmentManager().beginTransaction().hide(deviceListFragment).show(noLoginFragment).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().hide(deviceListFragment).show(noLoginFragment)
+                        .commitAllowingStateLoss();
                 mCurrentFragment = noLoginFragment;
             }
-
-        } else {
+        } else {//系统回收了  再次启动app的时候 初始化Fragmentment
+            deviceListFragment = (DeviceListFragment) getSupportFragmentManager()
+                    .findFragmentByTag("device");
+            noLoginFragment = (NoLoginFragment) getSupportFragmentManager()
+                    .findFragmentByTag("login");
             if (HetSdk.getInstance().isAuthLogin()) {
-                getSupportFragmentManager().beginTransaction().hide(noLoginFragment).show(deviceListFragment).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().hide(noLoginFragment).show(deviceListFragment)
+                        .commitAllowingStateLoss();
                 mCurrentFragment = deviceListFragment;
             } else {
-                getSupportFragmentManager().beginTransaction().hide(deviceListFragment).show(noLoginFragment).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().hide(deviceListFragment).show(noLoginFragment)
+                        .commitAllowingStateLoss();
                 mCurrentFragment = noLoginFragment;
             }
         }
-
         setDrawerNav();
     }
 
+    /**
+     * onSaveInstanceState会保存Activity的状态，比如activity中各种UI的状态。调用的时，activity可能销毁，也可能没有销毁
+     * onRestoreInstanceState 只有在activity销毁重建时才会调用。
+     * 恢复数据有两种途径onCreate(Bundle), onRestoreInstanceState(Bundle)
+     */
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Logc.d("C-life", "mainActivity被系统回收了");
+    }
 
     private void showFragment() {
         if (HetSdk.getInstance().isAuthLogin()) {
@@ -233,7 +253,6 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
     protected void onDestroy() {
         super.onDestroy();
         unregisterRx();
-
         HetSdk.getInstance().destroy();
         System.exit(0);
 
@@ -305,15 +324,9 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
     public void switchToFragment(int fragmentId) {
         switch (fragmentId) {
             case FRAGMENT_SHOW_LIST:
-                if (deviceListFragment == null) {
-                    deviceListFragment = DeviceListFragment.newInstance();
-                }
                 swtchContent(deviceListFragment);
                 break;
             case FRAGMENT_NO_SHOW_LIST:
-                if (noLoginFragment == null) {
-                    noLoginFragment = NoLoginFragment.newInstance();
-                }
                 swtchContent(noLoginFragment);
                 break;
         }
@@ -327,16 +340,22 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
     public void swtchContent(Fragment to) {
         if (mCurrentFragment == null) {
             initFragment(null);
+            return;
         }
+        FragmentTransaction transaction;
         if (mCurrentFragment != to) {
-            FragmentTransaction transaction = getSupportFragmentManager()
+            transaction = getSupportFragmentManager()
                     .beginTransaction();
-
+            if (mCurrentFragment.isAdded()) {
+                transaction.hide(mCurrentFragment).commitAllowingStateLoss();
+            }
+            transaction = getSupportFragmentManager()
+                    .beginTransaction();
             if (!to.isAdded()) { // 先判断是否被add过
-                transaction.hide(mCurrentFragment).add(R.id.container, to)
+                transaction.add(R.id.container, to)
                         .commitAllowingStateLoss(); // 隐藏当前的fragment，add下一个到Activity中
             } else {
-                transaction.hide(mCurrentFragment).show(to).commitAllowingStateLoss(); // 隐藏当前的fragment，显示下一个
+                transaction.show(to).commitAllowingStateLoss(); // 隐藏当前的fragment，显示下一个
             }
             mCurrentFragment = to;
         }
