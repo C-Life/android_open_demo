@@ -13,7 +13,7 @@
 	allprojects {
 	    repositories {
 	        jcenter()
-			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+            maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 	    }
 	}
 
@@ -1837,7 +1837,6 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	#---------------------------------实体类-------------------------------------
 	-keep public class com.het.sdk.demo.model.** {*;}
 	-keep public class com.het.sdk.demo.widget.** {*;}
-	-keep class com.het.ui.sdk.**
 	
 	#===================butterknife======================
 	-keep class butterknife.** { *; }
@@ -1855,13 +1854,6 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	
 	#****************************第三方公共包***************************************************
 	#---------------------------------保护第三方包-----------------------------
-	-keep class com.activeandroid.**{*;}
-	# Do not strip any method/class that is annotated with @DoNotStrip
-	#-keep @com.facebook.common.internal.DoNotStrip class *
-	#-keepclassmembers class * {
-	#@com.facebook.common.internal.DoNotStrip *;
-	#}
-
 	-keep class org.apache.http.**
 	-keep interface org.apache.http.**
 	-dontwarn org.apache.**
@@ -1934,7 +1926,21 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	#===========recyclerview-animators===========
 	-keep class jp.wasabeef.** {*;}
 	-dontwarn jp.wasabeef.*
-
+	
+	#===========ormlite===========
+	-keep class com.j256.**
+	-keepclassmembers class com.j256.** { *; }
+	-keep enum com.j256.**
+	-keepclassmembers enum com.j256.** { *; }
+	-keep interface com.j256.**
+	-keepclassmembers interface com.j256.** { *; }
+	#===========umeng（友盟 ）===========
+	-keep class com.umeng.analytics.** {*;}
+	-dontwarn com.google.android.maps.**
+	-dontwarn android.webkit.WebView
+	-dontwarn com.umeng.**
+	-dontwarn com.tencent.weibo.sdk.**
+	
 	#==========facebook==========
 	-keep enum com.facebook.**
 	-keepattributes Exceptions,InnerClasses,Signature
@@ -1996,6 +2002,40 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	    public static **[] values();
 	    public static ** valueOf(java.lang.String);
 	}
+	
+	#==========友盟自动更新==========
+	-keep public class com.umeng.fb.ui.ThreadView {
+	}
+	-keep public class * extends com.umeng.**
+	# 以下包不进行过滤
+	-keep class com.umeng.** { *; }
+	
+	
+	#==========AndFix==========
+	-keep class * extends java.lang.annotation.Annotation
+	-keepclasseswithmembernames class * {
+	    native <methods>;
+	}
+	
+	#==========eventbus 3.0==========
+	-keepattributes *Annotation*
+	-keepclassmembers class ** {
+	    @org.greenrobot.eventbus.Subscribe <methods>;
+	}
+	-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+	-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+	    <init>(java.lang.Throwable);
+	}
+	
+	
+	#==========EventBus==========
+	-keepclassmembers class ** {
+	    public void onEvent*(**);
+	}
+	-keepclassmembers class ** {
+	public void xxxxxx(**);
+	}
+	
 	
 	#==========gson==========
 	-keep class com.google.gson.** {*;}
@@ -2065,14 +2105,6 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	
 	-keep class com.ultrapower.** {*;}
 	
-	#==========高徳地图==========
-	-dontwarn com.amap.api.**
-	-dontwarn com.a.a.**
-	-dontwarn com.autonavi.**
-	-keep class com.amap.api.**  {*;}
-	-keep class com.autonavi.**  {*;}
-	-keep class com.a.a.**  {*;}
-	
 	#*****************************公共模块**************************************
 	-keep class rx.**{*;}
 	-keep class rx.internal.util.** {*;}
@@ -2091,24 +2123,10 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	-keep public class com.het.basic.data.http.retrofit2.RetrofitManager { *; }
 	-keep public class com.het.basic.data.http.okhttp.listener.DownloadProgressListener { *; }
 	
-	
-	#===========高斯模糊
-	-keep class net.qiujuer.genius.blur.** {*;}
-	
-	#---------------------------------bindlibrary---------------------------------------
 	#====xstream库====
 	-dontwarn com.thoughtworks.xstream.**
 	-keep class com.thoughtworks.xstream.io.xml.** { *; }
-	#====bindlibrary相关实体类====
-	-keep public class * extends com.het.bindlibrary.ui.BindDeviceGuideActivity
-	-keep class com.het.bindlibrary.biz.bind.http.contact.** { *; }
-	-keep class com.het.bindlibrary.model.** { *; }
-	-keep class com.het.bindlibrary.db.** { *; }
-	-keep class com.het.common.bind.logic.model.**  { *; }
-	-keep class com.het.common.bind.logic.msg.**  { *; }
-	-keep class com.het.common.bind.logic.ble.model.**  { *; }
-	-keep class com.het.common.bind.logic.ble.extral.model.**  { *; }
-	-keep class com.het.common.bind.logic.utils.**  { *; }
+	
 	#-keep class com.third.factory.Const  { *; }
 	-keep class com.hiflying.smartlink.SmartLinkedModule  { *; }
 	-keep class com.handmark.pulltorefresh.library.extras.**  { *; }
@@ -2126,11 +2144,8 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	    public <fields>;
 	    public <methods>;
 	}
-	-keepnames class com.het.bindlibrary.ui.BindDeviceGuideActivity$* {*;}
 	-keepnames class com.mediatek.elian.ElianNative$* {*;}
 	-keepnames class com.realtek.simpleconfiglib.Crypt {*;}
-	-keepnames class com.handmark.pulltorefresh.library.extras.PullToRefreshWebViewBind2 {*;}
-	-keepnames class com.handmark.pulltorefresh.library.extras.PullToRefreshWebViewBind2$JsValueCallback {*;}
 	-keepnames class com.sctech.cfe.Xactivity {*;}
 	#====zbar====
 	-keep class net.sourceforge.zbar.** { *; }
@@ -2179,10 +2194,6 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 	-keep class com.het.h5.sdk.event.** { *; }
 	# --------------------------------------------------------------------------
 	
-	-keep class com.csleep.library.basecore.**{*;}
-	-keep class com.csleep.library.basecore.BaseCore{*;}
-	-keep class het.com.clseepvideoplayersdk.**{*;}
-	
 	##===================腾讯X5内核=====STAT=============
 	-keep class com.tencent.smtt.export.external.**{*;}
 	-keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {*;}
@@ -2212,6 +2223,17 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 		public <fields>;
 		public <methods>;
 	}
-
+	
+	# OkHttp
+	-dontwarn okhttp3.**
+	-dontwarn okio.**
+	-dontwarn com.squareup.okhttp.**
+	-keep class okio.**{*;}
+	-keep class com.squareup.okhttp.** { *; }
+	-keep interface com.squareup.okhttp.** { *; }
+	
+	-dontwarn java.nio.file.*
+	-dontwarn javax.annotation.**
+	-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 	
 	
