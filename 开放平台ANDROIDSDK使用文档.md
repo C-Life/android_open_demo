@@ -1180,7 +1180,7 @@ WIFI设备控制具体可以分成3个步骤：
 	    @Override
 	    public void onConnectSuccess(BluetoothGatt gatt, int status) {
 	            conDevice.setText("连接成功");
-	            HookManager.getInstance().enableHook(true, "fuck@academy");
+	            HookManager.getInstance().enableHook(true, "enable@hook");
 	            HookManager.getInstance().addHook(hookCallBack);
 	    }
 	    @Override
