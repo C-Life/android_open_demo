@@ -13,17 +13,21 @@
 	allprojects {
 	    repositories {
 	        jcenter()
-            maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+	         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 	    }
 	}
 
 ### 1.3.引用SDK到工程
 
+集成了第三方登录的gradle依赖 
 
-SDK引用
+	//引用库形式 集成了第三方登录的引用
+	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.1-SNAPSHOT'
 
-    	//引用库形式
-    	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.0-SNAPSHOT'
+基础SDK的gradle依赖
+
+	//引用库形式 
+	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.1-SNAPSHOT'
 
 模组注册
 
@@ -119,7 +123,7 @@ Android 6.0+新增了运行时权限动态检测，敏感权限必须要动态�
         configModel.setLog(true); //是否开启log信息
         configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //环境设置
         configModel.setH5UIconfig(UIJsonConfig.getInstance(this).getJsonString(UIJsonConfig.fileName, this));
-        //配置第三方登录
+        //配置开放平台第三方登录  不需要使用开放平台第三方登录的不需要
         mLoginDelegate = new HetSdkThirdDelegate.Builder(this)
                 .registerQQ(UIJsonConfig.getTencentAppID())
                 .registerWeixin(UIJsonConfig.getWechatAppID(),UIJsonConfig.getWechatAppSecret())
@@ -553,6 +557,7 @@ HetDeviceListApi.getInstance().getSubTypeListProduct() 获取APP支持绑定的�
         }
     }
 
+
 第三种：在开放平台后台直接直接查看产品ID，详情请查《clife开发平台使用手册》。  
 ![](https://i.imgur.com/TDwtXPH.png)
 
@@ -568,12 +573,78 @@ HetDeviceListApi.getInstance().getSubTypeListProduct() 获取APP支持绑定的�
 | 9	 | wifi设备 AP绑定 |
 
 
-### 4.2.设备绑定
+### 4.2.根据产品ID获取产品信息
+	/**
+     * 根据产品id获取信息
+     * @param productId 产品ID
+     * @param callback
+     */
+	public static void getProductByProductId(String productId, IHetCallback callback) {
+       ....
+    }
+调用示例：  
 
-#### 4.2.1.WIFI设备绑定
+    HetQrCodeApi.getProductByProductId(productId, new IHetCallback() {
+            @Override
+            public void onSuccess(int i, String s) {
+                //获取产品信息成功
+                ............
+            }
+
+            @Override
+            public void onFailed(int i, String s) {
+               //获取产品信息失败
+			   ............
+            }
+    });
+
+正确的Json返回结果：
+
+	{
+	    "code": 0,
+	    "data": {
+	            "productId": 6,
+	            "deviceSubtypeId": 3,
+	            "deviceSubtypeName": "多门冰箱",
+	            "productIcon": "http://200.200.200.50/v1/device/icon",
+	            "productName": "通用冰箱",
+	            "productCode": "CC-1003",
+	            "bindType": 1,
+	            "moduleId": 2,
+	            "moduleName": "TI CC3200R2",
+	            "moduleType": 1,
+	            "deviceTypeId": 1,
+	            "radiocastName": "HET_",
+	            "deviceCode": "00000199000B0301",
+	            "guideUrl"："http://200.200.200.50/XXX
+	    }
+	}
+返回字段说明：  
+
+| 字段名称 | 字段类型 | 字段说明 |
+|---------|---------|---------|
+| productId | int | 产品ID |
+| deviceSubtypeId | int | 设备子分类ID |
+| deviceSubTypeName | string | 设备子分类名称 |
+| productIcon | string | 产品LOGO |
+| productName | string | 设备接入秘钥 |
+| productCode | 	string | 	产品型号 |
+| bindType | int | 绑定类型 |
+| moduleId | int | 芯片模块ID |
+| moduleName | string | 芯片模块名称 |
+| moduleType | int | 模块类型（1-WiFi，2-蓝牙，9-ap模式） |
+| deviceTypeId | int | 设备分类ID |
+| radiocastName | string | 设备广播名 |
+| deviceTypeName | string | 设备分类名称 |
+| deviceCode | string | 设备编码 |
+| guideUrl | string | 引导页URL |
+
+### 4.3.设备绑定
+
+#### 4.3.1.WIFI设备绑定
 WIFI设备绑定分AP模式绑定和smartLink模式绑定。
 
-##### 4.2.1.1.绑定模式简介
+##### 4.3.1.1.绑定模式简介
 
 WIFI设备AP绑定流程图如下：
 
@@ -595,7 +666,7 @@ APP启动绑定之前，将设备设置成配置模式。 APP发送要配置的�
 1.获取路由器ssid和密码  
 2.传入参数产品ID productId，路由器ssid 和 密码，启动绑定  
 
-##### 4.2.1.2.启动绑定  
+##### 4.3.1.2.启动绑定  
 
 HetWifiBindApi.getInstance().startBind() 启动绑定。
 
@@ -638,7 +709,7 @@ HetWifiBindApi.getInstance().startBind() 启动绑定。
 
 
 
-#### 4.2.2.BLE蓝牙设备绑定
+#### 4.3.2.BLE蓝牙设备绑定
 HetCommonBleBindApi.getInstance().startBind() 启动蓝牙设备扫描绑定。整个过程有2个步骤：  
 第一步：扫描搜索周围设备；  
 第二步：选择扫描到的某个设备绑定到服务器；  
@@ -1434,13 +1505,18 @@ HetFeedbackApi.getInstance().addFeedback() 提交意见反馈
 | summary | String | 简要描述 |
 | pictureUrl | String | 简图路径 |
 
+
 # <span id="jump">第三方社交平台服务集成</span>
 
 第三方登录和分享的集成，SDK目前只支持三种方式，也是目前比较主流的第三方平台。包括微信、QQ、和新浪微博。  
-具体过程分4个步骤：  
+具体过程分5个步骤：  
+第一步：gradle 引用
 
-第一步：在集成之前需要在微信开放平台、腾讯开放平台、新浪开放平台创建应用，获取到相应的appID和appSecret。  
-第二步：在Application里面配置第三方登录SDK。  
+	//引用库形式 集成了第三方登录和分享的引用
+	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.1-SNAPSHOT'
+
+第二步：在集成之前需要在微信开放平台、腾讯开放平台、新浪开放平台创建应用，获取到相应的appID和appSecret。  
+第三步：在Application里面配置第三方登录SDK。  
 
     //配置第三方登录
     mLoginDelegate = new HetSdkThirdDelegate.Builder(this)
@@ -1451,7 +1527,7 @@ HetFeedbackApi.getInstance().addFeedback() 提交意见反馈
 
 注意：your_sina_redirect_url是新浪微博用于OAuth authorize页面回调的url。
 
-第三步：配置清单文件AndroidManifest.xml
+第四步：配置清单文件AndroidManifest.xml
 
     <!-- ====================第三方登录分享开始 ========================== -->
   		<activity
@@ -1508,7 +1584,7 @@ HetFeedbackApi.getInstance().addFeedback() 提交意见反馈
 	<uses-permission android:name="android.permission.WRITE_APN_SETTINGS"></uses-permission>
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
 
-第四步：设置微信登录的回调页面。  
+第五步：设置微信登录的回调页面。  
 在项目包名目录下添加一个wxapi目录在wxapi里面新建一个WXEntryActivity页面，如：
 
 	public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -1834,406 +1910,407 @@ android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient �
 ## 2.SDK 混淆说明
 	
 	#**************************DEMO混淆区域*******************************
-	#---------------------------------实体类-------------------------------------
-	-keep public class com.het.sdk.demo.model.** {*;}
-	-keep public class com.het.sdk.demo.widget.** {*;}
-	
-	#===================butterknife======================
-	-keep class butterknife.** { *; }
-	-dontwarn butterknife.internal.**
-	-keep class **$$ViewBinder { *; }
-	
-	-keepclasseswithmembernames class * {
-	    @butterknife.* <fields>;
-	}
-	
-	-keepclasseswithmembernames class * {
-	    @butterknife.* <methods>;
-	}
-	#===================butterknife======================
-	
-	#****************************第三方公共包***************************************************
-	#---------------------------------保护第三方包-----------------------------
-	-keep class org.apache.http.**
-	-keep interface org.apache.http.**
-	-dontwarn org.apache.**
-	#===========sharesdk===========
-	-keep class cn.sharesdk.**{*;}
-	-keep class com.sina.**{*;}
-	-keep class **.R$* {*;}
-	-keep class **.R{*;}
-	
-	-keep class com.mob.**{*;}
-	-dontwarn com.mob.**
-	-dontwarn cn.sharesdk.**
-	-dontwarn **.R$*
-	
-	#===========nineoldandroids-2.4.0.jar===========
-	-keep public class com.nineoldandroids.** {*;}
-	
-	#===========zxing===========
-	-keep class com.google.zxing.** {*;}
-	-dontwarn com.google.zxing.**
-	#===========百度定位===========
-	-keep class com.baidu.** {*;}
-	-keep class vi.com.** {*;}
-	-dontwarn com.baidu.**
-	
-	#==============极光推送开始==============#
-	-dontoptimize
-	-dontpreverify
-	
-	-dontwarn cn.jpush.**
-	-keep class cn.jpush.** { *; }
-	-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
-	
-	-dontwarn cn.jiguang.**
-	-keep class cn.jiguang.** { *; }
-	#==============极光推送结束==============#
-	
-	#==============百度推送开始==============#
-	#-libraryjars libs/pushservice-5.9.0.59.jar
-	-dontwarn com.baidu.**
-	-keep class com.baidu.**{*; }
-	#==============百度推送结束==============#
-	
-	#===========okhttp===========
-	-dontwarn com.squareup.okhttp3.**
-	-keep class com.squareup.okhttp3.** { *;}
-	-dontwarn okio.**
-	# Retrofit
-	-dontwarn retrofit2.**
-	-keep class retrofit2.** { *; }
-	# RxJava RxAndroid
-	-dontwarn sun.misc.**
-	-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-	    long producerIndex;
-	    long consumerIndex;
-	}
-	-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-	    rx.internal.util.atomic.LinkedQueueNode producerNode;
-	}
-	-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-	    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-	}
-	###rxandroid-1.2.1
-	-keepclassmembers class rx.android.**{*;}
-	
-	# Gson
-	-keep class com.google.gson.stream.** { *; }
-	-keepattributes EnclosingMethod
-	
-	#===========recyclerview-animators===========
-	-keep class jp.wasabeef.** {*;}
-	-dontwarn jp.wasabeef.*
-	
-	#===========ormlite===========
-	-keep class com.j256.**
-	-keepclassmembers class com.j256.** { *; }
-	-keep enum com.j256.**
-	-keepclassmembers enum com.j256.** { *; }
-	-keep interface com.j256.**
-	-keepclassmembers interface com.j256.** { *; }
-	#===========umeng（友盟 ）===========
-	-keep class com.umeng.analytics.** {*;}
-	-dontwarn com.google.android.maps.**
-	-dontwarn android.webkit.WebView
-	-dontwarn com.umeng.**
-	-dontwarn com.tencent.weibo.sdk.**
-	
-	#==========facebook==========
-	-keep enum com.facebook.**
-	-keepattributes Exceptions,InnerClasses,Signature
-	-keepattributes *Annotation*
-	-keepattributes SourceFile,LineNumberTable
-	
-	#================Fresco混淆===START==============#
-	#==native方法
-	-keepclassmembers class * {
-	    native <methods>;
-	}
-	-dontwarn okio.**
-	-dontwarn com.squareup.okhttp.**
-	-dontwarn okhttp3.**
-	-dontwarn javax.annotation.**
-	-dontwarn com.android.volley.toolbox.**
-	-dontwarn com.facebook.infer.**
-	
-	# Keep our interfaces so they can be used by other ProGuard rules.
-	# See http://sourceforge.net/p/proguard/bugs/466/
-	-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
-	# Do not strip any method/class that is annotated with @DoNotStrip
-	-keep @com.facebook.common.internal.DoNotStrip class *
-	-keepclassmembers class * {@com.facebook.common.internal.DoNotStrip *;}
-	# can not display gif image.
-	-keep class com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl {
-	    public AnimatedFactoryImpl(com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory, com.facebook.imagepipeline.core.ExecutorSupplier);
-	}
-	-keep class com.facebook.animated.gif.** {*;}
-	-dontwarn javax.annotation.**
-	# facebook fresco end -------------------------------------------------
-	#================Fresco混淆===END==============#
-	
-	-keep public interface com.facebook.**
-	-keep public interface com.tencent.**
-	-keep public interface com.umeng.socialize.**
-	-keep public interface com.umeng.socialize.sensor.**
-	-keep public interface com.umeng.scrshot.**
-	
-	-keep public class com.umeng.socialize.* {*;}
-	-keep public class javax.**
-	-keep public class android.webkit.**
-	
-	-keep class com.facebook.**
-	-keep class com.umeng.scrshot.**
-	-keep public class com.tencent.** {*;}
-	-keep class com.umeng.socialize.sensor.**
-	-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
-	
-	-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
-	
-	-keep class im.yixin.sdk.api.YXMessage {*;}
-	-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
-	
-	-keepclassmembers class * {
-	   public <init> (org.json.JSONObject);
-	}
-	-keepclassmembers enum * {
-	    public static **[] values();
-	    public static ** valueOf(java.lang.String);
-	}
-	
-	#==========友盟自动更新==========
-	-keep public class com.umeng.fb.ui.ThreadView {
-	}
-	-keep public class * extends com.umeng.**
-	# 以下包不进行过滤
-	-keep class com.umeng.** { *; }
-	
-	
-	#==========AndFix==========
-	-keep class * extends java.lang.annotation.Annotation
-	-keepclasseswithmembernames class * {
-	    native <methods>;
-	}
-	
-	#==========eventbus 3.0==========
-	-keepattributes *Annotation*
-	-keepclassmembers class ** {
-	    @org.greenrobot.eventbus.Subscribe <methods>;
-	}
-	-keep enum org.greenrobot.eventbus.ThreadMode { *; }
-	-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-	    <init>(java.lang.Throwable);
-	}
-	
-	
-	#==========EventBus==========
-	-keepclassmembers class ** {
-	    public void onEvent*(**);
-	}
-	-keepclassmembers class ** {
-	public void xxxxxx(**);
-	}
-	
-	
-	#==========gson==========
-	-keep class com.google.gson.** {*;}
-	-keep class com.google.**{*;}
-	-keep class sun.misc.Unsafe { *; }
-	-keep class com.google.gson.stream.** { *; }
-	-keep class com.google.gson.examples.android.model.** { *; }
-	
-	-keep public class * implements java.io.Serializable {*;}
-	-keepclassmembers class * implements java.io.Serializable {
-	static final long serialVersionUID;
-	    private static final java.io.ObjectStreamField[] serialPersistentFields;
-	    !static !transient <fields>;
-	    !private <fields>;
-	    !private <methods>;
-	    private void writeObject(java.io.ObjectOutputStream);
-	    private void readObject(java.io.ObjectInputStream);
-	    java.lang.Object writeReplace();
-	    java.lang.Object readResolve();
-	}
-	
-	
-	
-	# ==========support-v4==========
-	-dontwarn android.support.v4.**
-	-keep class android.support.v4.app.** { *; }
-	-keep interface android.support.v4.app.** { *; }
-	-keep class android.support.v4.** { *; }
-	-keep public class * extends android.app.Fragment
-	
-	# ==========support-v7==========
-	-dontwarn android.support.v7.**
-	-keep class android.support.v7.internal.** { *; }
-	-keep interface android.support.v7.internal.** { *; }
-	-keep class android.support.v7.** { *; }
-	
-	# ==========support design==========
-	-dontwarn android.support.design.**
-	-keep class android.support.design.** { *; }
-	-keep interface android.support.design.** { *; }
-	-keep public class android.support.design.R$* { *; }
-	#-------------------------------------------------------------------------
-	
-	#==========activeandroid==========
-	-keep class com.activeandroid.** { *; }
-	-dontwarn com.ikoding.app.biz.dataobject.**
-	-keep public class com.ikoding.app.biz.dataobject.** { *;}
-	-keepattributes *Annotation*
-	
-	-keepattributes Exceptions,InnerClasses
-	
-	-keep class io.rong.** {*;}
-	
-	-keep class * implements io.rong.imlib.model.MessageContent{*;}
-	
-	-keepattributes Signature
-	
-	-keep class sun.misc.Unsafe { *; }
-	
-	-keep class com.google.gson.examples.android.model.** { *; }
-	
-	-keepclassmembers class * extends com.sea_monster.dao.AbstractDao {
-	 public static java.lang.String TABLENAME;
-	}
-	-keep class **$Properties
-	-dontwarn org.eclipse.jdt.annotation.**
-	
-	-keep class com.ultrapower.** {*;}
-	
-	#*****************************公共模块**************************************
-	-keep class rx.**{*;}
-	-keep class rx.internal.util.** {*;}
-	-keep class com.het.basic.data.api.token.model.AuthModel{*;}
-	-keep class com.het.basic.**{*;}
-	-keep class com.het.basic.data.http.okhttp.OkHttpManager{*;}
-	-keep class com.het.basic.AppDelegate{*;}
-	-keep public class com.het.basic.constact.** { *; }
-	-keep public class com.het.basic.model.** { *; }
-	-keep public class com.het.basic.base.helper.RxSchedulers { *; }
-	-keep public class com.het.basic.data.api.token.HetParamsMerge { *; }
-	-keep public class com.het.basic.data.api.token.TokenManager { *; }
-	-keep public class com.het.basic.data.api.login.** { *; }
-	-keep public class com.het.basic.utils.** { *; }
-	-keep public class com.het.basic.data.api.utils.** { *; }
-	-keep public class com.het.basic.data.http.retrofit2.RetrofitManager { *; }
-	-keep public class com.het.basic.data.http.okhttp.listener.DownloadProgressListener { *; }
-	
-	#====xstream库====
-	-dontwarn com.thoughtworks.xstream.**
-	-keep class com.thoughtworks.xstream.io.xml.** { *; }
-	
-	#-keep class com.third.factory.Const  { *; }
-	-keep class com.hiflying.smartlink.SmartLinkedModule  { *; }
-	-keep class com.handmark.pulltorefresh.library.extras.**  { *; }
-	-keep class com.het.librebind.constant.**  { *; }
-	-keep class com.het.librebind.model.**  { *; }
-	-keep class com.het.librebind.utils.** { *; }
-	-keep class com.xlwtech.**  { *; }
-	#System.loadLibrary
-	-keep class com.mediatek.elian.ElianNative{ *; }
-	-keep class com.mediatek.elian.ElianNative$LoadLib{
-	    public <fields>;
-	    public <methods>;
-	}
-	-keepnames class com.mediatek.elian.ElianNative$* {
-	    public <fields>;
-	    public <methods>;
-	}
-	-keepnames class com.mediatek.elian.ElianNative$* {*;}
-	-keepnames class com.realtek.simpleconfiglib.Crypt {*;}
-	-keepnames class com.sctech.cfe.Xactivity {*;}
-	#====zbar====
-	-keep class net.sourceforge.zbar.** { *; }
-	-keep class com.broadcom.cooee.** { *; }
-	-keep class com.het.zbar.** { *; }
-	#----------------------------------------------------------------------------------
-	
-	#---------------------------------BlueToothSupport-------------------------------
-	#====BlueToothSupport相关实体类====
-	-keep class com.het.ble.**  { *; }
-	-keep class com.het.bluetoothbase.**  { *; }
-	-keep class com.het.bluetoothoperate.**  { *; }
-	-keep class org.dom4j.**  { *; }
-	-keep class javax.xml.**  { *; }
-	-keep class com.het.device.ui.**  { *; }
-	-keep class com.google.gson.**  { *; }
-	#----------------------------------------------------------------------------------
-	
-	#---------------------------------udpcore-------------------------------
-	#====udpcore相关实体类====
-	-keep class com.het.wifi.common.model.**  { *; }
-	-keep class com.het.wifi.common.db.**  { *; }
-	-keep class com.het.wifi.common.protocol.**  { *; }
-	-keep class com.het.UdpCore.smartlink.**  { *; }
-	-keep class com.het.UdpCore.smartlink.callback.**  { *; }
-	-keep class com.het.UdpCore.smartlink.ti.callback.**  { *; }
-	-keep class com.het.UdpCore.Utils.Logc  { *; }
-	-keep class com.het.wifi.common.protocol.coder.bean.** { *; }
-	#----------------------------------------------------------------------------------
-	
-	#---------------------------------BluetoothBase-------------------------------
-	-keep class android.bluetooth.** { *; }
-	-keep class com.het.bluetoothbase.scan.**  { *; }
-	-keep class com.het.bluetoothbase.conn.**  { *; }
-	#----------------------------------------------------------------------------------
-	
-	#---------------------------------BluetoothOperate-------------------------------
-	-keep class com.het.bluetoothoperate.model.**  { *; }
-	-keep class com.het.bluetoothoperate.listener.**  { *; }
-	#----------------------------------------------------------------------------------
-	
-	#**************************het的h5库*******************************
-	-keep class com.het.h5.sdk.manager.** { *; }
-	-keep class com.het.h5.sdk.callback.** { *; }
-	-keep class com.het.h5.sdk.bean.** { *; }
-	-keep class com.het.h5.sdk.event.** { *; }
-	# --------------------------------------------------------------------------
-	
-	##===================腾讯X5内核=====STAT=============
-	-keep class com.tencent.smtt.export.external.**{*;}
-	-keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {*;}
-	-keep class com.tencent.smtt.sdk.CacheManager {public *;}
-	-keep class com.tencent.smtt.sdk.CookieManager {public *;}
-	-keep class com.tencent.smtt.sdk.WebHistoryItem {public *;}
-	-keep class com.tencent.smtt.sdk.WebViewDatabase {public *;}
-	-keep class com.tencent.smtt.sdk.WebBackForwardList {public *;}
-	-keep public class com.tencent.smtt.sdk.WebView {
-		public <fields>;
-		public <methods>;
-	}
-	-keep public class com.tencent.smtt.sdk.WebView$HitTestResult {
-		public static final <fields>;
-		public java.lang.String getExtra();
-		public int getType();
-	}
-	-keep public class com.tencent.smtt.sdk.WebView$WebViewTransport {public <methods>;}
-	-keep public class com.tencent.smtt.sdk.WebView$PictureListener {
-		public <fields>;
-		public <methods>;
-	}
-	-keep public enum com.tencent.smtt.sdk.WebSettings$** {*;}
-	-keep public enum com.tencent.smtt.sdk.QbSdk$** {*;}
-	-keep public class com.tencent.smtt.sdk.WebSettings {public *;}
-	-keep public class com.tencent.smtt.sdk.ValueCallback {
-		public <fields>;
-		public <methods>;
-	}
-	
-	# OkHttp
-	-dontwarn okhttp3.**
-	-dontwarn okio.**
-	-dontwarn com.squareup.okhttp.**
-	-keep class okio.**{*;}
-	-keep class com.squareup.okhttp.** { *; }
-	-keep interface com.squareup.okhttp.** { *; }
-	
-	-dontwarn java.nio.file.*
-	-dontwarn javax.annotation.**
-	-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+    #---------------------------------实体类-------------------------------------
+    -keep public class com.het.sdk.demo.model.** {*;}
+    -keep public class com.het.sdk.demo.widget.** {*;}
+
+    #===================butterknife======================
+    -keep class butterknife.** { *; }
+    -dontwarn butterknife.internal.**
+    -keep class **$$ViewBinder { *; }
+
+    -keepclasseswithmembernames class * {
+        @butterknife.* <fields>;
+    }
+
+    -keepclasseswithmembernames class * {
+        @butterknife.* <methods>;
+    }
+    #===================butterknife======================
+
+    #****************************第三方公共包***************************************************
+    #---------------------------------保护第三方包-----------------------------
+    -keep class org.apache.http.**
+    -keep interface org.apache.http.**
+    -dontwarn org.apache.**
+    #===========sharesdk===========
+    -keep class cn.sharesdk.**{*;}
+    -keep class com.sina.**{*;}
+    -keep class **.R$* {*;}
+    -keep class **.R{*;}
+
+    -keep class com.mob.**{*;}
+    -dontwarn com.mob.**
+    -dontwarn cn.sharesdk.**
+    -dontwarn **.R$*
+
+    #===========nineoldandroids-2.4.0.jar===========
+    -keep public class com.nineoldandroids.** {*;}
+
+    #===========zxing===========
+    -keep class com.google.zxing.** {*;}
+    -dontwarn com.google.zxing.**
+    #===========百度定位===========
+    -keep class com.baidu.** {*;}
+    -keep class vi.com.** {*;}
+    -dontwarn com.baidu.**
+
+    #==============极光推送开始==============#
+    -dontoptimize
+    -dontpreverify
+
+    -dontwarn cn.jpush.**
+    -keep class cn.jpush.** { *; }
+    -keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+
+    -dontwarn cn.jiguang.**
+    -keep class cn.jiguang.** { *; }
+    #==============极光推送结束==============#
+
+    #==============百度推送开始==============#
+    #-libraryjars libs/pushservice-5.9.0.59.jar
+    -dontwarn com.baidu.**
+    -keep class com.baidu.**{*; }
+    #==============百度推送结束==============#
+
+    #===========okhttp===========
+    -dontwarn com.squareup.okhttp3.**
+    -keep class com.squareup.okhttp3.** { *;}
+    -dontwarn okio.**
+    # Retrofit
+    -dontwarn retrofit2.**
+    -keep class retrofit2.** { *; }
+    # RxJava RxAndroid
+    -dontwarn sun.misc.**
+    -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+        long producerIndex;
+        long consumerIndex;
+    }
+    -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+        rx.internal.util.atomic.LinkedQueueNode producerNode;
+    }
+    -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+        rx.internal.util.atomic.LinkedQueueNode consumerNode;
+    }
+    ###rxandroid-1.2.1
+    -keepclassmembers class rx.android.**{*;}
+
+    # Gson
+    -keep class com.google.gson.stream.** { *; }
+    -keepattributes EnclosingMethod
+
+    #===========recyclerview-animators===========
+    -keep class jp.wasabeef.** {*;}
+    -dontwarn jp.wasabeef.*
+
+    #===========ormlite===========
+    -keep class com.j256.**
+    -keepclassmembers class com.j256.** { *; }
+    -keep enum com.j256.**
+    -keepclassmembers enum com.j256.** { *; }
+    -keep interface com.j256.**
+    -keepclassmembers interface com.j256.** { *; }
+    #===========umeng（友盟 ）===========
+    -keep class com.umeng.analytics.** {*;}
+    -dontwarn com.google.android.maps.**
+    -dontwarn android.webkit.WebView
+    -dontwarn com.umeng.**
+    -dontwarn com.tencent.weibo.sdk.**
+
+    #==========facebook==========
+    -keep enum com.facebook.**
+    -keepattributes Exceptions,InnerClasses,Signature
+    -keepattributes *Annotation*
+    -keepattributes SourceFile,LineNumberTable
+
+    #================Fresco混淆===START==============#
+    #==native方法
+    -keepclassmembers class * {
+        native <methods>;
+    }
+    -dontwarn okio.**
+    -dontwarn com.squareup.okhttp.**
+    -dontwarn okhttp3.**
+    -dontwarn javax.annotation.**
+    -dontwarn com.android.volley.toolbox.**
+    -dontwarn com.facebook.infer.**
+
+    # Keep our interfaces so they can be used by other ProGuard rules.
+    # See http://sourceforge.net/p/proguard/bugs/466/
+    -keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+    # Do not strip any method/class that is annotated with @DoNotStrip
+    -keep @com.facebook.common.internal.DoNotStrip class *
+    -keepclassmembers class * {@com.facebook.common.internal.DoNotStrip *;}
+    # can not display gif image.
+    -keep class com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl {
+        public AnimatedFactoryImpl(com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory, com.facebook.imagepipeline.core.ExecutorSupplier);
+    }
+    -keep class com.facebook.animated.gif.** {*;}
+    -dontwarn javax.annotation.**
+    # facebook fresco end -------------------------------------------------
+    #================Fresco混淆===END==============#
+
+    -keep public interface com.facebook.**
+    -keep public interface com.tencent.**
+    -keep public interface com.umeng.socialize.**
+    -keep public interface com.umeng.socialize.sensor.**
+    -keep public interface com.umeng.scrshot.**
+
+    -keep public class com.umeng.socialize.* {*;}
+    -keep public class javax.**
+    -keep public class android.webkit.**
+
+    -keep class com.facebook.**
+    -keep class com.umeng.scrshot.**
+    -keep public class com.tencent.** {*;}
+    -keep class com.umeng.socialize.sensor.**
+    -keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+
+    -keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+
+    -keep class im.yixin.sdk.api.YXMessage {*;}
+    -keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+
+    -keepclassmembers class * {
+       public <init> (org.json.JSONObject);
+    }
+    -keepclassmembers enum * {
+        public static **[] values();
+        public static ** valueOf(java.lang.String);
+    }
+
+    #==========友盟自动更新==========
+    -keep public class com.umeng.fb.ui.ThreadView {
+    }
+    -keep public class * extends com.umeng.**
+    # 以下包不进行过滤
+    -keep class com.umeng.** { *; }
+
+
+    #==========AndFix==========
+    -keep class * extends java.lang.annotation.Annotation
+    -keepclasseswithmembernames class * {
+        native <methods>;
+    }
+
+    #==========eventbus 3.0==========
+    -keepattributes *Annotation*
+    -keepclassmembers class ** {
+        @org.greenrobot.eventbus.Subscribe <methods>;
+    }
+    -keep enum org.greenrobot.eventbus.ThreadMode { *; }
+    -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+        <init>(java.lang.Throwable);
+    }
+
+
+    #==========EventBus==========
+    -keepclassmembers class ** {
+        public void onEvent*(**);
+    }
+    -keepclassmembers class ** {
+    public void xxxxxx(**);
+    }
+
+
+    #==========gson==========
+    -keep class com.google.gson.** {*;}
+    -keep class com.google.**{*;}
+    -keep class sun.misc.Unsafe { *; }
+    -keep class com.google.gson.stream.** { *; }
+    -keep class com.google.gson.examples.android.model.** { *; }
+
+    -keep public class * implements java.io.Serializable {*;}
+    -keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+        private static final java.io.ObjectStreamField[] serialPersistentFields;
+        !static !transient <fields>;
+        !private <fields>;
+        !private <methods>;
+        private void writeObject(java.io.ObjectOutputStream);
+        private void readObject(java.io.ObjectInputStream);
+        java.lang.Object writeReplace();
+        java.lang.Object readResolve();
+    }
+
+
+
+    # ==========support-v4==========
+    -dontwarn android.support.v4.**
+    -keep class android.support.v4.app.** { *; }
+    -keep interface android.support.v4.app.** { *; }
+    -keep class android.support.v4.** { *; }
+    -keep public class * extends android.app.Fragment
+
+    # ==========support-v7==========
+    -dontwarn android.support.v7.**
+    -keep class android.support.v7.internal.** { *; }
+    -keep interface android.support.v7.internal.** { *; }
+    -keep class android.support.v7.** { *; }
+
+    # ==========support design==========
+    -dontwarn android.support.design.**
+    -keep class android.support.design.** { *; }
+    -keep interface android.support.design.** { *; }
+    -keep public class android.support.design.R$* { *; }
+    #-------------------------------------------------------------------------
+
+    #==========activeandroid==========
+    -keep class com.activeandroid.** { *; }
+    -dontwarn com.ikoding.app.biz.dataobject.**
+    -keep public class com.ikoding.app.biz.dataobject.** { *;}
+    -keepattributes *Annotation*
+
+    -keepattributes Exceptions,InnerClasses
+
+    -keep class io.rong.** {*;}
+
+    -keep class * implements io.rong.imlib.model.MessageContent{*;}
+
+    -keepattributes Signature
+
+    -keep class sun.misc.Unsafe { *; }
+
+    -keep class com.google.gson.examples.android.model.** { *; }
+
+    -keepclassmembers class * extends com.sea_monster.dao.AbstractDao {
+     public static java.lang.String TABLENAME;
+    }
+    -keep class **$Properties
+    -dontwarn org.eclipse.jdt.annotation.**
+
+    -keep class com.ultrapower.** {*;}
+
+    #*****************************公共模块**************************************
+    -keep class rx.**{*;}
+    -keep class rx.internal.util.** {*;}
+    -keep class com.het.basic.data.api.token.model.AuthModel{*;}
+    -keep class com.het.basic.**{*;}
+    -keep class com.het.basic.data.http.okhttp.OkHttpManager{*;}
+    -keep class com.het.basic.AppDelegate{*;}
+    -keep public class com.het.basic.constact.** { *; }
+    -keep public class com.het.basic.model.** { *; }
+    -keep public class com.het.basic.base.helper.RxSchedulers { *; }
+    -keep public class com.het.basic.data.api.token.HetParamsMerge { *; }
+    -keep public class com.het.basic.data.api.token.TokenManager { *; }
+    -keep public class com.het.basic.data.api.login.** { *; }
+    -keep public class com.het.basic.utils.** { *; }
+    -keep public class com.het.basic.data.api.utils.** { *; }
+    -keep public class com.het.basic.data.http.retrofit2.RetrofitManager { *; }
+    -keep public class com.het.basic.data.http.okhttp.listener.DownloadProgressListener { *; }
+
+    #====xstream库====
+    -dontwarn com.thoughtworks.xstream.**
+    -keep class com.thoughtworks.xstream.io.xml.** { *; }
+
+    #-keep class com.third.factory.Const  { *; }
+    -keep class com.hiflying.smartlink.SmartLinkedModule  { *; }
+    -keep class com.handmark.pulltorefresh.library.extras.**  { *; }
+    -keep class com.het.librebind.constant.**  { *; }
+    -keep class com.het.librebind.model.**  { *; }
+    -keep class com.het.librebind.utils.** { *; }
+    -keep class com.xlwtech.**  { *; }
+    #System.loadLibrary
+    -keep class com.mediatek.elian.ElianNative{ *; }
+    -keep class com.mediatek.elian.ElianNative$LoadLib{
+        public <fields>;
+        public <methods>;
+    }
+    -keepnames class com.mediatek.elian.ElianNative$* {
+        public <fields>;
+        public <methods>;
+    }
+    -keepnames class com.mediatek.elian.ElianNative$* {*;}
+    -keepnames class com.realtek.simpleconfiglib.Crypt {*;}
+    -keepnames class com.sctech.cfe.Xactivity {*;}
+    #====zbar====
+    -keep class net.sourceforge.zbar.** { *; }
+    -keep class com.broadcom.cooee.** { *; }
+    -keep class com.het.zbar.** { *; }
+    #----------------------------------------------------------------------------------
+
+    #---------------------------------BlueToothSupport-------------------------------
+    #====BlueToothSupport相关实体类====
+    -keep class com.het.ble.**  { *; }
+    -keep class com.het.bluetoothbase.**  { *; }
+    -keep class com.het.bluetoothoperate.**  { *; }
+    -keep class org.dom4j.**  { *; }
+    -keep class javax.xml.**  { *; }
+    -keep class com.het.device.ui.**  { *; }
+    -keep class com.google.gson.**  { *; }
+    #----------------------------------------------------------------------------------
+
+    #---------------------------------udpcore-------------------------------
+    #====udpcore相关实体类====
+    -keep class com.het.wifi.common.model.**  { *; }
+    -keep class com.het.wifi.common.db.**  { *; }
+    -keep class com.het.wifi.common.protocol.**  { *; }
+    -keep class com.het.UdpCore.smartlink.**  { *; }
+    -keep class com.het.UdpCore.smartlink.callback.**  { *; }
+    -keep class com.het.UdpCore.smartlink.ti.callback.**  { *; }
+    -keep class com.het.UdpCore.Utils.Logc  { *; }
+    -keep class com.het.wifi.common.protocol.coder.bean.** { *; }
+    #----------------------------------------------------------------------------------
+
+    #---------------------------------BluetoothBase-------------------------------
+    -keep class android.bluetooth.** { *; }
+    -keep class com.het.bluetoothbase.scan.**  { *; }
+    -keep class com.het.bluetoothbase.conn.**  { *; }
+    #----------------------------------------------------------------------------------
+
+    #---------------------------------BluetoothOperate-------------------------------
+    -keep class com.het.bluetoothoperate.model.**  { *; }
+    -keep class com.het.bluetoothoperate.listener.**  { *; }
+    #----------------------------------------------------------------------------------
+
+    #**************************het的h5库*******************************
+    -keep class com.het.h5.sdk.manager.** { *; }
+    -keep class com.het.h5.sdk.callback.** { *; }
+    -keep class com.het.h5.sdk.bean.** { *; }
+    -keep class com.het.h5.sdk.event.** { *; }
+    # --------------------------------------------------------------------------
+
+    ##===================腾讯X5内核=====STAT=============
+    -keep class com.tencent.smtt.export.external.**{*;}
+    -keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {*;}
+    -keep class com.tencent.smtt.sdk.CacheManager {public *;}
+    -keep class com.tencent.smtt.sdk.CookieManager {public *;}
+    -keep class com.tencent.smtt.sdk.WebHistoryItem {public *;}
+    -keep class com.tencent.smtt.sdk.WebViewDatabase {public *;}
+    -keep class com.tencent.smtt.sdk.WebBackForwardList {public *;}
+    -keep public class com.tencent.smtt.sdk.WebView {
+    	public <fields>;
+    	public <methods>;
+    }
+    -keep public class com.tencent.smtt.sdk.WebView$HitTestResult {
+    	public static final <fields>;
+    	public java.lang.String getExtra();
+    	public int getType();
+    }
+    -keep public class com.tencent.smtt.sdk.WebView$WebViewTransport {public <methods>;}
+    -keep public class com.tencent.smtt.sdk.WebView$PictureListener {
+    	public <fields>;
+    	public <methods>;
+    }
+    -keep public enum com.tencent.smtt.sdk.WebSettings$** {*;}
+    -keep public enum com.tencent.smtt.sdk.QbSdk$** {*;}
+    -keep public class com.tencent.smtt.sdk.WebSettings {public *;}
+    -keep public class com.tencent.smtt.sdk.ValueCallback {
+    	public <fields>;
+    	public <methods>;
+    }
+
+    # OkHttp
+    -dontwarn okhttp3.**
+    -dontwarn okio.**
+    -dontwarn com.squareup.okhttp.**
+    -keep class okio.**{*;}
+    -keep class com.squareup.okhttp.** { *; }
+    -keep interface com.squareup.okhttp.** { *; }
+
+    -dontwarn java.nio.file.*
+    -dontwarn javax.annotation.**
+    -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
 	
 	
