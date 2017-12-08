@@ -99,8 +99,9 @@ dependencies {
 
     compile files('libs/pushservice-5.9.0.59.jar')
     //引用库形式
-    compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.0-SNAPSHOT'
-    //compile project(':HetOpenLib')
+    compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.1-SNAPSHOT'
+//    compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.1-SNAPSHOT'
+//    compile project(':HetOpenLib')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.android.support:design:23.1.1'

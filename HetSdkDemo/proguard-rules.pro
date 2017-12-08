@@ -119,7 +119,6 @@
 #---------------------------------实体类-------------------------------------
 -keep public class com.het.sdk.demo.model.** {*;}
 -keep public class com.het.sdk.demo.widget.** {*;}
--keep class com.het.ui.sdk.**
 
 #===================butterknife======================
 -keep class butterknife.** { *; }
@@ -137,14 +136,6 @@
 
 #****************************第三方公共包***************************************************
 #---------------------------------保护第三方包-----------------------------
--keep class com.activeandroid.**{*;}
-# Do not strip any method/class that is annotated with @DoNotStrip
-#-keep @com.facebook.common.internal.DoNotStrip class *
-#-keepclassmembers class * {
-#@com.facebook.common.internal.DoNotStrip *;
-#}
-#---------------------------------暂时未用到（先写着）-----------------------------
-
 -keep class org.apache.http.**
 -keep interface org.apache.http.**
 -dontwarn org.apache.**
@@ -396,14 +387,6 @@ static final long serialVersionUID;
 
 -keep class com.ultrapower.** {*;}
 
-#==========高徳地图==========
--dontwarn com.amap.api.**
--dontwarn com.a.a.**
--dontwarn com.autonavi.**
--keep class com.amap.api.**  {*;}
--keep class com.autonavi.**  {*;}
--keep class com.a.a.**  {*;}
-
 #*****************************公共模块**************************************
 -keep class rx.**{*;}
 -keep class rx.internal.util.** {*;}
@@ -422,24 +405,10 @@ static final long serialVersionUID;
 -keep public class com.het.basic.data.http.retrofit2.RetrofitManager { *; }
 -keep public class com.het.basic.data.http.okhttp.listener.DownloadProgressListener { *; }
 
-
-#===========高斯模糊
--keep class net.qiujuer.genius.blur.** {*;}
-
-#---------------------------------bindlibrary---------------------------------------
 #====xstream库====
 -dontwarn com.thoughtworks.xstream.**
 -keep class com.thoughtworks.xstream.io.xml.** { *; }
-#====bindlibrary相关实体类====
--keep public class * extends com.het.bindlibrary.ui.BindDeviceGuideActivity
--keep class com.het.bindlibrary.biz.bind.http.contact.** { *; }
--keep class com.het.bindlibrary.model.** { *; }
--keep class com.het.bindlibrary.db.** { *; }
--keep class com.het.common.bind.logic.model.**  { *; }
--keep class com.het.common.bind.logic.msg.**  { *; }
--keep class com.het.common.bind.logic.ble.model.**  { *; }
--keep class com.het.common.bind.logic.ble.extral.model.**  { *; }
--keep class com.het.common.bind.logic.utils.**  { *; }
+
 #-keep class com.third.factory.Const  { *; }
 -keep class com.hiflying.smartlink.SmartLinkedModule  { *; }
 -keep class com.handmark.pulltorefresh.library.extras.**  { *; }
@@ -457,42 +426,13 @@ static final long serialVersionUID;
     public <fields>;
     public <methods>;
 }
--keepnames class com.het.bindlibrary.ui.BindDeviceGuideActivity$* {*;}
 -keepnames class com.mediatek.elian.ElianNative$* {*;}
 -keepnames class com.realtek.simpleconfiglib.Crypt {*;}
--keepnames class com.handmark.pulltorefresh.library.extras.PullToRefreshWebViewBind2 {*;}
--keepnames class com.handmark.pulltorefresh.library.extras.PullToRefreshWebViewBind2$JsValueCallback {*;}
 -keepnames class com.sctech.cfe.Xactivity {*;}
 #====zbar====
 -keep class net.sourceforge.zbar.** { *; }
 -keep class com.broadcom.cooee.** { *; }
 -keep class com.het.zbar.** { *; }
-#----------------------------------------------------------------------------------
-
-#---------------------------------------hetdevicesdk-------------------------------
--keep public class com.het.device.logic.bean.** {*;}
--keep public class com.het.device.logic.control.bean.** {*;}
--keep public class com.het.device.logic.detail.bean.** {*;}
--keep public class com.het.device.logic.event.** {*;}
--keep public class com.het.device.logic.utils.** {*;}
--keep public class com.het.device.logic.** {*;}
--keep public interface com.het.device.logic.control.callback.**
--keep public class com.het.device.** {*;}
--keep public class com.het.device.sdk.bean.** {*;}
-#---------------------------------------DeviceProgect-------------------------------
-#====DeviceProgect相关实体类====
--keep class com.het.device.biz.conf.**  { *; }
--keep class com.het.device.biz.event.**  { *; }
--keep class com.het.device.biz.plugin.**  { *; }
--keep class com.het.device.biz.plugin.**  { *; }
--keep class com.het.device.h5.model.**  { *; }
--keep class com.het.device.h5.AppJavaScriptsBridge  { *; }
--keep class com.het.device.model.**  { *; }
--keep class com.het.device.ui.**  { *; }
--keep class scene.model.**  { *; }
--keep class scene.View.**  { *; }
--keep class com.het.device.h5.manager.HtmlFiveManager  { *; }
--keep class com.het.device.h5.AppJavaScriptsBridge  { *; }
 #----------------------------------------------------------------------------------
 
 #---------------------------------BlueToothSupport-------------------------------
@@ -536,10 +476,6 @@ static final long serialVersionUID;
 -keep class com.het.h5.sdk.event.** { *; }
 # --------------------------------------------------------------------------
 
--keep class com.csleep.library.basecore.**{*;}
--keep class com.csleep.library.basecore.BaseCore{*;}
--keep class het.com.clseepvideoplayersdk.**{*;}
-
 ##===================腾讯X5内核=====STAT=============
 -keep class com.tencent.smtt.export.external.**{*;}
 -keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {*;}
@@ -570,10 +506,6 @@ static final long serialVersionUID;
 	public <methods>;
 }
 
-#===================Youzan SDK Start===================
--dontwarn com.youzan.androidsdk.***
--keep class com.youzan.androidsdk.**{*;}
-
 # OkHttp
 -dontwarn okhttp3.**
 -dontwarn okio.**
@@ -585,83 +517,5 @@ static final long serialVersionUID;
 -dontwarn java.nio.file.*
 -dontwarn javax.annotation.**
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-#===================Youzan SDK End===================
-
-#-keep public class com.tencent.smtt.sdk.WebViewClient {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.DownloadListener {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.WebChromeClient {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.WebChromeClient$FileChooserParams {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep class com.tencent.smtt.sdk.SystemWebChromeClient{public *;}
-## 1. extension interfaces should be apparent
-#-keep public class com.tencent.smtt.export.external.extension.interfaces.* {
-#	public protected *;
-#}
-## 2. interfaces should be apparent
-#-keep public class com.tencent.smtt.export.external.interfaces.* {
-#	public protected *;
-#}
-#-keep public class com.tencent.smtt.sdk.WebViewCallbackClient {
-#	public protected *;
-#}
-#-keep public class com.tencent.smtt.sdk.WebStorage$QuotaUpdater {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.WebIconDatabase {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.WebStorage {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.DownloadListener {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.QbSdk {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.QbSdk$PreInitCallback {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.CookieSyncManager {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.Tbs* {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.utils.LogFileUtils {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.utils.TbsLog {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.utils.TbsLogClient {
-#	public <fields>;
-#	public <methods>;
-#}
-#-keep public class com.tencent.smtt.sdk.CookieSyncManager {
-#	public <fields>;
-#	public <methods>;
-#}
 
 

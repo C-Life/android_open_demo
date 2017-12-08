@@ -129,20 +129,13 @@
     <string name="common_sure">确定</string>
     <string name="common_next">下一步</string>
     <string name="common_no_network">网络不可用，请检查网络设置</string>
-
     <string name="common_loading_prompt">加载中……</string>
-
     <string name="common_left_click">topbar左边按钮</string>
     <string name="common_right_click">topbar右边按钮</string>
-
     <string name="about_not_to_update">暂不升级</string>
-
     <string name="delete_msg">删除</string>
-
     <string name="conenct_auto_linkage_promt">关闭后，将不会根据睡眠状态自动\n开启、关闭喷雾功能</string>
-
     <string name="next">下一步</string>
-
     <string name="scene_detail">场景详情</string>
     <string name="scene_log">场景日志</string>
     <string name="scence_test">体验场景</string>

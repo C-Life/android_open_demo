@@ -5,15 +5,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.het.basic.data.http.okhttp.OkHttpManager;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.StringUtils;
 import com.het.basic.utils.ToastUtil;
+import com.het.open.lib.api.HetQrCodeApi;
 import com.het.open.lib.api.HetThirdCloudAuthApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
-import com.het.sdk.demo.utils.Constants;
 import com.het.sdk.demo.utils.UIJsonConfig;
 
 import butterknife.Bind;
@@ -259,7 +260,7 @@ public class ThirdAuthActivity extends BaseHetActivity {
         if(!StringUtils.isNull(openId)){
             s = openId;
         }else
-        randomCodeService.getRandomCode(Constants.APP_ID,Constants.APP_SECRET
+        randomCodeService.getRandomCode(UIJsonConfig.getInstance(this).getAppId(),UIJsonConfig.getInstance(this).getSecret()
                 ,authorizationCode.getAuthorizationCode(),s,timestamp)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

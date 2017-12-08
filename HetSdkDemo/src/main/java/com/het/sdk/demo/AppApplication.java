@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+
 import com.broadcom.cooee.CooeeModuleImpl;
 import com.espressif.iot.esptouch.EsptouchModuleImpl;
 import com.ezconnect.marvell.MarvellV1WiFiImpl;

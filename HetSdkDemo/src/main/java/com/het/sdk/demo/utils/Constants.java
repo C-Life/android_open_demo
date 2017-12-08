@@ -30,8 +30,8 @@ public class Constants {
 //      public static final String APP_ID = "30765";
 //      public static final String APP_SECRET = "5f699a78c319444cb8a291296049572c";
 
-    public static final String APP_ID = "30801";
-    public static final String APP_SECRET = "e41d92e9f98e4bbaa0446ebef526afe3";
+    public static final String APP_ID = "30765";
+    public static final String APP_SECRET = "5f699a78c319444cb8a291296049572c";
 
 //土壤仪
 //    public static final  String APP_ID = "30695";
