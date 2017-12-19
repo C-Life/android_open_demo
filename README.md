@@ -22,12 +22,12 @@
 集成了第三方登录的gradle依赖 
 
 	//引用库形式 集成了第三方登录的引用
-	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.1-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.2-SNAPSHOT'
 
 基础SDK的gradle依赖
 
 	//引用库形式 
-	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.1-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.2-SNAPSHOT'
 
 模组注册
 
