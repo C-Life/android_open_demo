@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
 import com.het.basic.utils.GsonUtil;
+import com.het.basic.utils.StringUtils;
 import com.het.bind.logic.bean.UserInfoBean;
 import com.het.open.lib.api.HetDeviceListApi;
 import com.het.open.lib.api.HetDeviceManagerApi;
@@ -30,6 +31,7 @@ import java.lang.reflect.Type;
  */
 
 public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
+
     public void startLogin() {
 
         HetNewAuthApi.getInstance().authorize(activity, new AuthCallback() {
@@ -180,17 +182,27 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
 
     public void startEdit(UserInfoBean userInfoBean) {
 
-        HetNewAuthApi.getInstance().alterPassword(activity, new AuthCallback() {
-            @Override
-            public void onSuccess(int code, String msg) {
-                ((BaseHetActivity) activity).showToast(msg);
+        String account = null;
+        if (userInfoBean != null) {
+            if (!StringUtils.isNull(userInfoBean.getPhone())) {
+                account = userInfoBean.getPhone();
+            } else if (!StringUtils.isNull((String) userInfoBean.getEmail())) {
+                account = (String) userInfoBean.getEmail();
             }
+        }
 
-            @Override
-            public void onFailed(int code, String msg) {
-                ((BaseHetActivity) activity).showToast(msg);
-            }
-        }, userInfoBean.getPhone(), activity.getString(R.string.update_password), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string());
+        if (account != null) {
+            HetNewAuthApi.getInstance().alterPassword(activity, new AuthCallback() {
+                @Override
+                public void onSuccess(int code, String msg) {
+                    ((BaseHetActivity) activity).showToast(msg);
+                }
 
+                @Override
+                public void onFailed(int code, String msg) {
+                    ((BaseHetActivity) activity).showToast(msg);
+                }
+            }, account, activity.getString(R.string.update_password), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string());
+        }
     }
 }

@@ -19,7 +19,6 @@ import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.base.BaseHetFragment;
 import com.het.sdk.demo.manager.BuildManager;
-import com.het.sdk.demo.ui.activity.auth.ThirdAuthActivity;
 import com.het.sdk.demo.ui.activity.feedback.FeedbackAddActivity;
 import com.het.sdk.demo.ui.activity.message.MessageCenterActivity;
 import com.het.sdk.demo.ui.activity.singlelayout.QuestionActivity;
@@ -92,9 +91,9 @@ public class NavigationDrawerFragment extends BaseHetFragment<LoginPresenter> im
     }
 
     /**
-     *  获取完整的用户信息
+     * 获取完整的用户信息
      */
-    public void setUserPhone(){
+    public void setUserPhone() {
         mPresenter.getUserInfo();
     }
 
@@ -118,15 +117,12 @@ public class NavigationDrawerFragment extends BaseHetFragment<LoginPresenter> im
             case R.id.v_privacy://隐私政策
                 break;
             case R.id.v_copyright://版权声明
-
-
                 break;
             case R.id.logout://退出登录
                 loginOut();
                 break;
         }
     }
-
 
 
     /**
@@ -203,8 +199,8 @@ public class NavigationDrawerFragment extends BaseHetFragment<LoginPresenter> im
 
     @Override
     public void showUser(UserInfoBean user) {
-        if (user != null && !StringUtils.isNull(user.getPhone())) {
-            vCurrentCount.setItemRightText(user.getPhone());
+        if (user != null) {
+            vCurrentCount.setItemRightText(!StringUtils.isNull(user.getPhone()) ? user.getPhone() : !StringUtils.isNull((String) user.getEmail()) ? (String) user.getEmail() : "");
         }
     }
 }
