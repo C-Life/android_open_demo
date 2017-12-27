@@ -120,20 +120,23 @@ Android 6.0+新增了运行时权限动态检测，敏感权限必须要动态�
      */
     private void configApplication(String appId, String appSecret) {
         ConfigModel configModel = new ConfigModel();
-        configModel.setLog(true); //是否开启log信息
-        configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //环境设置
+        configModel.setLog(true); //是否开启log信息--- 可选项
+        configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //环境设置---  必选项
+
+        //使用开放平台授权登录时设置登录页参数  根据项目具体需求设置。--- 可选项
         configModel.setH5UIconfig(UIJsonConfig.getInstance(this).getJsonString(UIJsonConfig.fileName, this));
-        //配置开放平台第三方登录  不需要使用开放平台第三方登录的不需要
-        mLoginDelegate = new HetSdkThirdDelegate.Builder(this)
-                .registerQQ(UIJsonConfig.getTencentAppID())
-                .registerWeixin(UIJsonConfig.getWechatAppID(),UIJsonConfig.getWechatAppSecret())
-                .registerSinaWeibo(UIJsonConfig.getSinaAppID(), UIJsonConfig.getSinaAppSecret(), this.mSinaRedirectURL)
-               .create();
+        //配置开放平台第三方登录  不需要使用开放平台第三方登录的不需要  -- 可选项
+        mLoginDelegate = new HetSdkThirdDelegateBuilder(this)
+                    .registerQQ(UIJsonConfig.getTencentAppID())
+                    .registerWeixin(UIJsonConfig.getWechatAppID(), UIJsonConfig.getWechatAppSecret())
+                    .registerSinaWeibo(UIJsonConfig.getSinaAppID(), UIJsonConfig.getSinaAppSecret(), this.mSinaRedirectURL)
+                    .create();
+        //SDK 初始化
         HetSdk.getInstance().init(this, appId, appSecret, configModel);
     }
 
-1、appId、appSecret可以在开放平台创建的应用的应用详情里查看。  
-2、HetSdkThirdDelegate 配置第三方社交平台（微信、QQ、新浪微博登录和分享），需要的开发者自行配置，不需要的可以不要。关于第三方登录的集成请参考   **（SDK第三方登录的集成）**。  
+1、appId、appSecret可以在开放平台创建的应用的应用详情里查看。
+2、HetSdkThirdDelegateBuilder 配置第三方社交平台（微信、QQ、新浪微博登录和分享），需要的开发者自行配置，不需要的可以不要。关于第三方登录的集成请参考   **（SDK第三方登录的集成）**。
 3、configModel.setH5UIconfig 配置授权登录页面主题样式; 通过参数定义的JSON字符串来进行配置，例如demoAPP是通过assets/h5UIConfig.json这个文件来组装JSON字符串的。
 
 **接口调用请求说明**  
