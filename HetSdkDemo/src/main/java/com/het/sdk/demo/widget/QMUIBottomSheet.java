@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -621,7 +620,7 @@ public class QMUIBottomSheet extends Dialog {
 
             itemView.setTag(tag);
             itemView.setOnClickListener(this);
-            AppCompatImageView imageView = (AppCompatImageView) itemView.findViewById(R.id.grid_item_image);
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.grid_item_image);
             imageView.setImageResource(imageRes);
 
             if (subscriptRes != 0) {

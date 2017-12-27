@@ -22,6 +22,7 @@ import com.het.sdk.demo.event.HetShareEvent;
 import com.het.sdk.demo.ui.activity.MainActivity;
 import com.het.sdk.demo.ui.activity.device.BleCommonControlActivity;
 import com.het.sdk.demo.ui.activity.device.ControlLedActivity;
+import com.het.sdk.demo.ui.activity.device.H5ControlLedActivity;
 import com.het.sdk.demo.ui.activity.sidebarlayout.SidebarMainActivity;
 import com.het.sdk.demo.utils.Constants;
 import com.het.sdk.demo.widget.MultipleStatusView;
@@ -82,8 +83,8 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
                 ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
             } else {//WIFI -- H5控制
                 //H5 控制
-                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
-//                H5ControlLedActivity.startH5ControlLedActivity(mContext, (DeviceModel) o);
+//                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
+                H5ControlLedActivity.startH5ControlLedActivity(mContext, (DeviceModel) o);
             }
 
         });
