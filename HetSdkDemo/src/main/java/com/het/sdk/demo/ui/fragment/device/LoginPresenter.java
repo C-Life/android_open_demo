@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.google.gson.reflect.TypeToken;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.StringUtils;
-import com.het.bind.logic.bean.UserInfoBean;
 import com.het.open.lib.api.HetDeviceListApi;
 import com.het.open.lib.api.HetDeviceManagerApi;
 import com.het.open.lib.api.HetDeviceShareApi;
@@ -20,6 +19,7 @@ import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.base.BaseHetPresenter;
 import com.het.sdk.demo.manager.HetUserManager;
+import com.het.sdk.demo.model.HetUserInfoBean;
 import com.het.sdk.demo.push.HetPushManager;
 import com.het.sdk.demo.ui.fragment.UserHetView;
 import com.het.sdk.demo.utils.UIJsonConfig;
@@ -128,7 +128,7 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
 
     public void getUserInfo() {
         if (!HetSdk.getInstance().isAuthLogin()) return;
-        UserInfoBean userInfoBean = HetUserManager.getInstance().getUserModel();
+        HetUserInfoBean userInfoBean = HetUserManager.getInstance().getUserModel();
         if (userInfoBean != null) {
             ((UserHetView) mBaseHetView).showUser(userInfoBean);
             return;
@@ -136,9 +136,9 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
         HetUserApi.getInstance().getUserMess(new IHetCallback() {
             @Override
             public void onSuccess(int code, String msg) {
-                Type type = new TypeToken<UserInfoBean>() {
+                Type type = new TypeToken<HetUserInfoBean>() {
                 }.getType();
-                UserInfoBean users = GsonUtil.getInstance().toObject(msg, type);
+                HetUserInfoBean users = GsonUtil.getInstance().toObject(msg, type);
                 HetUserManager.getInstance().setUserModel(users);
                 ((UserHetView) mBaseHetView).showUser(users);
             }
@@ -156,16 +156,16 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
      */
     public void editPwd() {
         if (!HetSdk.getInstance().isAuthLogin()) return;
-        UserInfoBean userInfoBean = HetUserManager.getInstance().getUserModel();
+        HetUserInfoBean userInfoBean = HetUserManager.getInstance().getUserModel();
         if (userInfoBean != null) {
             startEdit(userInfoBean);
         } else {
             HetUserApi.getInstance().getUserMess(new IHetCallback() {
                 @Override
                 public void onSuccess(int code, String msg) {
-                    Type type = new TypeToken<UserInfoBean>() {
+                    Type type = new TypeToken<HetUserInfoBean>() {
                     }.getType();
-                    UserInfoBean users = GsonUtil.getInstance().toObject(msg, type);
+                    HetUserInfoBean users = GsonUtil.getInstance().toObject(msg, type);
                     HetUserManager.getInstance().setUserModel(users);
                     if (users != null) {
                         startEdit(users);
@@ -180,18 +180,8 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
         }
     }
 
-    public void startEdit(UserInfoBean userInfoBean) {
-
-        String account = null;
-        if (userInfoBean != null) {
-            if (!StringUtils.isNull(userInfoBean.getPhone())) {
-                account = userInfoBean.getPhone();
-            } else if (!StringUtils.isNull((String) userInfoBean.getEmail())) {
-                account = (String) userInfoBean.getEmail();
-            }
-        }
-
-        if (account != null) {
+    public void startEdit(HetUserInfoBean userInfoBean) {
+        if (userInfoBean != null && !StringUtils.isNull(userInfoBean.getAccount())) {
             HetNewAuthApi.getInstance().alterPassword(activity, new AuthCallback() {
                 @Override
                 public void onSuccess(int code, String msg) {
@@ -202,7 +192,7 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
                 public void onFailed(int code, String msg) {
                     ((BaseHetActivity) activity).showToast(msg);
                 }
-            }, account, activity.getString(R.string.update_password), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string());
+            }, userInfoBean.getAccount(), activity.getString(R.string.update_password), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string());
         }
     }
 }

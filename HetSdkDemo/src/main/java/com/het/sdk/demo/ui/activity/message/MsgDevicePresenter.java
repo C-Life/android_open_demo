@@ -5,7 +5,6 @@ import com.het.open.lib.api.HetDeviceShareApi;
 import com.het.open.lib.api.HetMessageApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.sdk.demo.base.BaseHetPresenter;
-import com.het.sdk.demo.base.BaseHetView;
 
 /**
  * Created by Administrator on 2017-10-11.

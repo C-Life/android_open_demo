@@ -72,6 +72,9 @@ public class ControlLedActivity extends BaseHetActivity {
     private LedConfigModel ledConfigModel = new LedConfigModel();
     private LedRunDataModel ledRunDataModel = new LedRunDataModel();
 
+    private int brightnessInt = 0;
+    private int colorTempInt = 0;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_led_layout;
@@ -82,17 +85,14 @@ public class ControlLedActivity extends BaseHetActivity {
     protected void initData() {
 
         if (deviceModel != null) {
-
-
-
-            HetWifiDeviceControlApi.getInstance().start(deviceModel.getDeviceId(),iWifiDeviceData);
+            HetWifiDeviceControlApi.getInstance().start(deviceModel.getDeviceId(), iWifiDeviceData);
         }
     }
 
     private IWifiDeviceData iWifiDeviceData = new IWifiDeviceData() {
         @Override
         public void onGetConfigData(String jsonData) {
-            Logc.d("onGetConfigData: " ,jsonData);
+            Logc.d("onGetConfigData: ", jsonData);
             LedConfigModel configModel = GsonUtil.getInstance().toObject(jsonData, LedConfigModel.class);
             if (ledConfigModel != null) {
                 ledConfigModel = configModel;
@@ -101,7 +101,7 @@ public class ControlLedActivity extends BaseHetActivity {
 
         @Override
         public void onGetRunData(String jsonData) {
-            Logc.d("onGetRunData: " ,jsonData);
+            Logc.d("onGetRunData: ", jsonData);
             LedRunDataModel runDataModel = GsonUtil.getInstance().toObject(jsonData, LedRunDataModel.class);
             if (runDataModel != null) {
                 ledRunDataModel = runDataModel;
@@ -142,21 +142,151 @@ public class ControlLedActivity extends BaseHetActivity {
                 ToastUtil.showToast(mContext, "该设备是分享的设备,不能分享给其他人");
             }
         });
+
+
+        lightSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0) {
+                ledConfigModel.setLightness("" + brightnessInt);
+                ledConfigModel.setUpdateFlag("16");
+
+                HetDeviceWifiControlApi.getInstance().setDataToDevice(new IHetCallback() {
+                    @Override
+                    public void onSuccess(int code, String msg) {
+                    }
+
+                    @Override
+                    public void onFailed(int code, String msg) {
+                    }
+                }, deviceModel.getDeviceId(), GsonUtil.getInstance().toJson(ledConfigModel));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+                brightnessInt = arg1;
+            }
+        });
+
+
+        colorSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0) {
+
+                //ledConfigModel.setSceneMode("2");
+                //ledConfigModel.setLightness("8");
+                //ledConfigModel.setSwitchStatus("165");
+                ledConfigModel.setColorTemp(""+ colorTempInt);
+                ledConfigModel.setUpdateFlag("8");
+
+                HetDeviceWifiControlApi.getInstance().setDataToDevice(new IHetCallback() {
+                    @Override
+                    public void onSuccess(int code, String msg) {
+                    }
+
+                    @Override
+                    public void onFailed(int code, String msg) {
+                    }
+                }, deviceModel.getDeviceId(), GsonUtil.getInstance().toJson(ledConfigModel));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+                colorTempInt = arg1 + 1;
+            }
+        });
     }
+
 
     @OnClick({R.id.readRe, R.id.restRe, R.id.yedengRe, R.id.closeBtn})
     public void onclick(View v) {
         switch (v.getId()) {
             case R.id.readRe:
+                setReadRe();
                 break;
             case R.id.restRe:
+                setRestRe();
                 break;
             case R.id.yedengRe:
+                setYedengRe();
                 break;
             case R.id.closeBtn:
                 submit();
                 break;
         }
+    }
+
+    private void setReadRe() {
+
+        ledConfigModel.setSceneMode("3");
+        ledConfigModel.setLightness("2");
+        ledConfigModel.setColorTemp("1");
+        ledConfigModel.setUpdateFlag("26");
+
+        HetDeviceWifiControlApi.getInstance().setDataToDevice(new IHetCallback() {
+            @Override
+            public void onSuccess(int code, String msg) {
+
+
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+
+            }
+        }, deviceModel.getDeviceId(), GsonUtil.getInstance().toJson(ledConfigModel));
+    }
+
+    private void setYedengRe() {
+
+        ledConfigModel.setSceneMode("1");
+        ledConfigModel.setLightness("10");
+        ledConfigModel.setColorTemp("0");
+        ledConfigModel.setUpdateFlag("26");
+
+        HetDeviceWifiControlApi.getInstance().setDataToDevice(new IHetCallback() {
+            @Override
+            public void onSuccess(int code, String msg) {
+
+
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+
+            }
+        }, deviceModel.getDeviceId(), GsonUtil.getInstance().toJson(ledConfigModel));
+    }
+
+    private void setRestRe() {
+
+        ledConfigModel.setSceneMode("2");
+        ledConfigModel.setLightness("8");
+        ledConfigModel.setColorTemp("2");
+        ledConfigModel.setUpdateFlag("26");
+
+        HetDeviceWifiControlApi.getInstance().setDataToDevice(new IHetCallback() {
+            @Override
+            public void onSuccess(int code, String msg) {
+
+
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+
+            }
+        }, deviceModel.getDeviceId(), GsonUtil.getInstance().toJson(ledConfigModel));
     }
 
     private void submit() {
@@ -174,8 +304,6 @@ public class ControlLedActivity extends BaseHetActivity {
             ledConfigModel.setLightness("3");
         }
         ledConfigModel.setUpdateFlag("1");
-
-
 
         HetDeviceWifiControlApi.getInstance().setDataToDevice(new IHetCallback() {
             @Override

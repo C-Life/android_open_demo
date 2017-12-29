@@ -19,7 +19,7 @@ public class BindAlertDialog extends Dialog {
     private TextView mLoadingTv, tv_close;
     private OnKeyBack onKeyBack;
     private int backCount;
-    DialogInterface.OnKeyListener keylistener = new DialogInterface.OnKeyListener() {
+    OnKeyListener keylistener = new OnKeyListener() {
         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
             if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
                 backCount++;

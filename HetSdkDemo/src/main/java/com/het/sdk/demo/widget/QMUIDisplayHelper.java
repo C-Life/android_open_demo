@@ -343,6 +343,6 @@ public class QMUIDisplayHelper {
 
 
     public static boolean isElevationSupported() {
-        return android.os.Build.VERSION.SDK_INT >= 21;
+        return Build.VERSION.SDK_INT >= 21;
     }
 }

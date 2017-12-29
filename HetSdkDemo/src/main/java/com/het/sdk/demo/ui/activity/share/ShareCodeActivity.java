@@ -42,7 +42,8 @@ public class ShareCodeActivity extends BaseHetActivity {
         shareCode = bundle.getString(SHARE_CODE);
         if (!StringUtils.isNull(shareCode)) {
             mLlCode.setVisibility(View.VISIBLE);
-            RxQRCode.builder(shareCode).
+
+            RxQRCode.builder("shareCode="+shareCode).
                     backColor(getResources().getColor(R.color.white)).
                     codeColor(getResources().getColor(R.color.black)).
                     codeSide(800).

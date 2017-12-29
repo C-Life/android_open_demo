@@ -9,9 +9,9 @@ import com.het.basic.utils.ACache;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.SharePreferencesUtil;
 import com.het.basic.utils.StringUtils;
-import com.het.bind.logic.bean.UserInfoBean;
 import com.het.log.Logc;
 import com.het.open.lib.api.HetSdk;
+import com.het.sdk.demo.model.HetUserInfoBean;
 
 
 /**
@@ -20,7 +20,7 @@ import com.het.open.lib.api.HetSdk;
  */
 
 public class HetUserManager {
-    private UserInfoBean mUserModel;
+    private HetUserInfoBean mUserModel;
     private static HetUserManager mUserManger;
     private Context mContext = HetSdk.getInstance().getApplication();
     private static final String USER_MODEL = "userModel";
@@ -48,13 +48,13 @@ public class HetUserManager {
     }
 
     @Nullable
-    public UserInfoBean getUserModel() {
+    public HetUserInfoBean getUserModel() {
         if (HetSdk.getInstance().isAuthLogin()) {
-            this.mUserModel = (UserInfoBean) this.mACache.getAsObject("userModel");
+            this.mUserModel = (HetUserInfoBean) this.mACache.getAsObject("userModel");
             if (this.mUserModel == null) {
                 String userString = SharePreferencesUtil.getString(mContext, "userModel");
                 if (!StringUtils.isNull(userString)) {
-                    this.mUserModel = GsonUtil.getInstance().toObject(userString, new TypeToken<UserInfoBean>() {
+                    this.mUserModel = GsonUtil.getInstance().toObject(userString, new TypeToken<HetUserInfoBean>() {
                     }.getType());
                 }
             }
@@ -64,7 +64,7 @@ public class HetUserManager {
         }
     }
 
-    public void setUserModel(UserInfoBean userModel) {
+    public void setUserModel(HetUserInfoBean userModel) {
         if (userModel != null) {
             this.mUserModel = userModel;
             this.mACache.put("userModel", this.mUserModel);

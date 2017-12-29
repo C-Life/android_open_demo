@@ -70,7 +70,7 @@ public class MessageCenterActivity extends BaseHetActivity<MsgListPresenter> imp
     }
 
     @Override
-    public void onItemClick(android.view.View view, MessageBean item, int position) {
+    public void onItemClick(View view, MessageBean item, int position) {
 //        this.mPresenter.getBydeviceId(item.getBusinessParam() == null ? "" : item.getBusinessParam());
 //        Bundle bundle = new Bundle();
 //        bundle.putSerializable("deviceMsg", item);

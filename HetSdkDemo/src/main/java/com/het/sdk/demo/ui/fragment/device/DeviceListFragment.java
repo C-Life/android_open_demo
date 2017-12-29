@@ -76,6 +76,8 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
             DeviceModel deviceModel = (DeviceModel) o;
             Bundle bundle = new Bundle();
             bundle.putSerializable("DeviceModel", (DeviceModel) o);
+
+
             if (((DeviceModel) o).getModuleType() == 2) {//蓝牙控制
                 ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
             } else if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {//WIFI -- 舒眠灯原生控制
@@ -83,10 +85,8 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
                 ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
             } else {//WIFI -- H5控制
                 //H5 控制
-//                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
-                H5ControlLedActivity.startH5ControlLedActivity(mContext, (DeviceModel) o);
+                ((BaseHetActivity) getActivity()).jumpToTarget(H5ControlLedActivity.class, bundle);
             }
-
         });
         mAdapter.setISwipeMenuClickListener((var1, var2) -> {
             mPresenter.delDevice(deviceModels.get(var2), new IHetCallback() {

@@ -14,11 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.het.basic.utils.StringUtils;
-import com.het.bind.logic.bean.UserInfoBean;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.base.BaseHetFragment;
 import com.het.sdk.demo.manager.BuildManager;
+import com.het.sdk.demo.model.HetUserInfoBean;
 import com.het.sdk.demo.ui.activity.feedback.FeedbackAddActivity;
 import com.het.sdk.demo.ui.activity.message.MessageCenterActivity;
 import com.het.sdk.demo.ui.activity.singlelayout.QuestionActivity;
@@ -198,9 +198,9 @@ public class NavigationDrawerFragment extends BaseHetFragment<LoginPresenter> im
     }
 
     @Override
-    public void showUser(UserInfoBean user) {
+    public void showUser(HetUserInfoBean user) {
         if (user != null) {
-            vCurrentCount.setItemRightText(!StringUtils.isNull(user.getPhone()) ? user.getPhone() : !StringUtils.isNull((String) user.getEmail()) ? (String) user.getEmail() : "");
+            vCurrentCount.setItemRightText(!StringUtils.isNull(user.getAccount()) ? user.getAccount() : "");
         }
     }
 }

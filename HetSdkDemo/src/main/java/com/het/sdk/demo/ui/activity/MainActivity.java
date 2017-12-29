@@ -12,10 +12,10 @@ import com.het.basic.utils.permissions.RxPermissions;
 import com.het.open.lib.api.HetSdk;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
-import com.het.sdk.demo.ui.fragment.auth.AuthFragment;
 import com.het.sdk.demo.ui.fragment.BindFragment;
 import com.het.sdk.demo.ui.fragment.CommonFragment;
 import com.het.sdk.demo.ui.fragment.DeviceFragment;
+import com.het.sdk.demo.ui.fragment.auth.AuthFragment;
 import com.het.sdk.demo.utils.UIJsonConfig;
 
 import butterknife.Bind;

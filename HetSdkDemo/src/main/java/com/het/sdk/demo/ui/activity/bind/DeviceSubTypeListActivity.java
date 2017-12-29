@@ -53,7 +53,7 @@ public class DeviceSubTypeListActivity extends BaseHetActivity<DeviceTypePersent
             deviceProductBean.setDeviceTypeId(deviceSubModel.getDeviceTypeId());
             deviceProductBean.setDeviceSubtypeId(deviceSubModel.getDeviceSubtypeId());
             deviceProductBean.setProductId(deviceSubModel.getProductId());
-            deviceProductBean.setModuleType(ModuleType.values()[deviceSubModel.getModuleType()]);
+            deviceProductBean.setModuleType(ModuleType.WIFI);
             deviceProductBean.setModuleId(deviceSubModel.getModuleId());
             deviceProductBean.setProductName(deviceSubModel.getProductName());
             deviceProductBean.setRadioCastName(deviceSubModel.getRadiocastName());

@@ -10,7 +10,6 @@ import com.het.basic.data.http.okhttp.OkHttpManager;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.StringUtils;
 import com.het.basic.utils.ToastUtil;
-import com.het.open.lib.api.HetQrCodeApi;
 import com.het.open.lib.api.HetThirdCloudAuthApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.sdk.demo.R;
@@ -195,8 +194,8 @@ public class ThirdAuthActivity extends BaseHetActivity {
     interface RandomCodeService{
 
         @GET("/v1/cloud/auth")
-        Observable<String> getRandomCode(@Query("appId") String appId, @Query("appSecret")String appSecret,@Query("authorizationCode") String authorizationCode,
-                                              @Query("account") String account,@Query("timestamp") String timestamp);
+        Observable<String> getRandomCode(@Query("appId") String appId, @Query("appSecret") String appSecret, @Query("authorizationCode") String authorizationCode,
+                                         @Query("account") String account, @Query("timestamp") String timestamp);
     }
 
     class Result{

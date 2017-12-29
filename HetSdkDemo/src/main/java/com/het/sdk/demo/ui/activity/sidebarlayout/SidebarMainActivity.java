@@ -24,10 +24,10 @@ import com.het.basic.base.RxManage;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.StringUtils;
 import com.het.basic.utils.permissions.RxPermissions;
-import com.het.bind.logic.bean.UserInfoBean;
 import com.het.log.Logc;
 import com.het.open.lib.api.HetCodeConstants;
 import com.het.open.lib.api.HetDeviceShareApi;
+import com.het.open.lib.api.HetHttpApi;
 import com.het.open.lib.api.HetSdk;
 import com.het.open.lib.api.HetUserApi;
 import com.het.open.lib.callback.IHetCallback;
@@ -35,6 +35,7 @@ import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.event.HetShareEvent;
 import com.het.sdk.demo.manager.HetUserManager;
+import com.het.sdk.demo.model.HetUserInfoBean;
 import com.het.sdk.demo.push.BdPushService;
 import com.het.sdk.demo.push.HetPushManager;
 import com.het.sdk.demo.ui.activity.bind.DeviceTypeListActivity;
@@ -47,6 +48,7 @@ import com.het.sdk.demo.utils.StatusBarUtil;
 import com.het.sdk.demo.utils.UIJsonConfig;
 
 import java.lang.reflect.Type;
+import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -226,7 +228,7 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
     //获取userId  绑定推送服务
     private void pushBind() {
         if (!HetSdk.getInstance().isAuthLogin()) return;
-        UserInfoBean userInfoBean = HetUserManager.getInstance().getUserModel();
+        HetUserInfoBean userInfoBean = HetUserManager.getInstance().getUserModel();
         if (userInfoBean != null) {
             HetPushManager.getInstance().startPushService(userInfoBean.getUserId());
             return;
@@ -234,9 +236,9 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
         HetUserApi.getInstance().getUserMess(new IHetCallback() {
             @Override
             public void onSuccess(int code, String msg) {
-                Type type = new TypeToken<UserInfoBean>() {
+                Type type = new TypeToken<HetUserInfoBean>() {
                 }.getType();
-                UserInfoBean users = GsonUtil.getInstance().toObject(msg, type);
+                HetUserInfoBean users = GsonUtil.getInstance().toObject(msg, type);
                 HetUserManager.getInstance().setUserModel(users);
                 HetPushManager.getInstance().startPushService(users.getUserId());
             }
@@ -388,8 +390,27 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
                 } else {
                     mPresenter.startLogin();
                 }
+                //test1();
                 break;
         }
+    }
+
+    private void test1() {
+
+        TreeMap<String, String> params = new TreeMap<String, String>();
+        params.put("deviceId", "83FD530EC157FD1B6099B50CED3C5BC3");
+        String path = "v1/device/data/getRaw";;
+        HetHttpApi.getInstance().hetGet(path, params, new IHetCallback() {
+            @Override
+            public void onSuccess(int code, String msg) {
+
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+
+            }
+        });
     }
 
     private long mPressedTime = 0;

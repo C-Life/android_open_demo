@@ -117,6 +117,7 @@ public class UIJsonConfig {
             e.printStackTrace();
         }
 
+        //System.out.println("appInfoMap"+appInfoMap.toString());
     }
 
     /*
@@ -165,9 +166,17 @@ public class UIJsonConfig {
      */
     private static final String Sina_app_secret = "sina_app_secret";
 
+    /**
+     * 登录UI版本
+     */
+    private static final String loginType = "loginType";
 
 
+    /** **/
+    public String getLoginType() {
 
+        return appInfoMap.get(loginType).toString();
+    }
 
     /*
      *===========================================

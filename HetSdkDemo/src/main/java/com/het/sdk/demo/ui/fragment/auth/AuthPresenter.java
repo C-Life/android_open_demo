@@ -29,7 +29,7 @@ public class AuthPresenter extends BaseHetPresenter<BaseHetView> {
             public void onFailed(int code, String msg) {
                 ((BaseHetActivity) activity).showToast(msg);
             }
-        }, activity.getString(R.string.login_security), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string());
+        }, activity.getString(R.string.login_security), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string(), UIJsonConfig.getInstance(activity).getLoginType());
 
     }
 

@@ -17,5 +17,6 @@
   "wechat_app_id": "wx49a17f4b9643f2e0",
   "wechat_app_secret": "121b5279ba5f3b009f968c987ec2ac1c",
   "sina_app_id": "1919114603",
-  "sina_app_secret": "981961acd338382be8e7ef5f04e5b17f"
+  "sina_app_secret": "981961acd338382be8e7ef5f04e5b17f",
+  "loginType":"1"
 }
