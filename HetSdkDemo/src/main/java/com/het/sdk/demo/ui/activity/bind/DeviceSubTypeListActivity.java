@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.google.gson.reflect.TypeToken;
 import com.het.basic.utils.GsonUtil;
-import com.het.bind.logic.api.bind.bean.ModuleType;
 import com.het.bind.logic.bean.device.DeviceProductBean;
 import com.het.open.lib.model.DeviceSubModel;
 import com.het.open.lib.model.DeviceTypeModel;
@@ -53,13 +52,12 @@ public class DeviceSubTypeListActivity extends BaseHetActivity<DeviceTypePersent
             deviceProductBean.setDeviceTypeId(deviceSubModel.getDeviceTypeId());
             deviceProductBean.setDeviceSubtypeId(deviceSubModel.getDeviceSubtypeId());
             deviceProductBean.setProductId(deviceSubModel.getProductId());
-            deviceProductBean.setModuleType(ModuleType.WIFI);
             deviceProductBean.setModuleId(deviceSubModel.getModuleId());
             deviceProductBean.setProductName(deviceSubModel.getProductName());
             deviceProductBean.setRadioCastName(deviceSubModel.getRadiocastName());
             deviceProductBean.setBindType(deviceSubModel.getModuleType());
 
-            int type = deviceSubModel.getModuleType();
+            int type = deviceProductBean.getBindType();//绑定类型
             switch (type) {
                 case 1:
                 case 9:

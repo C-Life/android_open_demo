@@ -22,12 +22,12 @@
 集成了第三方登录的gradle依赖 
 
 	//引用库形式 集成了第三方登录的引用
-	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.2-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.3-SNAPSHOT'
 
 基础SDK的gradle依赖
 
 	//引用库形式
-	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.2-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.3-SNAPSHOT'
 
 模组注册
 
@@ -124,20 +124,20 @@ Android 6.0+新增了运行时权限动态检测，敏感权限必须要动态�
         configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //环境设置
         configModel.setH5UIconfig(UIJsonConfig.getInstance(this).getJsonString(UIJsonConfig.fileName, this));
         //配置开放平台第三方登录  不需要使用开放平台第三方登录的不需要
-        mLoginDelegate = new HetSdkThirdDelegate.Builder(this)
-                .registerQQ(UIJsonConfig.getTencentAppID())
-                .registerWeixin(UIJsonConfig.getWechatAppID(),UIJsonConfig.getWechatAppSecret())
-                .registerSinaWeibo(UIJsonConfig.getSinaAppID(), UIJsonConfig.getSinaAppSecret(), this.mSinaRedirectURL)
-               .create();
+         mLoginDelegate = new HetSdkThirdDelegateBuilder(this)
+                        .registerQQ("your_tencent_app_id")
+                        .registerWeixin("your_wechat_app_id", "your_wechat_app_secret")
+                        .registerSinaWeibo("your_sina_app_id", "your_sina_app_secret", "your_sina_redirecturl")
+                        .create();
         HetSdk.getInstance().init(this, appId, appSecret, configModel);
     }
 
 1、appId、appSecret可以在开放平台创建的应用的应用详情里查看。
-2、HetSdkThirdDelegate 配置第三方社交平台（微信、QQ、新浪微博登录和分享），需要的开发者自行配置，不需要的可以不要。关于第三方登录的集成请参考   **（SDK第三方登录的集成）**。
+2、HetSdkThirdDelegateBuilder 配置第三方社交平台（微信、QQ、新浪微博登录和分享），需要的开发者自行配置，不需要的可以不要。关于第三方登录的集成请参考   **（SDK第三方登录的集成）**。
 3、configModel.setH5UIconfig 配置授权登录页面主题样式; 通过参数定义的JSON字符串来进行配置，例如demoAPP是通过assets/h5UIConfig.json这个文件来组装JSON字符串的。
 
 **接口调用请求说明**
-SDK初始化接口 HetSdk.getInstance().init（）
+SDK初始化接口 HetSdk.getInstance().init();
 
 **参数说明**
 
@@ -274,6 +274,10 @@ HetNewAuthApi.getInstance().authorize() 跳转到授权登录页面。
 
 ### 3.2.云云对接用户授权登录
 为了适应不同的业务需求，同时也考虑平台的安全问题SDK也提供了云云对接用户授权验证接口，该流程请参考文档[C-Life开放平台验证码三方授权流程](%E9%AA%8C%E8%AF%81%E7%A0%81%E4%B8%89%E6%96%B9%E6%8E%88%E6%9D%83%E6%B5%81%E7%A8%8B)。
+
+注意：云云对接用户授权登录成功之后需要使用RxBus发送登录成功的消息通知，如：
+
+    RxManage.getInstance().post(HetCodeConstants.Login.LOGIN_SUCCESS, null);
 
 
 ### 3.3.退出登录
