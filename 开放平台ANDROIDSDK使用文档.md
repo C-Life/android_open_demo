@@ -1518,16 +1518,16 @@ HetFeedbackApi.getInstance().addFeedback() 提交意见反馈
 第一步：gradle 引用
 
 	//引用库形式 集成了第三方登录和分享的引用
-	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.1-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.3-SNAPSHOT'
 
 第二步：在集成之前需要在微信开放平台、腾讯开放平台、新浪开放平台创建应用，获取到相应的appID和appSecret。  
 第三步：在Application里面配置第三方登录SDK。  
 
     //配置第三方登录
-    mLoginDelegate = new HetSdkThirdDelegate.Builder(this)
+    mLoginDelegate = new HetSdkThirdDelegateBuilder(this)
                 .registerQQ("your_qq_app_id")
                 .registerWeixin("your_weixin_app_id", "your_weixin_app_secret")
-                .registerSinaWeibo("your_sina_app_id", "your_sina_app_secret", "your_sina_redirect_url"L)
+                .registerSinaWeibo("your_sina_app_id", "your_sina_app_secret", "your_sina_redirect_url")
                 .create();
 
 注意：your_sina_redirect_url是新浪微博用于OAuth authorize页面回调的url。
