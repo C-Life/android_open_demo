@@ -23,6 +23,19 @@
             android:text="@string/common_not_login"/>
 
         <TextView
+            android:id="@+id/login_cloud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/common_login_cloud"
+            android:textColor="#3285FF"
+            android:textSize="16sp"
+            android:background="@drawable/btn_common_blue"/>
+
+        <TextView
             android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,26 +44,13 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:layout_marginTop="@dimen/dimen15"
-            android:layout_marginBottom="@dimen/dimen60"
             android:text="@string/common_login"
             android:textColor="#3285FF"
             android:textSize="16sp"
             android:background="@drawable/btn_common_blue"/>
 
-        <TextView
-            android:id="@+id/login_cloud"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:layout_marginTop="@dimen/dimen15"
-            android:layout_marginBottom="@dimen/dimen60"
-            android:text="@string/common_login_cloud"
-            android:textColor="#3285FF"
-            android:textSize="16sp"
-            android:background="@drawable/btn_common_blue"/>
+
+
     </LinearLayout>
 
 </RelativeLayout>

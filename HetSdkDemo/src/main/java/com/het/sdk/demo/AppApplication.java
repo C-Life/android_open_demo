@@ -13,6 +13,7 @@ import com.het.RealtekModuleImpl;
 import com.het.ap.HeTApModuleImpl;
 import com.het.basic.utils.ToastUtil;
 import com.het.bind.logic.api.bind.ModuleManager;
+import com.het.bluetoothbase.ViseBluetooth;
 import com.het.open.lib.api.HetCodeConstants;
 import com.het.open.lib.api.HetSdk;
 import com.het.open.lib.biz.thirdlogin.HetSdkThirdDelegate;
@@ -85,7 +86,9 @@ public class AppApplication extends MultiDexApplication {
     private void configApplication(String appId, String appSecret) {
         ConfigModel configModel = new ConfigModel();
         configModel.setLog(true); //是否开启log信息
-        configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //环境设置TYPE_LOCAL_HOST
+       // configModel.setSupportDevicePush(false);
+        configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //TYPE_PRODUCE_HOST HetCodeConstants.TYPE_LOCAL_HOST
+
         configModel.setH5UIconfig(UIJsonConfig.getInstance(this).getJsonString(UIJsonConfig.fileName, this));
         //配置第三方登录
         mLoginDelegate = new HetSdkThirdDelegateBuilder(this)
@@ -95,8 +98,7 @@ public class AppApplication extends MultiDexApplication {
                 .create();
         HetSdk.getInstance().init(this, appId, appSecret, configModel);
 
-
-
+        ViseBluetooth.getInstance().init(this);
     }
 
     /**
@@ -123,7 +125,6 @@ public class AppApplication extends MultiDexApplication {
     public void onTerminate() {
         super.onTerminate();
         HetSdk.getInstance().destroy();
-//        HetPushManager.getInstance().stopPush();
         if (mLoginDelegate != null) {
             mLoginDelegate.releaseResource();
         }

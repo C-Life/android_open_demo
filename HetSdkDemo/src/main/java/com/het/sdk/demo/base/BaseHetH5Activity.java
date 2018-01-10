@@ -1,7 +1,9 @@
 package com.het.sdk.demo.base;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.het.basic.base.RxManage;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.NetworkUtil;
+import com.het.basic.utils.permissions.RxPermissions;
 import com.het.h5.sdk.callback.IAppJavaScriptsInterface;
 import com.het.h5.sdk.callback.IH5CallBack;
 import com.het.h5.sdk.callback.IMethodCallBack;
@@ -19,10 +22,14 @@ import com.het.open.lib.api.HetDeviceControlDelegate;
 import com.het.open.lib.callback.ICtrlCallback;
 import com.het.open.lib.model.DeviceModel;
 import com.het.sdk.demo.R;
+import com.het.sdk.demo.ble.BLEBean;
+import com.het.sdk.demo.ble.BLEManager;
 import com.het.sdk.demo.event.DeviceStatusEvent;
 import com.het.sdk.demo.impl.OnUpdateInViewImpl;
 import com.het.sdk.demo.model.PushToH5Model;
 import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
+import com.tencent.smtt.export.external.interfaces.SslError;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
@@ -38,6 +45,8 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
     protected HetDeviceControlDelegate deviceControlDelegate;
     protected DeviceModel deviceModel;
     private PushToH5Model pushToH5Model = new PushToH5Model();
+
+    private BLEManager mBleManager;
 
     @Override
     protected int getLayoutId() {
@@ -70,6 +79,12 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
                 super.onPageFinished(webView, s);
                 hideDialog();
             }
+
+            @Override
+            public void onReceivedSslError(WebView var1, SslErrorHandler sslErrorHandler, SslError var3) {
+                sslErrorHandler.proceed();//证书忽略
+            }
+
         });
     }
 
@@ -134,12 +149,16 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
             if (deviceControlDelegate != null) {
                 deviceControlDelegate.onResume();
             }
+        } else {
+            initBleManager().refreshAty(this);
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if (mBleManager != null)
+            mBleManager.stopScan();
         if (deviceModel.getModuleType() != 2) {
             if (deviceControlDelegate != null) {
                 deviceControlDelegate.onPause();
@@ -149,15 +168,20 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
 
     @Override
     public void onDestroy() {
-        if (deviceControlDelegate != null) {
-            deviceControlDelegate.onDestroy();
-        }
         if (mWebView != null) {
             HetH5SdkManager.getInstance().clearCache(this);
             mWebView.removeJavascriptInterface("bindJavaScript");
             mWebView.destroy();
             mWebView = null;
         }
+        if (deviceControlDelegate != null) {
+            deviceControlDelegate.onDestroy();
+        } else {
+            mBleManager.disconnect();
+            mBleManager.stopConnDevice();
+            mBleManager.clear();
+        }
+
         RxManage.getInstance().unregister(DeviceStatusEvent.DEVICE_STATUS);
         super.onDestroy();
     }
@@ -197,6 +221,10 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
 
     @Override
     public void send(String s, IMethodCallBack iMethodCallBack) {
+        if (deviceModel.getModuleType() == 2) {
+            mBleManager.setConfigData(s, iMethodCallBack);
+            return;
+        }
         if (deviceControlDelegate == null) {
             return;
         }
@@ -227,9 +255,54 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
     public void onWebViewCreate() {
         //开始监听上报的数据
         initJson();
-        deviceControlDelegate.onStart();
+        if (deviceControlDelegate != null) {
+            deviceControlDelegate.onStart();
+        }
+
+        if (deviceModel.getModuleType() == 2) {
+            if (mHtmlFiveManager != null) {
+                BLEBean bleBean = new BLEBean();
+                mHtmlFiveManager.updateConfigData(GsonUtil.getInstance().toJson(bleBean));
+            }
+            getPermission();
+        }
     }
 
+    protected BLEManager initBleManager() {
+        if (mBleManager == null) {
+            mBleManager = BLEManager.getInstance();
+            mBleManager.init(this);
+        }
+        return mBleManager;
+    }
+
+    /**
+     * 获取权限
+     */
+    private void getPermission() {
+        initBleManager();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            RxPermissions.getInstance(this)
+                    .request(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    .subscribe(grant -> {
+                        if (!grant) {
+                            BaseHetH5Activity.this.finish();
+                        } else {
+                            startBle();
+                        }
+                    });
+        } else {
+            startBle();
+        }
+    }
+
+    private void startBle() {
+        if (mBleManager.isBlueToothEnable(this)) {
+            mBleManager.connDeviceByMac(deviceModel.getMacAddress(), mHtmlFiveManager);
+        } else {
+            mBleManager.enableBlueTooth(this, 1);
+        }
+    }
 
     @Override
     public void tips(String msg) {

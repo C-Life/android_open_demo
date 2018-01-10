@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.het.basic.base.RxManage;
 import com.het.basic.utils.ToastUtil;
 import com.het.open.lib.model.DeviceModel;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetH5Activity;
+import com.het.sdk.demo.ui.activity.bind.QrScanActivity;
 import com.het.sdk.demo.ui.activity.share.UserMessShareActivity;
 import com.het.sdk.demo.utils.UIJsonConfig;
 
@@ -25,8 +27,19 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
     }
 
     @Override
+    protected void initData() {
+        super.initData();
+        RxManage.getInstance().register("Qr_device_url",url->{
+            mHtmlFiveManager.loadUrl((String) url);
+        });
+    }
+
+    @Override
     protected void initTopBarView() {
         mTitleView.setTitle("设备H5控制");
+        mTitleView.setUpTextOption("扫描", v->{
+            jumpToTarget(QrScanActivity.class);
+        });
         mTitleView.setBackground(UIJsonConfig.getInstance(mContext).setNavBackground_color());
         mTitleView.setUpImgOption(R.mipmap.add, v -> {
             if (deviceModel.getShare() == 2) {
@@ -48,6 +61,7 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        RxManage.getInstance().unregister("Qr_device_url");
     }
 
 }

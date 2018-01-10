@@ -381,13 +381,13 @@ HetUserApi.getInstance().getUserMess()获取用户信息
 	     * 修改密码
 	     * @param mContext 上下文
 	     * @param authCallback  回调
-	     * @param phone 手机号
+	     * @param account 登录账号
 	     * @param specifyTitle 标题栏文字
 	     * @param navigationBarTextColor 标题栏文字颜色
 	     * @param navBackground 标题栏背景颜色
 	     * @throws Exception
 	     */
-	public void alterPassword(Context mContext, AuthCallback authCallback, String phone,String specifyTitle,int navigationBarTextColor,int navBackground) throws Exception{
+	public void alterPassword(Context mContext, AuthCallback authCallback, String account,String specifyTitle,int navigationBarTextColor,int navBackground) throws Exception{
 	        ............
 	}
 

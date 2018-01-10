@@ -79,7 +79,13 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
 
 
             if (((DeviceModel) o).getModuleType() == 2) {//蓝牙控制
-                ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
+                //水质检测仪  h5控制（特殊处理）
+                if (deviceModel.getDeviceTypeId() == 70 && deviceModel.getDeviceSubtypeId() == 3) {
+                    ((BaseHetActivity) getActivity()).jumpToTarget(H5ControlLedActivity.class, bundle);
+                } else {
+                    //原生控制
+                    ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
+                }
             } else if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {//WIFI -- 舒眠灯原生控制
                 //原生 控制
                 ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);

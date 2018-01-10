@@ -1,5 +1,7 @@
 package com.het.sdk.demo.impl;
 
+import android.util.Log;
+
 import com.het.basic.base.RxManage;
 import com.het.h5.sdk.manager.HtmlFiveManager;
 import com.het.open.lib.callback.OnUpdateInView;
@@ -19,6 +21,7 @@ public class OnUpdateInViewImpl extends OnUpdateInView {
 
     @Override
     protected void onUpdateConfig(String s) {
+        Log.e("onUpdateConfig",s);
         if (mHtmlFiveManager != null && s != null) {
             mHtmlFiveManager.updateConfigData(s);
         }
@@ -26,6 +29,7 @@ public class OnUpdateInViewImpl extends OnUpdateInView {
 
     @Override
     protected void onUpdateRun(String s) {
+        Log.e("onUpdateRun",s);
         if (mHtmlFiveManager != null && s != null) {
             mHtmlFiveManager.updateRunData(s);
         }
@@ -33,6 +37,7 @@ public class OnUpdateInViewImpl extends OnUpdateInView {
 
     @Override
     protected void onUpdateWarm(String s) {
+        Log.e("onUpdateWarm",s);
         if (mHtmlFiveManager != null && s != null) {
             mHtmlFiveManager.updateErrorData(s);
         }

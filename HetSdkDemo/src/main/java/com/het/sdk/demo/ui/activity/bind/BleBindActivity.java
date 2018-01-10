@@ -10,10 +10,8 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.het.basic.base.RxManage;
 import com.het.basic.utils.ActivityManager;
-import com.het.basic.utils.GsonUtil;
 import com.het.bind.logic.bean.device.DeviceProductBean;
 import com.het.open.lib.api.HetCodeConstants;
 import com.het.open.lib.api.HetCommonBleBindApi;
@@ -30,7 +28,6 @@ import com.het.sdk.demo.utils.UIJsonConfig;
 import com.het.sdk.demo.widget.BindProgressBar;
 import com.het.sdk.demo.widget.RippleBackground;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.Bind;
@@ -130,17 +127,15 @@ public class BleBindActivity extends BaseHetActivity {
     private void startScan() {
         HetCommonBleBindApi.getInstance().startBind(this, "" + deviceProductBean1.getProductId(), new ICommonBleBind() {
             @Override
-            public void onScanDevices(int code, String devices) {
-                if (code == 0) {
-                    Type type = new TypeToken<List<DeviceProductBean>>() {
-                    }.getType();
-                    List<DeviceProductBean> scanDevices = GsonUtil.getInstance().toObject(devices, type);
-                    if (scanDevices != null && scanDevices.size() > 0) {
-                        for (int i = 0; i < scanDevices.size(); i++) {
-                            scanDevices.get(i).setProductName(deviceProductBean1.getProductName());
-                        }
-                        showScanSucess(scanDevices);
+            public void onScanDevices(int code, List<DeviceProductBean> devices) {
+                if (code == 0 && devices != null && devices.size() > 0) {
+                    for (int i = 0; i < devices.size(); i++) {
+                        devices.get(i).setProductName(deviceProductBean1.getProductName());
                     }
+                    showScanSucess(devices);
+                } else {
+                    hideDialog();
+                    showBindFail();
                 }
             }
 

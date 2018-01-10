@@ -1,13 +1,2 @@
-//include ':bindlogicllib'
-
-//include ':HetOpenLib'
-
 include ':HetSdkDemo'
 
-//include ':hetmqttpushsdk'
-
-//include ':hetopensdksleepble'
-
-//include ':UdpCore_v1.2'
-//
-//include ':BlueToothSupport'

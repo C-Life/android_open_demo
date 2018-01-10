@@ -14,6 +14,9 @@
     <string name="color">颜色</string>
     <string name="water_shortage_notification1">加湿器已经因缺水自动暂停了,注意加水不能超过最高刻度线</string>
     <string name="press_again">再按一次退出程序</string>
+
+    <string name="ble_history_start">同步历史数据...</string>
+    <string name="ble_success">同步成功</string>
     <!--!自定义场景字符串-->
     <string name="custom_scene_add_diy_summary">DIY一套属于自己的场景</string>
     <string name="custom_scene_add_diy_title">添加自定义场景</string>
@@ -122,6 +125,9 @@
 
     <string name="common_not_login">当前未登录状态</string>
     <string name="common_login">登录</string>
+    <string name="common_login1">模板一登录</string>
+    <string name="common_login2">模板二登录</string>
+    <string name="common_login3">模板三登录</string>
     <string name="common_login_cloud">云登录</string>
 
     <string name="common_loading">请求中</string>

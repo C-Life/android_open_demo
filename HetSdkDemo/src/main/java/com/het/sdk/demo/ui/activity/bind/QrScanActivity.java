@@ -96,8 +96,10 @@ public class QrScanActivity extends BaseHetActivity implements QRCodeView.Delega
 
         if ("shareCode".equals(str)) {
             String shareCode = result.substring(10, result.length());
-
             parseQrCodeVer2(shareCode);
+        } else if (result.contains("http")) {
+            RxManage.getInstance().post("Qr_device_url", result);
+            finish();
         } else {
             parseQrCodeVersion(result);
         }

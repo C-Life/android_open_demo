@@ -8,8 +8,8 @@ android {
         applicationId "com.het.sdk.demo"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.5"
+        versionCode 3
+        versionName "1.0.6"
 
         ndk {
             abiFilters 'armeabi'
@@ -25,7 +25,7 @@ android {
     }
 
     dexOptions {
-        javaMaxHeapSize "4g"
+//        javaMaxHeapSize "4g"
         preDexLibraries = false
     }
 
