@@ -100,7 +100,7 @@ SDK 提供了以下功能模块：
 | CAMERA | 	允许程序打开相机  |
 | WAKE_LOCK | 	允许应用在手机屏幕关闭后后台进程仍然运行  |
 
-#### 1.6.Android6.0系统文件读写权限设置
+### 1.6.Android6.0系统文件读写权限设置
 Android 6.0+新增了运行时权限动态检测，敏感权限必须要动态申请。开发者可以使用SDK提供的RxPermissions来动态申请权限。
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
