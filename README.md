@@ -1,14 +1,25 @@
 
 # 开放平台 Android SDK 集成
 
-开放平台SDK是在android Studio（以下称AS）环境上使用的。封装了设备接入所需的接口，集成简单，操作方便。
+为了简化开发者在设备接入开放平台的开发工作，Clife开放平台为开发人员提供了APP端SDK通用的接口调用源代码和开发文档。开发者不需要关注具体底层实现和复杂的数据协议，实现APP的业务功能即可。集成简单，调用方便。
+SDK 提供了以下功能模块：
+
+*  授权登录和云对接登录
+*  设备配网和绑定(wifi绑定和蓝牙绑定)
+*  安全稳定的底层网络模块
+*  提供了android原生应用控制和H5控制2种控制模式
+*  提供了接收设备数据的回调接口
 
 ## 1.SDK集成准备
+### 1.1.android 开发环境
+*  Android 开发工具使用Android Studio
+*  Android SDK 要求 Android 4.0 及以上版本
+*  JDK 版本要求1.8 或以上版本
 
-### 1.1.创建应用
-  AS新建Android项目，然后通过https://open.clife.cn/#/home注册一个开发者账号。登录到开放平台创建应用完善详细资料。此部分请参考《clife开发平台使用手册》。  创建产品之后创建APP获取到后台分配的appId和appSecret。
+### 1.2.创建应用
+  Android Studio新建Android项目，然后通过https://open.clife.cn/#/home注册一个开发者账号。登录到开放平台创建应用完善详细资料。此部分请参考《clife开发平台使用手册》。  创建产品之后创建APP获取到后台分配的appId和appSecret。
 
-### 1.2.配置项目根目录build.gradle
+### 1.3.配置项目根目录build.gradle
 
 	allprojects {
 	    repositories {
@@ -17,11 +28,11 @@
 	    }
 	}
 
-### 1.3.引用SDK到工程
+### 1.4.引用SDK到工程
 
-集成了第三方登录的gradle依赖 
+集成了第三方登录的gradle依赖
 
-	//引用库形式 集成了第三方登录的引用
+	//引用库形式 集成了第三方登录(目前只支持微信、QQ和新浪微博)的引用
 	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.3-SNAPSHOT'
 
 基础SDK的gradle依赖
@@ -55,7 +66,7 @@
 
 ![](https://i.imgur.com/98xFDg4.png)
 
-### 1.4.配置AndroidManifest.xml 添加权限
+### 1.5.配置AndroidManifest.xml 添加权限
 
 请将下面权限配置代码复制到 AndroidManifest.xml 文件中：
 
@@ -89,7 +100,7 @@
 | CAMERA | 	允许程序打开相机  |
 | WAKE_LOCK | 	允许应用在手机屏幕关闭后后台进程仍然运行  |
 
-#### 1.5.Android6.0系统文件读写权限设置
+#### 1.6.Android6.0系统文件读写权限设置
 Android 6.0+新增了运行时权限动态检测，敏感权限必须要动态申请。开发者可以使用SDK提供的RxPermissions来动态申请权限。
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -275,9 +286,66 @@ HetNewAuthApi.getInstance().authorize() 跳转到授权登录页面。
 ### 3.2.云云对接用户授权登录
 为了适应不同的业务需求，同时也考虑平台的安全问题SDK也提供了云云对接用户授权验证接口，该流程请参考文档[C-Life开放平台验证码三方授权流程](%E9%AA%8C%E8%AF%81%E7%A0%81%E4%B8%89%E6%96%B9%E6%8E%88%E6%9D%83%E6%B5%81%E7%A8%8B)。
 
-注意：云云对接用户授权登录成功之后需要使用RxBus发送登录成功的消息通知，如：
+#### 3.2.1.云云对接接口调用
 
-    RxManage.getInstance().post(HetCodeConstants.Login.LOGIN_SUCCESS, null);
+授权流程图如下：
+![](https://i.imgur.com/Swtg7nm.png)
+
+1.SDK请求CLife获取授权码
+
+调用方法：HetThirdCloudAuthApi.getInstance().getAuthorizationCode(IHetCallback callback,Stringaccount,StringopenId)
+参数说明
+
+|参数名称|	是否必须|	字段类型	|参数说明|
+|---------|---------|---------|---------|
+|account	|否	|string	|用户账号（首次授权时传入）|
+|openId	|否	|string	|openId（二次授权时传入，若同时传入account和openId，则认为是二次授权）|
+
+返回结果
+正确的Json返回结果：
+
+	{
+	 "code":0,
+	 "data": {
+	        "authorizationCode": "21d97e0044f54cacb8f1d5b435c28cff",
+	    }
+	}
+
+|字段名称|	字段类型	|字段说明|
+|---------|---------|---------|
+|authorizationCode	|string	|授权码，用于后续获取随机码使用|
+
+
+2.SDK请求CLife验证验证码和随机码
+HetThirdCloudAuthApi.getInstance().checkRandomCode(IHetCallbackcallback,StringverificationCode,StringrandomCode)
+参数说明
+
+|参数名称	|是否必须	|字段类型	|参数说明|
+|---------|---------|---------|---------|
+|verificationCode|	否	|string	|验证码,不提交则默认为二次授权|
+|randomCode	|是|	string|	随机码|
+
+返回结果
+正确的Json返回结果：
+
+	{
+	 "code":0,
+	 "data": {
+	        "accessToken": "21d97e0044f54cacb8f1d5b435c28cff",
+	        "expiresIn": 7200,
+	        "refreshToken": "1a2d0c85cc43475f9af573f61bb622f6",
+	        "openId": "d09f572c60ffced144d6cfc55a6881b9",
+	        "account": "18028271615"
+	    }
+	}
+|字段名称	|字段类型	|字段说明|
+|---------|---------|---------|
+|accessToken	|string|	访问凭证|
+|expiresIn	|number	|访问凭证失效时间（秒）|
+|refreshToken	|string	|刷新token的凭证|
+|openId	|string	|开放ID|
+|account	|string	|用户账号，手机号码或邮箱|
+
 
 
 ### 3.3.退出登录
