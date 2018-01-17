@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:textColor="@color/tab_default_color"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tv_activity_bind_tip1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:textColor="@color/tab_default_color"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tv_activity_bind_tip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/tab_default_color"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_activity_bind_input_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="53dp"
+        android:textSize="14sp"
+        android:textColor="@color/tab_default_color"/>
+
+    <com.het.sdk.demo.widget.ClearEditText
+        android:id="@+id/et_activity_bind_macorimei"
+        android:layout_width="170dp"
+        android:layout_height="@dimen/dimens37"
+        android:layout_marginTop="13dp"
+        android:paddingLeft="7dp"
+        android:textCursorDrawable="@null"
+        android:digits="0123456789abcdefghigklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"
+        android:layout_gravity="center_horizontal"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:background="@drawable/bg_edittext_imei"/>
+
+    <Button
+        android:id="@+id/btn_activity_bind_macorimei"
+        android:layout_width="160dp"
+        android:layout_height="@dimen/dimens37"
+        android:layout_marginTop="47dp"
+        android:textColor="@color/tab_default_color"
+        android:textSize="@dimen/textSize16"
+        android:gravity="center"
+        android:text="@string/bind_start"
+        android:background="@drawable/bg_edittext_imei"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>
