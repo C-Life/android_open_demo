@@ -35,7 +35,6 @@ import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.event.HetShareEvent;
 import com.het.sdk.demo.manager.HetUserManager;
 import com.het.sdk.demo.model.HetUserInfoBean;
-import com.het.sdk.demo.push.BdPushService;
 import com.het.sdk.demo.push.HetPushManager;
 import com.het.sdk.demo.ui.activity.bind.DeviceTypeListActivity;
 import com.het.sdk.demo.ui.fragment.NavigationDrawerFragment;
@@ -98,7 +97,7 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
 //        在主 Activiy 的 OnCreate 方法中，调用接口 startWork， 其中 loginValue 是 apiKey。（注意：不
 //        要在 Application 的 onCreate 里去做 startWork 的操作，否则可能造成应用循环重启的问题，
 //        将严重影响应用的功能和性能。）
-        HetPushManager.getInstance().init(new BdPushService(this));
+//        HetPushManager.getInstance().init(new BdPushService(this));
     }
 
     @Override
