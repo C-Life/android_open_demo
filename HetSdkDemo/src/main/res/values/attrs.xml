@@ -135,8 +135,4 @@
         <attr name="item_left_text_color_string" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="DraggableFlagView">
-        <attr name="color" format="color"/>
-    </declare-styleable>
-
 </resources>
