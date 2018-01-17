@@ -22,33 +22,33 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 public class WeakHandler {
     private final Handler.Callback mCallback;
-    private final ExecHandler mExec;
+    private final WeakHandler.ExecHandler mExec;
     private Lock mLock = new ReentrantLock();
     @VisibleForTesting
-    final ChainedRef mRunnables;
+    final WeakHandler.ChainedRef mRunnables;
 
     public WeakHandler() {
-        this.mRunnables = new ChainedRef(this.mLock, (Runnable) null);
+        this.mRunnables = new WeakHandler.ChainedRef(this.mLock, (Runnable) null);
         this.mCallback = null;
-        this.mExec = new ExecHandler();
+        this.mExec = new WeakHandler.ExecHandler();
     }
 
     public WeakHandler(@Nullable Handler.Callback callback) {
-        this.mRunnables = new ChainedRef(this.mLock, (Runnable) null);
+        this.mRunnables = new WeakHandler.ChainedRef(this.mLock, (Runnable) null);
         this.mCallback = callback;
-        this.mExec = new ExecHandler(new WeakReference(callback));
+        this.mExec = new WeakHandler.ExecHandler(new WeakReference(callback));
     }
 
     public WeakHandler(@NonNull Looper looper) {
-        this.mRunnables = new ChainedRef(this.mLock, (Runnable) null);
+        this.mRunnables = new WeakHandler.ChainedRef(this.mLock, (Runnable) null);
         this.mCallback = null;
-        this.mExec = new ExecHandler(looper);
+        this.mExec = new WeakHandler.ExecHandler(looper);
     }
 
     public WeakHandler(@NonNull Looper looper, @NonNull Handler.Callback callback) {
-        this.mRunnables = new ChainedRef(this.mLock, (Runnable) null);
+        this.mRunnables = new WeakHandler.ChainedRef(this.mLock, (Runnable) null);
         this.mCallback = callback;
-        this.mExec = new ExecHandler(looper, new WeakReference(callback));
+        this.mExec = new WeakHandler.ExecHandler(looper, new WeakReference(callback));
     }
 
     public final boolean post(@NonNull Runnable r) {
@@ -72,7 +72,7 @@ public class WeakHandler {
     }
 
     public final void removeCallbacks(Runnable r) {
-        WeakRunnable runnable = this.mRunnables.remove(r);
+        WeakHandler.WeakRunnable runnable = this.mRunnables.remove(r);
         if (runnable != null) {
             this.mExec.removeCallbacks(runnable);
         }
@@ -80,7 +80,7 @@ public class WeakHandler {
     }
 
     public final void removeCallbacks(Runnable r, Object token) {
-        WeakRunnable runnable = this.mRunnables.remove(r);
+        WeakHandler.WeakRunnable runnable = this.mRunnables.remove(r);
         if (runnable != null) {
             this.mExec.removeCallbacks(runnable, token);
         }
@@ -159,11 +159,11 @@ public class WeakHandler {
         return this.mExec.getLooper();
     }
 
-    private WeakRunnable wrapRunnable(@NonNull Runnable r) {
+    private WeakHandler.WeakRunnable wrapRunnable(@NonNull Runnable r) {
         if (r == null) {
             throw new NullPointerException("Runnable can\'t be null");
         } else {
-            ChainedRef hardRef = new ChainedRef(this.mLock, r);
+            WeakHandler.ChainedRef hardRef = new WeakHandler.ChainedRef(this.mLock, r);
             this.mRunnables.insertAfter(hardRef);
             return hardRef.wrapper;
         }
@@ -171,23 +171,23 @@ public class WeakHandler {
 
     static class ChainedRef {
         @Nullable
-        ChainedRef next;
+        WeakHandler.ChainedRef next;
         @Nullable
-        ChainedRef prev;
+        WeakHandler.ChainedRef prev;
         @NonNull
         final Runnable runnable;
         @NonNull
-        final WeakRunnable wrapper;
+        final WeakHandler.WeakRunnable wrapper;
         @NonNull
         Lock lock;
 
         public ChainedRef(@NonNull Lock lock, @NonNull Runnable r) {
             this.runnable = r;
             this.lock = lock;
-            this.wrapper = new WeakRunnable(new WeakReference(r), new WeakReference(this));
+            this.wrapper = new WeakHandler.WeakRunnable(new WeakReference(r), new WeakReference(this));
         }
 
-        public WeakRunnable remove() {
+        public WeakHandler.WeakRunnable remove() {
             this.lock.lock();
 
             try {
@@ -208,7 +208,7 @@ public class WeakHandler {
             return this.wrapper;
         }
 
-        public void insertAfter(@NonNull ChainedRef candidate) {
+        public void insertAfter(@NonNull WeakHandler.ChainedRef candidate) {
             this.lock.lock();
 
             try {
@@ -226,13 +226,13 @@ public class WeakHandler {
         }
 
         @Nullable
-        public WeakRunnable remove(Runnable obj) {
+        public WeakHandler.WeakRunnable remove(Runnable obj) {
             this.lock.lock();
 
             try {
-                for (ChainedRef curr = this.next; curr != null; curr = curr.next) {
+                for (WeakHandler.ChainedRef curr = this.next; curr != null; curr = curr.next) {
                     if (curr.runnable == obj) {
-                        WeakRunnable var3 = curr.remove();
+                        WeakHandler.WeakRunnable var3 = curr.remove();
                         return var3;
                     }
                 }
@@ -246,16 +246,16 @@ public class WeakHandler {
 
     static class WeakRunnable implements Runnable {
         private final WeakReference<Runnable> mDelegate;
-        private final WeakReference<ChainedRef> mReference;
+        private final WeakReference<WeakHandler.ChainedRef> mReference;
 
-        WeakRunnable(WeakReference<Runnable> delegate, WeakReference<ChainedRef> reference) {
+        WeakRunnable(WeakReference<Runnable> delegate, WeakReference<WeakHandler.ChainedRef> reference) {
             this.mDelegate = delegate;
             this.mReference = reference;
         }
 
         public void run() {
             Runnable delegate = (Runnable) this.mDelegate.get();
-            ChainedRef reference = (ChainedRef) this.mReference.get();
+            WeakHandler.ChainedRef reference = (WeakHandler.ChainedRef) this.mReference.get();
             if (reference != null) {
                 reference.remove();
             }

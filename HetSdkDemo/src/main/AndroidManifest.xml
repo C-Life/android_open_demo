@@ -29,6 +29,7 @@
 
     <!-- 适配Android N系统必需的ContentProvider写权限声明，写权限包含应用包名 -->
     <uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.het.sdk.demo" />
+
     <permission
         android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.het.sdk.demo"
         android:protectionLevel="normal" />
@@ -47,13 +48,11 @@
             android:name=".ui.activity.sidebarlayout.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeSplash">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -67,9 +66,7 @@
             android:name=".ui.activity.sidebarlayout.SidebarMainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <!-- ====================分享开始 ========================== -->
         <!-- 分享 -->
@@ -253,8 +250,9 @@
             android:launchMode="singleTask" />
         <!-- push富媒体结束 -->
 
+
         <!-- push应用定义消息receiver声明 -->
-        <receiver android:name="com.het.sdk.demo.push.BaiduPushReceiver">
+        <receiver android:name=".push.BaiduPushReceiver">
             <intent-filter>
 
                 <!-- 接收push消息 -->
@@ -307,7 +305,7 @@
             android:name="com.baidu.android.pushservice.CommandService"
             android:exported="true" />
 
-        <!-- 适配Android N系统必需的ContentProvider声明，写权限包含应用包名-->
+        <!-- 适配Android N系统必需的ContentProvider声明，写权限包含应用包名 -->
         <provider
             android:name="com.baidu.android.pushservice.PushInfoProvider"
             android:authorities="com.het.sdk.demo.bdpush"
@@ -377,9 +375,15 @@
         <activity
             android:name=".ui.activity.device.H5ControlLedActivity"
             android:screenOrientation="portrait" />
+        <!--
+            <activity
+            android:name=".ui.activity.device.SleepBleActivity"
+            android:screenOrientation="portrait" />
+        -->
         <activity
             android:name=".ui.activity.auth.ThirdAuthActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.bind.MacImeiBindActivity"></activity>
     </application>
 
 </manifest>

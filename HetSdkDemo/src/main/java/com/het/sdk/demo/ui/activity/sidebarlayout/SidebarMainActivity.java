@@ -27,7 +27,6 @@ import com.het.basic.utils.permissions.RxPermissions;
 import com.het.log.Logc;
 import com.het.open.lib.api.HetCodeConstants;
 import com.het.open.lib.api.HetDeviceShareApi;
-import com.het.open.lib.api.HetHttpApi;
 import com.het.open.lib.api.HetSdk;
 import com.het.open.lib.api.HetUserApi;
 import com.het.open.lib.callback.IHetCallback;
@@ -48,7 +47,6 @@ import com.het.sdk.demo.utils.StatusBarUtil;
 import com.het.sdk.demo.utils.UIJsonConfig;
 
 import java.lang.reflect.Type;
-import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -317,7 +315,7 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
         } else {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             toolbar.setNavigationOnClickListener(v -> {
-                mPresenter.startLogin();
+                mPresenter.startLogin(1);
             });
         }
     }
@@ -388,29 +386,11 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
                 if (HetSdk.getInstance().isAuthLogin()) {
                     jumpToTarget(DeviceTypeListActivity.class);
                 } else {
-                    mPresenter.startLogin();
+                    mPresenter.startLogin(1);
                 }
                 //test1();
                 break;
         }
-    }
-
-    private void test1() {
-
-        TreeMap<String, String> params = new TreeMap<String, String>();
-        params.put("deviceId", "83FD530EC157FD1B6099B50CED3C5BC3");
-        String path = "v1/device/data/getRaw";;
-        HetHttpApi.getInstance().hetGet(path, params, new IHetCallback() {
-            @Override
-            public void onSuccess(int code, String msg) {
-
-            }
-
-            @Override
-            public void onFailed(int code, String msg) {
-
-            }
-        });
     }
 
     private long mPressedTime = 0;

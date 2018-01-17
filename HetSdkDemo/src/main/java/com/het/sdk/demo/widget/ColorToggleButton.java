@@ -27,7 +27,7 @@ public class ColorToggleButton extends RelativeLayout {
     private static final long DURATION = 300L;
     private ColorChangeBgView mBgView;
     private AnimBall mAnimBall;
-    private OnCheckedChangeListener mOnCheckedChangeListener;
+    private ColorToggleButton.OnCheckedChangeListener mOnCheckedChangeListener;
     private int mState = -1;
     private int mMeasureWidth;
     private int mMeasureHeight;
@@ -120,7 +120,7 @@ public class ColorToggleButton extends RelativeLayout {
         Log.e(" mAnimBall", this.mAnimBall + "");
     }
 
-    public void setOnCheckedChangeListener(OnCheckedChangeListener onCheckedChangeListener) {
+    public void setOnCheckedChangeListener(ColorToggleButton.OnCheckedChangeListener onCheckedChangeListener) {
         this.mOnCheckedChangeListener = onCheckedChangeListener;
     }
 

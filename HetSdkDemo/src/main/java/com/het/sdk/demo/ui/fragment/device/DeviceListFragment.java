@@ -25,6 +25,7 @@ import com.het.sdk.demo.ui.activity.device.ControlLedActivity;
 import com.het.sdk.demo.ui.activity.device.H5ControlLedActivity;
 import com.het.sdk.demo.ui.activity.sidebarlayout.SidebarMainActivity;
 import com.het.sdk.demo.utils.Constants;
+import com.het.sdk.demo.utils.MacIMEIBindHelper;
 import com.het.sdk.demo.widget.MultipleStatusView;
 
 import java.lang.reflect.Type;
@@ -121,6 +122,9 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
         mMultipleStatusView.setOnRetryClickErrListener(onRetryClickErrListener);
         initRx();
         mPresenter.getDevicelist();
+
+        //设备扫描gprs设备  绑定成功
+        MacIMEIBindHelper.getInstance().setOnBindListener(deviceBean -> mPresenter.getDevicelist());
     }
 
     public void getDeviveList() {

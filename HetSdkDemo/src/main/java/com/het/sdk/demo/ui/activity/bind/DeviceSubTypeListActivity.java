@@ -14,6 +14,7 @@ import com.het.sdk.demo.adapter.AdapterDeviceSubtypeList;
 import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.manager.RecyclerViewManager;
 import com.het.sdk.demo.utils.Constants;
+import com.het.sdk.demo.utils.MacIMEIBindHelper;
 import com.het.sdk.demo.utils.UIJsonConfig;
 
 import java.lang.reflect.Type;
@@ -76,6 +77,11 @@ public class DeviceSubTypeListActivity extends BaseHetActivity<DeviceTypePersent
                 case 3:
                     break;
             }
+            if ((!MacIMEIBindHelper.getInstance().isBindTypeMacOrIMEI(deviceProductBean.getBindType()))) {
+                return;
+            }
+            //gprs 设备绑定
+            MacImeiBindActivity.startBindAty(mContext, deviceProductBean);
         });
 
         String deviceType = deviceTypeModel.getDeviceTypeId();

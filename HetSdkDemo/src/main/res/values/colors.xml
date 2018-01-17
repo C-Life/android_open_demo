@@ -10,7 +10,7 @@
     <color name="viewfinder_mask">#60000000</color>
     <color name="possible_result_points">#c0ffff00</color>
     <color name="common_black_alpha22">#22000000</color>
-
+    <color name="tab_default_color">#848484</color>
     <color name="qmui_drawable_color_list_separator">#DEE0E2</color>
     <color name="qmui_drawable_color_list_pressed">#DEE0E2</color>
     <color name="qmui_config_color_gray_1">#353C46</color>

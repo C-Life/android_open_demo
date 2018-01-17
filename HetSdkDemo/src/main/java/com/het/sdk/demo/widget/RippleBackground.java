@@ -39,7 +39,7 @@ public class RippleBackground extends RelativeLayout {
     private boolean animationRunning = false;
     private AnimatorSet animatorSet;
     private ArrayList<Animator> animatorList;
-    private LayoutParams rippleParams;
+    private RelativeLayout.LayoutParams rippleParams;
     private ArrayList<RippleView> rippleViewList = new ArrayList<RippleView>();
 
     public RippleBackground(Context context) {
@@ -85,7 +85,7 @@ public class RippleBackground extends RelativeLayout {
             paint.setStyle(Paint.Style.STROKE);
         paint.setColor(rippleColor);
 
-        rippleParams = new LayoutParams((int) (2 * (rippleRadius + rippleStrokeWidth)), (int) (2 * (rippleRadius + rippleStrokeWidth)));
+        rippleParams = new RelativeLayout.LayoutParams((int) (2 * (rippleRadius + rippleStrokeWidth)), (int) (2 * (rippleRadius + rippleStrokeWidth)));
         rippleParams.addRule(CENTER_IN_PARENT, TRUE);
 
         animatorSet = new AnimatorSet();

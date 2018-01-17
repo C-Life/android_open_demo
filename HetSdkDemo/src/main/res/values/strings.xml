@@ -125,9 +125,9 @@
 
     <string name="common_not_login">当前未登录状态</string>
     <string name="common_login">登录</string>
-    <string name="common_login1">模板一登录</string>
-    <string name="common_login2">模板二登录</string>
-    <string name="common_login3">模板三登录</string>
+    <string name="common_login_1">登录模板一</string>
+    <string name="common_login_2">登录模板二</string>
+    <string name="common_login_3">登录模板三</string>
     <string name="common_login_cloud">云登录</string>
 
     <string name="common_loading">请求中</string>
@@ -283,6 +283,22 @@
     <string name="bind_wifi_qrcode">将二维码/条码放入框内，即可自动扫描</string>
     <string name="bind_wifi_barcode">将条码放入框内，即可自动扫描</string>
     <string name="bind_type_brand_noproduct">抱歉，该品牌下没有设备!</string>
+
+    <!-- mac地址绑定或IMEI码绑定 -->
+    <string name="str_aty_macorimei_title">设备绑定</string>
+    <string name="str_aty_macorimei_tip11">1、请确保</string>
+    <string name="str_aty_macorimei_tip12">当前为待机或者工作中</string>
+    <string name="str_aty_macorimei_tip21">2、请确保</string>
+    <string name="str_aty_macorimei_tip22">网络正常</string>
+    <string name="str_aty_macorimei_toptip_mac">请输入设备的MAC地址</string>
+    <string name="str_aty_macorimei_toptip_imei">请输入设备的IMEI码</string>
+    <string name="str_aty_macorimei_input_nonull">输入不能为空!</string>
+    <string name="str_aty_macorimei_input_imei">请输入标准IMEI码!</string>
+    <string name="str_aty_macorimei_input_mac">请输入正确的Mac地址!</string>
+    <string name="str_aty_macorimei_binding">正在绑定&#8230;</string>
+    <string name="str_aty_macorimei_initing">正在加载&#8230;</string>
+    <string name="str_aty_macorimei_startbind">开始绑定</string>
+
 
     <string name="login_security">安全登录</string>
     <string name="login_out">退出登录</string>

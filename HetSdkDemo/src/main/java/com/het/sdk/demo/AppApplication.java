@@ -87,7 +87,7 @@ public class AppApplication extends MultiDexApplication {
         ConfigModel configModel = new ConfigModel();
         configModel.setLog(true); //是否开启log信息
        // configModel.setSupportDevicePush(false);
-        configModel.setHost(HetCodeConstants.TYPE_PRODUCE_HOST); //TYPE_PRODUCE_HOST HetCodeConstants.TYPE_LOCAL_HOST
+        configModel.setHost(HetCodeConstants.TYPE_LOCAL_HOST); //TYPE_PRODUCE_HOST HetCodeConstants.TYPE_LOCAL_HOST
 
         configModel.setH5UIconfig(UIJsonConfig.getInstance(this).getJsonString(UIJsonConfig.fileName, this));
         //配置第三方登录

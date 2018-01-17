@@ -10,7 +10,7 @@ public interface DeviceShareView extends BaseHetView {
 
     void getUserShareList(String list);
 
-    void getShareCode(String code, int type);
+    void getShareCode(String code,int type);
 
     void showTipText(String tips);
 }

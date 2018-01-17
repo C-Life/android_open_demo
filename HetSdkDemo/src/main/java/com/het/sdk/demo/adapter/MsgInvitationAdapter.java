@@ -15,7 +15,7 @@ import com.het.sdk.demo.R;
  */
 
 public class MsgInvitationAdapter extends HelpRecyclerViewDragAdapter<MessageBean> {
-    private ISwipeMenuClickListener mIDeleteBtnClickListener;
+    private MsgInvitationAdapter.ISwipeMenuClickListener mIDeleteBtnClickListener;
 
     public MsgInvitationAdapter(Context context) {
         super(context, new int[]{R.layout.het_message_item_message_device});
@@ -29,7 +29,7 @@ public class MsgInvitationAdapter extends HelpRecyclerViewDragAdapter<MessageBea
         ((SimpleDraweeView) viewHolder.getView(R.id.sv_msg_item)).setImageURI(Uri.parse(item.getIcon()));
     }
 
-    public void setISwipeMenuClickListener(ISwipeMenuClickListener mIDeleteBtnClickListener) {
+    public void setISwipeMenuClickListener(MsgInvitationAdapter.ISwipeMenuClickListener mIDeleteBtnClickListener) {
         this.mIDeleteBtnClickListener = mIDeleteBtnClickListener;
     }
 

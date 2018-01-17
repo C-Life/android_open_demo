@@ -56,9 +56,9 @@ public class AdapterDeviceList extends HelperRecyclerViewAdapter<DeviceModel> {
     }
 
 
-    private ISwipeMenuClickListener mDelBtnClickListener;
+    private AdapterDeviceList.ISwipeMenuClickListener mDelBtnClickListener;
 
-    public void setISwipeMenuClickListener(ISwipeMenuClickListener mDelBtnClickListener) {
+    public void setISwipeMenuClickListener(AdapterDeviceList.ISwipeMenuClickListener mDelBtnClickListener) {
         this.mDelBtnClickListener = mDelBtnClickListener;
     }
 

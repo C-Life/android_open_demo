@@ -195,8 +195,8 @@ public class ThirdAuthActivity extends BaseHetActivity {
     interface RandomCodeService{
 
         @GET("/v1/cloud/auth")
-        Observable<String> getRandomCode(@Query("appId") String appId, @Query("appSecret") String appSecret, @Query("authorizationCode") String authorizationCode,
-                                         @Query("account") String account, @Query("timestamp") String timestamp);
+        Observable<String> getRandomCode(@Query("appId") String appId, @Query("appSecret")String appSecret,@Query("authorizationCode") String authorizationCode,
+                                              @Query("account") String account,@Query("timestamp") String timestamp);
     }
 
     class Result{
