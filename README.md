@@ -1,8 +1,8 @@
 
 # 开放平台 Android SDK 集成
 
-为了简化开发者在设备接入开放平台的开发工作，Clife开放平台为开发人员提供了APP端SDK通用的接口调用源代码和开发文档。开发者不需要关注具体底层实现和复杂的数据协议，实现APP的业务功能即可。集成简单，调用方便。
-SDK 提供了以下功能模块：
+为了简化开发者在设备接入开放平台的开发工作，Clife开放平台为开发人员提供了APP端SDK通用的接口调用源代码和开发文档。开发者不需要关注具体底层实现和复杂的数据协议，实现APP的业务功能即可。集成简单，调用方便。  
+SDK 提供了以下功能模块：  
 
 *  授权登录和云对接登录
 *  设备配网和绑定(wifi绑定和蓝牙绑定)
@@ -13,11 +13,11 @@ SDK 提供了以下功能模块：
 ## 1.SDK集成准备
 ### 1.1.android 开发环境
 *  Android 开发工具使用Android Studio
-*  Android SDK 要求 Android 4.0 及以上版本
+*  Android SDK 要求 Android 4.0 及以上版本   
 *  JDK 版本要求1.8 或以上版本
 
 ### 1.2.创建应用
-  Android Studio新建Android项目，然后通过https://open.clife.cn/#/home注册一个开发者账号。登录到开放平台创建应用完善详细资料。此部分请参考《clife开发平台使用手册》。  创建产品之后创建APP获取到后台分配的appId和appSecret。
+  Android Studio新建Android项目，然后通过https://open.clife.cn/#/home  注册一个开发者账号。登录到开放平台创建应用完善详细资料。此部分请参考《clife开发平台使用手册》。  创建产品之后创建APP获取到后台分配的appId和appSecret。
 
 ### 1.3.配置项目根目录build.gradle
 
@@ -30,7 +30,7 @@ SDK 提供了以下功能模块：
 
 ### 1.4.引用SDK到工程
 
-集成了第三方登录的gradle依赖
+集成了第三方登录的gradle依赖 
 
 	//引用库形式 集成了第三方登录(目前只支持微信、QQ和新浪微博)的引用
 	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.3-SNAPSHOT'
@@ -284,25 +284,25 @@ HetNewAuthApi.getInstance().authorize() 跳转到授权登录页面。
 <img src="https://i.imgur.com/0gc7Gqa.png" width = "360" height = "620" alt="图片名称" align=center />
 
 ### 3.2.云云对接用户授权登录
-为了适应不同的业务需求，同时也考虑平台的安全问题SDK也提供了云云对接用户授权验证接口，该流程请参考文档[C-Life开放平台验证码三方授权流程](%E9%AA%8C%E8%AF%81%E7%A0%81%E4%B8%89%E6%96%B9%E6%8E%88%E6%9D%83%E6%B5%81%E7%A8%8B)。
+为了适应不同的业务需求，同时也考虑平台的安全问题SDK也提供了云云对接用户授权验证接口，该流程请参考文档[C-Life开放平台验证码三方授权流程](../../cloudAPI/cloudAPI.html)。
 
 #### 3.2.1.云云对接接口调用
 
-授权流程图如下：
+授权流程图如下：   
 ![](https://i.imgur.com/Swtg7nm.png)
 
-1.SDK请求CLife获取授权码
+1.SDK请求CLife获取授权码  
 
-调用方法：HetThirdCloudAuthApi.getInstance().getAuthorizationCode(IHetCallback callback,Stringaccount,StringopenId)
-参数说明
+调用方法：HetThirdCloudAuthApi.getInstance().getAuthorizationCode(IHetCallback callback,Stringaccount,StringopenId)  
+参数说明  
 
 |参数名称|	是否必须|	字段类型	|参数说明|
 |---------|---------|---------|---------|
 |account	|否	|string	|用户账号（首次授权时传入）|
 |openId	|否	|string	|openId（二次授权时传入，若同时传入account和openId，则认为是二次授权）|
 
-返回结果
-正确的Json返回结果：
+返回结果  
+正确的Json返回结果：  
 
 	{
 	 "code":0,
@@ -317,7 +317,7 @@ HetNewAuthApi.getInstance().authorize() 跳转到授权登录页面。
 
 
 2.SDK请求CLife验证验证码和随机码
-HetThirdCloudAuthApi.getInstance().checkRandomCode(IHetCallbackcallback,StringverificationCode,StringrandomCode)
+HetThirdCloudAuthApi.getInstance().checkRandomCode(IHetCallbackcallback,StringverificationCode,StringrandomCode)  
 参数说明
 
 |参数名称	|是否必须	|字段类型	|参数说明|
@@ -325,9 +325,9 @@ HetThirdCloudAuthApi.getInstance().checkRandomCode(IHetCallbackcallback,Stringve
 |verificationCode|	否	|string	|验证码,不提交则默认为二次授权|
 |randomCode	|是|	string|	随机码|
 
-返回结果
-正确的Json返回结果：
-
+返回结果  
+正确的Json返回结果：  
+ 
 	{
 	 "code":0,
 	 "data": {
@@ -1979,8 +1979,30 @@ RxBus事件的取消订阅：
 
 注意：将源码和XML里的系统包和类替换为SDK里的包和类，如：  
 android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient 。
+## 2.授权登录页面模板配置
+为了满足不同项目对登录界面的审美要求，开放平台SDK提供了3套可供选择的授权登录页面模板。  
+使用方法：  
+ 
+    HetNewAuthApi.getInstance().authorize(activity, new AuthCallback() {
+	          @Override
+	          public void onSuccess(int code, String msg) {
+	                       //登录成功 do something
+	          	}
+	          @Override
+	          public void onFailed(int code, String msg) {
+	                       //登录失败 do something
+	          	}
+	          },"授权登录",Color.parseColor("#ff3285ff")，Color.parseColor("#FFFFFFFF")，"模板登录页编号");  
 
-## 2.SDK 混淆说明
+只需要在参数传模板登录页的编号就可以完成登录页的配置。具体的配置表如下：  
+
+| 模板登录页编号 | 模板登录页 |
+|---------|----------|
+| 1 | 授权登录页模板1 |
+| 2 | 授权登录页模板2 |
+| 3 | 授权登录页模板3 |
+
+## 3.SDK 混淆说明
 	
 	#**************************DEMO混淆区域*******************************
     #---------------------------------实体类-------------------------------------
