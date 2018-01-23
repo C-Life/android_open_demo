@@ -1,11 +1,15 @@
 package com.het.sdk.demo.ui.activity.device;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.het.basic.AppDelegate;
 import com.het.basic.base.RxManage;
 import com.het.basic.utils.ToastUtil;
+import com.het.basic.utils.permissions.RxPermissions;
 import com.het.open.lib.model.DeviceModel;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetH5Activity;
@@ -38,7 +42,7 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
     protected void initTopBarView() {
         mTitleView.setTitle("设备H5控制");
         mTitleView.setUpTextOption("扫描", v->{
-            jumpToTarget(QrScanActivity.class);
+            startCamera();
         });
         mTitleView.setBackground(UIJsonConfig.getInstance(mContext).setNavBackground_color());
         mTitleView.setUpImgOption(R.mipmap.add, v -> {
@@ -50,6 +54,23 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
                 ToastUtil.showToast(mContext, "该设备是分享的设备,不能分享给其他人");
             }
         });
+    }
+
+    /**
+     * 获取权限
+     */
+    private void startCamera() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            RxPermissions.getInstance(AppDelegate.getAppContext())
+                    .request(Manifest.permission.CAMERA)
+                    .subscribe(grant -> {
+                        if (grant) {
+                            jumpToTarget(QrScanActivity.class);
+                        }
+                    });
+        }else {
+            jumpToTarget(QrScanActivity.class);
+        }
     }
 
     @Override
