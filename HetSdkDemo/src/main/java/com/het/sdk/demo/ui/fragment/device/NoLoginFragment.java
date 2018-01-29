@@ -31,17 +31,11 @@ public class NoLoginFragment extends BaseHetFragment<LoginPresenter> {
 
     }
 
-    @OnClick({R.id.login1,R.id.login2,R.id.login3,R.id.login_cloud})
+    @OnClick({R.id.login, R.id.login_cloud})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.login1:
-                mPresenter.startLogin(1);
-                break;
-            case R.id.login2:
-                mPresenter.startLogin(2);
-                break;
-            case R.id.login3:
-                mPresenter.startLogin(3);
+            case R.id.login:
+                mPresenter.startLogin();
                 break;
             case R.id.login_cloud:
                 ((BaseHetActivity) getActivity()).jumpToTarget(ThirdAuthActivity.class);

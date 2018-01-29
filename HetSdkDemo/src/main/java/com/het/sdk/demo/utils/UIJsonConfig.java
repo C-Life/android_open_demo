@@ -1,40 +1,23 @@
 package com.het.sdk.demo.utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.het.basic.utils.GsonUtil;
-import com.het.basic.utils.StringUtils;
 import com.het.sdk.demo.R;
-import com.het.sdk.demo.model.UIconfigModel;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * Created by liuzh on 2017-08-24.
  * app登录界面和SDK参数的配置类
  */
 
-public class UIJsonConfig {
+public class UIJsonConfig implements Serializable {
 
-    // 配置文件名称
-    public static final String fileName = "h5UIConfig.json";
-    public static HashMap<String, Object> appInfoMap;
     private static Context mContext;
     private static UIJsonConfig mInstance;
 
@@ -55,201 +38,179 @@ public class UIJsonConfig {
     }
 
     private UIJsonConfig(Context context) {
-        if (mInstance == null) {
-            init(context);
-        }
     }
 
-    private void init(Context context) {
-        getJson(fileName, context);
+    private String appId;
+    private String appSecret;
+    private String navBackgroundColor;
+    private String navTitleColor;
+    private boolean logoshow;
+    private String loginBtnBackgroundColor;
+    private String loginBtnBorderColor;
+    private String loginBtnFontColor;
+    private boolean weiboLogin;
+    private boolean weixinLogin;
+    private boolean qqLogin;
+    private String tencentAppId;
+    private String wechatAppId;
+    private String wechatAppSecret;
+    private String sinaAppId;
+    private String sinaAppSecret;
+    private String loginType;
+
+    public String getNavBackgroundColor() {
+        return navBackgroundColor;
     }
 
-    public String getJsonString(String fileName, Context context) {
-        String json = getJson(fileName, context);
-        if (StringUtils.isNull(json)) return null;
-        Type type = new TypeToken<UIconfigModel>() {
-        }.getType();
-        UIconfigModel uIconfigModel = new Gson().fromJson(json, type);
-        if (uIconfigModel == null) return null;
-        return GsonUtil.getInstance().getGson().toJson(uIconfigModel, type);
-    }
 
-    public UIconfigModel getJsonObj(String fileName, Context context) {
-        String json = getJson(fileName, context);
-        if (StringUtils.isNull(json)) return null;
-        Type type = new TypeToken<UIconfigModel>() {
-        }.getType();
-        return new Gson().fromJson(json, type);
-    }
-
-    private String getJson(String fileName, Context context) {
-        //将json数据变成字符串
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            //获取assets资源管理器
-            AssetManager assetManager = context.getAssets();
-            //通过管理器打开文件并读取
-            BufferedReader bf = new BufferedReader(new InputStreamReader(
-                    assetManager.open(fileName)));
-            String line;
-            while ((line = bf.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-            configMap(stringBuilder);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return stringBuilder.toString();
-    }
-
-    @SuppressWarnings("rawtypes")
-    private void configMap(StringBuilder stringBuilder) {
-        appInfoMap = new HashMap<>();
-        try {
-            JSONObject root = new JSONObject(stringBuilder.toString());
-            Iterator actions = root.keys();
-            while (actions.hasNext()) {
-                String param = actions.next().toString();
-                Object value = root.get(param);
-                appInfoMap.put(param, value);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //System.out.println("appInfoMap"+appInfoMap.toString());
-    }
-
-    /*
-     *===========================================
-     * 定义app-Key 用来获取配置数据
-     *===========================================
-     */
-    /**
-     * appId
-     */
-    private static final String App_ID_Key = "app_id";
-    /**
-     * App_Secret
-     */
-    private static final String App_Secret_Key = "app_secret";
-    /**
-     * 登录界面 顶部导航背景颜色
-     */
-    private static final String NavBackground_color = "navBackgroundColor";
-    /**
-     * 登录界面 顶部标题字体颜色
-     */
-    private static final String NavTitle_color = "navTitleColor";
-    /**
-     * QQ登录 腾讯开放平台申请的ID
-     */
-    private static final String Tencent_app_id = "tencent_app_id";
-
-    /**
-     * 微信登录 微信开放平台申请的ID
-     */
-    private static final String Wechat_app_id = "wechat_app_id";
-
-    /**
-     * 微信登录 微信开放平台申请的secret"
-     */
-    private static final String Wechat_app_secret = "wechat_app_secret";
-
-    /**
-     * 新浪登录 新浪开放平台申请的secret"
-     */
-    private static final String Sina_app_id = "sina_app_id";
-
-    /**
-     * 新浪登录 新浪开放平台申请的secret"
-     */
-    private static final String Sina_app_secret = "sina_app_secret";
-
-    /**
-     * 登录UI版本
-     */
-    private static final String loginType = "loginType";
-
-
-    /** **/
-    public String getLoginType() {
-
-        return appInfoMap.get(loginType).toString();
-    }
-
-    /*
-     *===========================================
-     * 获取app的配置参数,用来配置app参数
-     *===========================================
-     */
-
-    /** **/
     public String getAppId() {
-        return appInfoMap.get(App_ID_Key).toString();
+        return appId;
     }
 
-    public String getSecret() {
-        return appInfoMap.get(App_Secret_Key).toString();
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
-    /**
-     * 获取TencentAppID
-     */
-    public static String getTencentAppID() {
-        return appInfoMap.get(Tencent_app_id).toString();
+    public String getAppSecret() {
+        return appSecret;
     }
 
-    /**
-     * 获取WechatAppID
-     */
-    public static String getWechatAppID() {
-        return appInfoMap.get(Wechat_app_id).toString();
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 
-    /**
-     * 获取WeChatAppSecret
-     */
-    public static String getWechatAppSecret() {
-        return appInfoMap.get(Wechat_app_secret).toString();
+    public String getLoginBtnBackgroundColor() {
+        return loginBtnBackgroundColor;
     }
 
-
-    /**
-     * 获取SinaAppID
-     */
-    public static String getSinaAppID() {
-        return appInfoMap.get(Sina_app_id).toString();
+    public void setLoginBtnBackgroundColor(String loginBtnBackgroundColor) {
+        this.loginBtnBackgroundColor = loginBtnBackgroundColor;
     }
 
-    /**
-     * 获取SinaAppSecret
-     */
-    public static String getSinaAppSecret() {
-        return appInfoMap.get(Sina_app_secret).toString();
+    public String getLoginBtnBorderColor() {
+        return loginBtnBorderColor;
+    }
+
+    public void setLoginBtnBorderColor(String loginBtnBorderColor) {
+        this.loginBtnBorderColor = loginBtnBorderColor;
+    }
+
+    public String getLoginBtnFontColor() {
+        return loginBtnFontColor;
+    }
+
+    public void setLoginBtnFontColor(String loginBtnFontColor) {
+        this.loginBtnFontColor = loginBtnFontColor;
+    }
+
+    public boolean isLogoshow() {
+        return logoshow;
+    }
+
+    public void setLogoshow(boolean logoshow) {
+        this.logoshow = logoshow;
+    }
+
+    public boolean isQQLogin() {
+        return qqLogin;
+    }
+
+    public void setQQLogin(boolean qqLogin) {
+        this.qqLogin = qqLogin;
+    }
+
+    public boolean isWeiboLogin() {
+        return weiboLogin;
+    }
+
+    public void setWeiboLogin(boolean weiboLogin) {
+        this.weiboLogin = weiboLogin;
+    }
+
+    public boolean isWeixinLogin() {
+        return weixinLogin;
+    }
+
+    public void setWeixinLogin(boolean weixinLogin) {
+        this.weixinLogin = weixinLogin;
+    }
+
+    public String getSinaAppId() {
+        return sinaAppId;
+    }
+
+    public void setSinaAppId(String sinaAppId) {
+        this.sinaAppId = sinaAppId;
+    }
+
+    public String getSinaAppSecret() {
+        return sinaAppSecret;
+    }
+
+    public void setSinaAppSecret(String sinaAppSecret) {
+        this.sinaAppSecret = sinaAppSecret;
+    }
+
+    public String getWechatAppId() {
+        return wechatAppId;
+    }
+
+    public void setWechatAppId(String wechatAppId) {
+        this.wechatAppId = wechatAppId;
+    }
+
+    public String getTencentAppId() {
+        return tencentAppId;
+    }
+
+    public void setTencentAppId(String tencentAppId) {
+        this.tencentAppId = tencentAppId;
+    }
+
+    public String getWechatAppSecret() {
+        return wechatAppSecret;
+    }
+
+    public void setWechatAppSecret(String wechatAppSecret) {
+        this.wechatAppSecret = wechatAppSecret;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
+
+    public String getLoginType() {
+        return loginType;
     }
 
     public Drawable setNavBackground_color() {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
-//        drawable.setCornerRadius(100);
-
-        String ButtonColor_FromMap = appInfoMap.get(NavBackground_color).toString();
+        String ButtonColor_FromMap = navBackgroundColor;
         if (!TextUtils.isEmpty(ButtonColor_FromMap)) {
             drawable.setColor(Color.parseColor("#" + ButtonColor_FromMap));
         } else {
-            drawable.setColor(ContextCompat.getColor(mContext,R.color.tab_text_color_press));
+            drawable.setColor(ContextCompat.getColor(mContext, R.color.tab_text_color_press));
         }
         return drawable;
     }
 
+
+    public void setNavBackgroundColor(String navBackgroundColor) {
+        this.navBackgroundColor = navBackgroundColor;
+    }
+
     public int setNavBackground_color_string() {
-        String ButtonColor_FromMap = appInfoMap.get(NavBackground_color).toString();
-        if (!TextUtils.isEmpty(ButtonColor_FromMap)) {
-            return Color.parseColor("#" + ButtonColor_FromMap);
+        if (!TextUtils.isEmpty(navBackgroundColor)) {
+            return Color.parseColor("#" + navBackgroundColor);
         } else {
-            return ContextCompat.getColor(mContext,R.color.tab_text_color_press);
+            return ContextCompat.getColor(mContext, R.color.tab_text_color_press);
         }
+    }
+
+
+    public void setNavTitleColor(String navTitleColor) {
+        this.navTitleColor = navTitleColor;
     }
 
     /**
@@ -258,12 +219,152 @@ public class UIJsonConfig {
      * @return
      */
     public int setNavigationBarTextColor() {
-        int navigationBarTextColor = ContextCompat.getColor(mContext,R.color.black);
-        String NavigationBarTextColor_FromMap = appInfoMap.get(NavTitle_color).toString();
+        int navigationBarTextColor = ContextCompat.getColor(mContext, R.color.black);
+        String NavigationBarTextColor_FromMap = navTitleColor;
         if (!TextUtils.isEmpty(NavigationBarTextColor_FromMap)) {
             navigationBarTextColor = Color.parseColor("#" + NavigationBarTextColor_FromMap);
         }
         return navigationBarTextColor;
+    }
+
+
+    //配置文件
+    public static final class ConfigUiBuilder {
+        private String appId;
+        private String appSecret;
+        private String navBackgroundColor;
+        private String navTitleColor;
+        private boolean logoshow;
+        private String loginBtnBackgroundColor;
+        private String loginBtnBorderColor;
+        private String loginBtnFontColor;
+        private boolean weiboLogin;
+        private boolean weixinLogin;
+        private boolean qqLogin;
+        private String tencentAppId;
+        private String wechatAppId;
+        private String wechatAppSecret;
+        private String sinaAppId;
+        private String sinaAppSecret;
+        private String loginType;
+        private Context context;
+
+        public ConfigUiBuilder(Context context) {
+            this.context = context;
+        }
+
+        public ConfigUiBuilder(Context context, String appId, String appSecret) {
+            this.context = context;
+            this.appId = appId;
+            this.appSecret = appSecret;
+        }
+
+        public ConfigUiBuilder setAppId(String appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        public ConfigUiBuilder setAppSecret(String appSecret) {
+            this.appSecret = appSecret;
+            return this;
+        }
+
+        public ConfigUiBuilder setNavBackgroundColor(String navBackgroundColor) {
+            this.navBackgroundColor = navBackgroundColor;
+            return this;
+        }
+
+        public ConfigUiBuilder setNavTitleColor(String navTitleColor) {
+            this.navTitleColor = navTitleColor;
+            return this;
+        }
+
+        public ConfigUiBuilder setLoginBtnBackgroundColor(String loginBtnBackgroundColor) {
+            this.loginBtnBackgroundColor = loginBtnBackgroundColor;
+            return this;
+        }
+
+        public ConfigUiBuilder setLoginBtnBorderColor(String loginBtnBorderColor) {
+            this.loginBtnBorderColor = loginBtnBorderColor;
+            return this;
+        }
+
+        public ConfigUiBuilder setLoginBtnFontColor(String loginBtnFontColor) {
+            this.loginBtnFontColor = loginBtnFontColor;
+            return this;
+        }
+
+        public ConfigUiBuilder setLoginType(String loginType) {
+            this.loginType = loginType;
+            return this;
+        }
+
+        public ConfigUiBuilder setLogoshow(boolean logoshow) {
+            this.logoshow = logoshow;
+            return this;
+        }
+
+        public ConfigUiBuilder setQQLogin(boolean qqLogin) {
+            this.qqLogin = qqLogin;
+            return this;
+        }
+
+        public ConfigUiBuilder setSinaAppId(String sinaAppId) {
+            this.sinaAppId = sinaAppId;
+            return this;
+        }
+
+        public ConfigUiBuilder setSinaAppSecret(String sinaAppSecret) {
+            this.sinaAppSecret = sinaAppSecret;
+            return this;
+        }
+
+        public ConfigUiBuilder setTencentAppId(String tencentAppId) {
+            this.tencentAppId = tencentAppId;
+            return this;
+        }
+
+        public ConfigUiBuilder setWechatAppId(String wechatAppId) {
+            this.wechatAppId = wechatAppId;
+            return this;
+        }
+
+        public ConfigUiBuilder setWechatAppSecret(String wechatAppSecret) {
+            this.wechatAppSecret = wechatAppSecret;
+            return this;
+        }
+
+        public ConfigUiBuilder setWeiboLogin(boolean weiboLogin) {
+            this.weiboLogin = weiboLogin;
+            return this;
+        }
+
+        public ConfigUiBuilder setWeixinLogin(boolean weixinLogin) {
+            this.weixinLogin = weixinLogin;
+            return this;
+        }
+
+        public UIJsonConfig build() {
+            UIJsonConfig uiJsonConfig = UIJsonConfig.getInstance(context);
+            uiJsonConfig.setAppId(appId);
+            uiJsonConfig.setAppSecret(appSecret);
+            uiJsonConfig.setNavBackgroundColor(navBackgroundColor);
+            uiJsonConfig.setNavTitleColor(navTitleColor);
+            uiJsonConfig.setLogoshow(logoshow);
+            uiJsonConfig.setLoginBtnBackgroundColor(loginBtnBackgroundColor);
+            uiJsonConfig.setLoginBtnBorderColor(loginBtnBorderColor);
+            uiJsonConfig.setLoginBtnFontColor(loginBtnFontColor);
+            uiJsonConfig.setWeiboLogin(weiboLogin);
+            uiJsonConfig.setWeixinLogin(weixinLogin);
+            uiJsonConfig.setQQLogin(qqLogin);
+            uiJsonConfig.setTencentAppId(tencentAppId);
+            uiJsonConfig.setWechatAppId(wechatAppId);
+            uiJsonConfig.setWechatAppSecret(wechatAppSecret);
+            uiJsonConfig.setSinaAppId(sinaAppId);
+            uiJsonConfig.setSinaAppSecret(sinaAppSecret);
+            uiJsonConfig.setLoginType(loginType);
+            return uiJsonConfig;
+        }
     }
 
 }

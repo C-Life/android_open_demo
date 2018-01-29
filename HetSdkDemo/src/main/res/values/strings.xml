@@ -211,7 +211,7 @@
     <string name="btn_data_histroy_error">异常数据</string>
     <string name="btn_http_get">通用GET</string>
     <string name="btn_http_post">通用POST</string>
-    <string name="appID_Toast">请替换 assets/h5UIConfig.json 中的参数定义为您申请到的开放平台app_id、app_secret</string>
+    <string name="appID_Toast">请正确配置SDK的参数为您申请到的开放平台app_id、app_secret</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

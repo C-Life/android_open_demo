@@ -314,7 +314,7 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
         } else {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             toolbar.setNavigationOnClickListener(v -> {
-                mPresenter.startLogin(1);
+                mPresenter.startLogin();
             });
         }
     }
@@ -385,7 +385,7 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
                 if (HetSdk.getInstance().isAuthLogin()) {
                     jumpToTarget(DeviceTypeListActivity.class);
                 } else {
-                    mPresenter.startLogin(1);
+                    mPresenter.startLogin();
                 }
                 //test1();
                 break;

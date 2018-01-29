@@ -10,7 +10,6 @@ import com.het.basic.data.http.okhttp.OkHttpManager;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.StringUtils;
 import com.het.basic.utils.ToastUtil;
-import com.het.open.lib.api.HetQrCodeApi;
 import com.het.open.lib.api.HetThirdCloudAuthApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.sdk.demo.R;
@@ -260,7 +259,7 @@ public class ThirdAuthActivity extends BaseHetActivity {
         if(!StringUtils.isNull(openId)){
             s = openId;
         }else
-        randomCodeService.getRandomCode(UIJsonConfig.getInstance(this).getAppId(),UIJsonConfig.getInstance(this).getSecret()
+        randomCodeService.getRandomCode(UIJsonConfig.getInstance(this).getAppId(),UIJsonConfig.getInstance(this).getAppSecret()
                 ,authorizationCode.getAuthorizationCode(),s,timestamp)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

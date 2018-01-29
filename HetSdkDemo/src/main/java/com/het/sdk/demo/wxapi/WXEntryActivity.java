@@ -25,8 +25,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logc.e("Weixin", "WXEntryActivity....onCreate", false);
-        api = WXAPIFactory.createWXAPI(this, UIJsonConfig.getWechatAppID(), true);
-        api.registerApp(UIJsonConfig.getWechatAppID());
+        api = WXAPIFactory.createWXAPI(this, UIJsonConfig.getInstance(this).getWechatAppId(), true);
+        api.registerApp(UIJsonConfig.getInstance(this).getWechatAppId());
         api.handleIntent(getIntent(), this);
 
     }

@@ -32,7 +32,7 @@ import java.lang.reflect.Type;
 
 public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
 
-    public void startLogin(int type) {
+    public void startLogin() {
 
         HetNewAuthApi.getInstance().authorize(activity, new AuthCallback() {
             @Override
@@ -45,7 +45,7 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
                 //登录失败
                 ((BaseHetActivity) activity).showToast(msg);
             }
-        }, activity.getString(R.string.login_security), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string(),String.valueOf(type));
+        }, activity.getString(R.string.login_security), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string(),UIJsonConfig.getInstance(activity).getLoginType());
 
     }
 

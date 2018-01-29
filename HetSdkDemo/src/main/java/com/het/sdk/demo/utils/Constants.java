@@ -21,21 +21,6 @@ package com.het.sdk.demo.utils;
  */
 public class Constants {
 
-//    public static final String APP_ID = "30284";
-//    public static final String APP_SECRET = "331dcf8e1c5a4a13bded9eb521c2934c";
-//    public static final String APP_ID = "10014";
-//    public static final String APP_SECRET = "bf1f3ce24b304af3ab7971aaec318135";
-
-//    Not Only Demo App
-//      public static final String APP_ID = "30765";
-//      public static final String APP_SECRET = "5f699a78c319444cb8a291296049572c";
-
-    public static final String APP_ID = "30765";
-    public static final String APP_SECRET = "5f699a78c319444cb8a291296049572c";
-
-//土壤仪
-//    public static final  String APP_ID = "30695";
-//    public static final String APP_SECRET = "5b8979a47e5e4a2d9bf219a97fb9769f";
     public static final String WIFI_IFFO_MODEL="WIFI_IFFO_MODEL";
     public static final String BIND_ERROR_MSG="BIND_ERROR_MSG";   //绑定失败信息
     public static final String DEVICE_MODEL="DEVICE_MODEL"; //设备model
