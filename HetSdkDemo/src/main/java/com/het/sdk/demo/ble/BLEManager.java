@@ -19,6 +19,7 @@ import com.het.bluetoothoperate.device.HetPubBleDevice;
 import com.het.bluetoothoperate.listener.IBleModelParse;
 import com.het.bluetoothoperate.listener.IReceiveCallback;
 import com.het.bluetoothoperate.listener.ISendCallback;
+import com.het.bluetoothoperate.manager.BluetoothDeviceManager;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.manager.HtmlFiveManager;
 import com.het.log.Logc;
@@ -31,11 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * Created by: Administrator.
- * Created time: 2017-02-28.
- * Desc:
- */
 public class BLEManager implements IBleModelParse {
     private static BLEManager bleManager;
 
@@ -54,7 +50,6 @@ public class BLEManager implements IBleModelParse {
 
     private Handler mainHandle = new Handler(Looper.getMainLooper());
 
-    @Deprecated
     private BLEManager(BaseHetActivity activity) {
         mActivity = activity;
         hetPubBleDevice = new HetPubBleDevice(mActivity ,this,null);
@@ -63,7 +58,6 @@ public class BLEManager implements IBleModelParse {
     private BLEManager() {
     }
 
-    @Deprecated
     public static BLEManager getInstance(BaseHetActivity activity) {
         if (bleManager == null) {
             synchronized (BLEManager.class) {
@@ -88,6 +82,7 @@ public class BLEManager implements IBleModelParse {
 
     public void init(BaseHetActivity activity) {
         mActivity = activity;
+        BluetoothDeviceManager.getInstance().init(activity);
         hetPubBleDevice = new HetPubBleDevice(mActivity , this, null);
     }
 

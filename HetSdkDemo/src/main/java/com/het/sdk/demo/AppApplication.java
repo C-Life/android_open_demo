@@ -14,7 +14,6 @@ import com.het.ap.HeTApModuleImpl;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.ToastUtil;
 import com.het.bind.logic.api.bind.ModuleManager;
-import com.het.bluetoothbase.ViseBluetooth;
 import com.het.open.lib.api.HetCodeConstants;
 import com.het.open.lib.api.HetSdk;
 import com.het.open.lib.biz.thirdlogin.HetSdkThirdDelegate;
@@ -114,7 +113,6 @@ public class AppApplication extends MultiDexApplication {
                 .registerSinaWeibo(UIJsonConfig.getInstance(this).getSinaAppId(), UIJsonConfig.getInstance(this).getSinaAppSecret(), this.mSinaRedirectURL)
                 .create();
         HetSdk.getInstance().init(this, appId, appSecret, configModel);
-        ViseBluetooth.getInstance().init(this);
     }
 
     /**
