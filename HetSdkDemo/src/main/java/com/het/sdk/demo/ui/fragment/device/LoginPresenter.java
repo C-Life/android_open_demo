@@ -22,7 +22,6 @@ import com.het.sdk.demo.manager.HetUserManager;
 import com.het.sdk.demo.model.HetUserInfoBean;
 import com.het.sdk.demo.push.HetPushManager;
 import com.het.sdk.demo.ui.fragment.UserHetView;
-import com.het.sdk.demo.utils.UIJsonConfig;
 
 import java.lang.reflect.Type;
 
@@ -45,7 +44,7 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
                 //登录失败
                 ((BaseHetActivity) activity).showToast(msg);
             }
-        }, activity.getString(R.string.login_security), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string(),UIJsonConfig.getInstance(activity).getLoginType());
+        }, activity.getString(R.string.login_security));
 
     }
 
@@ -192,7 +191,7 @@ public class LoginPresenter extends BaseHetPresenter<DeviceListHetView> {
                 public void onFailed(int code, String msg) {
                     ((BaseHetActivity) activity).showToast(msg);
                 }
-            }, userInfoBean.getAccount(), activity.getString(R.string.update_password), UIJsonConfig.getInstance(activity).setNavigationBarTextColor(), UIJsonConfig.getInstance(activity).setNavBackground_color_string());
+            }, userInfoBean.getAccount(), activity.getString(R.string.update_password));
         }
     }
 }

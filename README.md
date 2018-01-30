@@ -247,10 +247,8 @@ HetNewAuthApi.getInstance().authorize() 跳转到授权登录页面。
 	  *
 	  * @param authCallback 回调
 	  * @param specifyTitle 标题栏文字
-	  * @param navigationBarTextColor 标题栏文字颜色
-	  * @param navBackground 标题栏背景颜色
-	*/
-	public void authorize(Context mContext, AuthCallback authCallback,String specifyTitle,int navigationBarTextColor,int navBackground) {
+	  */
+	public void authorize(Context mContext, AuthCallback authCallback,String specifyTitle) {
 	    ...
 	}
 	protected void auth() {
@@ -264,7 +262,7 @@ HetNewAuthApi.getInstance().authorize() 跳转到授权登录页面。
 	          public void onFailed(int code, String msg) {
 	                       //登录失败 do something
 	          	}
-	          },"授权登录",Color.parseColor("#ff3285ff")，Color.parseColor("#FFFFFFFF"));
+	          },"授权登录");
 
 	    }
 
@@ -444,13 +442,10 @@ HetUserApi.getInstance().getUserMess()获取用户信息
 	     * 修改密码
 	     * @param mContext 上下文
 	     * @param authCallback  回调
-	     * @param phone 手机号
+	     * @param account 手机号
 	     * @param specifyTitle 标题栏文字
-	     * @param navigationBarTextColor 标题栏文字颜色
-	     * @param navBackground 标题栏背景颜色
-	     * @throws Exception
 	     */
-	public void alterPassword(Context mContext, AuthCallback authCallback, String phone,String specifyTitle,int navigationBarTextColor,int navBackground) throws Exception{
+	public void alterPassword(Context mContext, AuthCallback authCallback, String account, String specifyTitle){
 	        ............
 	}
 
@@ -467,7 +462,7 @@ HetUserApi.getInstance().getUserMess()获取用户信息
 	           public void onFailed(int code, String msg) {
 	                   //修改密码失败
 	           }
-	        }, account, "修改密码",Color.parseColor("#ff3285ff")，Color.parseColor("#FFFFFFFF"));
+	        }, account, "修改密码");
 	}
 
 修改密码页面：
@@ -1976,7 +1971,31 @@ RxBus事件的取消订阅：
 android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient 。
 ## 2.授权登录页面模板配置
 为了满足不同项目对登录界面的审美要求，开放平台SDK提供了3套可供选择的授权登录页面模板。
-使用方法：
+使用方法1： 在Application里面初始化SDK，配置H5登录界面
+
+	new UIJsonConfig.ConfigUiBuilder(this, "30765", "5f699a78c319444cb8a291296049572c")// appId 、app_secret
+                .setNavBackgroundColor("FF3285FF")//标题栏颜色
+                .setNavTitleColor("FFFFFFFF")//标题栏文字颜色
+                .setLogoshow(true)//登录页面是否显示LOGO
+                .setLoginBtnBackgroundColor("FFFFFFFF")//登录页面登录按钮的背景色
+                .setLoginBtnBorderColor("FF5BA532")//登录页面登录按钮的边框色
+                .setLoginBtnFontColor("FF000000")//登录页面登录按钮的文字颜色
+                .setWeiboLogin(true)//是否支持微博登录
+                .setWeixinLogin(true)//是否支持微信登录
+                .setQQLogin(true)//是否支持QQ登录
+                .setTencentAppId("1106346235")//腾讯开放平台 appId
+                .setWechatAppId("wx49a17f4b9643f2e0")//微信开放平台 appId
+                .setWechatAppSecret("121b5279ba5f3b009f968c987ec2ac1c")//微信开放平台 app_secret
+                .setSinaAppId("1919114603")//新浪开放平台 appId
+                .setSinaAppSecret("981961acd338382be8e7ef5f04e5b17f")//新浪开放平台 app_secret
+                .setLoginType("1")//登录模板选择 1-模板一   2-模板二  3-模板三
+                .build();
+
+
+setLoginType("1")//登录模板选择 1-模板一   2-模板二  3-模板三
+详情参考 ***SDK配置***
+
+使用方法2：
 
     HetNewAuthApi.getInstance().authorize(activity, new AuthCallback() {
 	          @Override
