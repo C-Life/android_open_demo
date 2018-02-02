@@ -148,19 +148,38 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
     private final IConnectCallback connectCallback = new IConnectCallback() {
         @Override
         public void onConnectSuccess(BluetoothGatt gatt, int status) {
-            conDevice.setText("连接成功");
+
+            BleCommonControlActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    conDevice.setText("连接成功");
+                }
+            });
+
             HookManager.getInstance().enableHook(true, "enable@hook");
             HookManager.getInstance().addHook(hookCallBack);
         }
 
         @Override
         public void onConnectFailure(final BleException exception) {
-            conDevice.setText("连接失败");
+            BleCommonControlActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    conDevice.setText("连接失败");
+                }
+            });
+
         }
 
         @Override
         public void onDisconnect(String mac) {
-            conDevice.setText("连接断开");
+            BleCommonControlActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    conDevice.setText("连接断开");
+                }
+            });
+
         }
     };
 
@@ -173,7 +192,6 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        hetFirewareUpgradeApi.stop();
         HetCommonBleControlApi.getInstance().disConnect(macAddress);
     }
 
@@ -189,63 +207,7 @@ public class BleCommonControlActivity extends BaseHetActivity implements View.On
             macAddress = deviceModel.getMacAddress();
         }
         HetCommonBleControlApi.getInstance().init(this);
-
-// 升级测试
-//        deviceModel = new DeviceModel();
-//        deviceModel.setMacAddress("D6:61:3D:DD:FA:23");
-//        String  file =  Environment.getExternalStorageDirectory() + File.separator + "WQM3H_AP.bin";
-//        Logc.e("file =" + file);
-//        if (SDKIOUtil.fileIsExists(file)){
-//            hetFirewareUpgradeApi = new HetFirewareUpgradeApi.BleUpgradeBuilder()
-//                    .setContext(this)
-//                    .setFilePath(file)
-//                    .setDeviceModel(deviceModel)
-//                    .setiUpInterface(iFirwareUpCallback).build();
-//            hetFirewareUpgradeApi.init();
-//            hetFirewareUpgradeApi.check();
-//        }
-
     }
-
-//    private HetFirewareUpgradeApi hetFirewareUpgradeApi;
-//
-//    private IFirwareUpCallback iFirwareUpCallback = new IFirwareUpCallback() {
-//        @Override
-//        public void checkHasNewVersion(UpgradeType upgradeType, DeviceVersionUpgradeModel deviceVersionUpgradeModel) {
-//            Logc.e("---->" + deviceVersionUpgradeModel.toString());
-//            //开始检查新版本
-//        }
-//
-//        @Override
-//        public void checkNoVersion(UpgradeType upgradeType, DeviceVersionUpgradeModel deviceVersionUpgradeModel) {
-//            Logc.e("---->" + deviceVersionUpgradeModel.toString());
-//        }
-//
-//        @Override
-//        public void upgradeReady(UpgradeType upgradeType) {
-//            hetFirewareUpgradeApi.start();
-//        }
-//
-//        @Override
-//        public void onStartUpgrade(UpgradeType upgradeType) {
-//            Logc.e("--onStartUpgrade-->");
-//        }
-//
-//        @Override
-//        public void onUpgradeProgress(UpgradeType upgradeType, int progress) {
-//            Logc.e("--onProgress-->" + progress);
-//        }
-//
-//        @Override
-//        public void onUpgradeSuccess(UpgradeType upgradeType) {
-//            Logc.e("--onUpgradeSuccess-->");
-//        }
-//
-//        @Override
-//        public void onUpgradeFail(UpgradeType upgradeType, Throwable var1) {
-//            Logc.e("--onUpgradeFail-->" + var1.getMessage());
-//        }
-//    };
 
     @Override
     protected void initView(Bundle savedInstanceState) {
