@@ -27,6 +27,7 @@ import com.het.sdk.demo.ble.BLEBean;
 import com.het.sdk.demo.ble.BLEManager;
 import com.het.sdk.demo.event.DeviceStatusEvent;
 import com.het.sdk.demo.impl.OnUpdateInViewImpl;
+import com.het.sdk.demo.manager.BuildManager;
 import com.het.sdk.demo.model.PushToH5Model;
 import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
 import com.tencent.smtt.export.external.interfaces.SslError;
@@ -292,6 +293,15 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
                     });
         } else {
             startBle();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            if (BuildManager.isSDKLater18()) {
+                BLEManager.getInstance(this).connDeviceByMac(deviceModel.getMacAddress(), mHtmlFiveManager);
+            }
         }
     }
 
