@@ -283,6 +283,7 @@
     <string name="bind_wifi_qrcode">将二维码/条码放入框内，即可自动扫描</string>
     <string name="bind_wifi_barcode">将条码放入框内，即可自动扫描</string>
     <string name="bind_type_brand_noproduct">抱歉，该品牌下没有设备!</string>
+    <string name="bind_open_loc_faild">打开定位失败</string>
 
     <!-- mac地址绑定或IMEI码绑定 -->
     <string name="str_aty_macorimei_title">设备绑定</string>

@@ -21,8 +21,8 @@ import com.het.bluetoothoperate.listener.IReceiveCallback;
 import com.het.bluetoothoperate.listener.ISendCallback;
 import com.het.bluetoothoperate.manager.BluetoothDeviceManager;
 import com.het.h5.sdk.callback.IMethodCallBack;
-import com.het.h5.sdk.manager.HtmlFiveManager;
 import com.het.log.Logc;
+import com.het.open.lib.manager.base.BaseHtmlFiveFactory;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.base.BaseHetH5Activity;
@@ -41,7 +41,7 @@ public class BLEManager implements IBleModelParse {
 
     private HetPubBleDevice hetPubBleDevice;
 
-    private HtmlFiveManager mHtmlFiveManager;
+    private BaseHtmlFiveFactory mHtmlFiveManager;
     private BaseHetActivity mActivity;
 
     private String mMac;
@@ -166,7 +166,7 @@ public class BLEManager implements IBleModelParse {
         }
     }
 
-    public void connDeviceByMac(String mac, HtmlFiveManager htmlFiveManager) {
+    public void connDeviceByMac(String mac, BaseHtmlFiveFactory htmlFiveManager) {
         Logc.d("开始连接蓝牙设备.");
         mHtmlFiveManager = htmlFiveManager;
         mMac = formatMac(mac);

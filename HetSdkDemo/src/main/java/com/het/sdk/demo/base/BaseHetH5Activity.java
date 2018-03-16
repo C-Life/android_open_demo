@@ -17,9 +17,10 @@ import com.het.h5.sdk.callback.IAppJavaScriptsInterface;
 import com.het.h5.sdk.callback.IH5CallBack;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.manager.HetH5SdkManager;
-import com.het.h5.sdk.manager.HtmlFiveManager;
 import com.het.open.lib.api.HetDeviceControlDelegate;
 import com.het.open.lib.callback.ICtrlCallback;
+import com.het.open.lib.manager.base.BaseHtmlFiveFactory;
+import com.het.open.lib.manager.h5.AppJavaBridgeManager;
 import com.het.open.lib.model.DeviceModel;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.ble.BLEBean;
@@ -41,7 +42,7 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
     RelativeLayout rlH5Container;
 
     WebView mWebView;
-    protected HtmlFiveManager mHtmlFiveManager;
+    protected BaseHtmlFiveFactory mHtmlFiveManager;
     protected HetDeviceControlDelegate deviceControlDelegate;
     protected DeviceModel deviceModel;
     private PushToH5Model pushToH5Model = new PushToH5Model();
@@ -56,6 +57,8 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
     @Override
     protected void initData() {
         deviceModel = (DeviceModel) getIntent().getSerializableExtra("DeviceModel");
+        mHtmlFiveManager = AppJavaBridgeManager.getAppJavaBridgeManager().getBridgerById(deviceModel.getProductId(), mContext).build(this, mWebView, this);
+
         initH5Page();
         initDelegate();
     }
@@ -66,13 +69,6 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
         mWebView.setFocusable(true);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rlH5Container.addView(mWebView, layoutParams);
-
-        IX5WebViewExtension x5WebViewExtension = mWebView.getX5WebViewExtension();
-        if (x5WebViewExtension != null) {
-            x5WebViewExtension.setScrollBarFadingEnabled(false);//隐藏X5快速滑动时的滚动条
-        }
-
-        mHtmlFiveManager = new HtmlFiveManager(this, mWebView, this);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView webView, String s) {
@@ -84,8 +80,11 @@ public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJ
             public void onReceivedSslError(WebView var1, SslErrorHandler sslErrorHandler, SslError var3) {
                 sslErrorHandler.proceed();//证书忽略
             }
-
         });
+        IX5WebViewExtension x5WebViewExtension = mWebView.getX5WebViewExtension();
+        if (x5WebViewExtension != null) {
+            x5WebViewExtension.setScrollBarFadingEnabled(false);//隐藏X5快速滑动时的滚动条
+        }
     }
 
     /**

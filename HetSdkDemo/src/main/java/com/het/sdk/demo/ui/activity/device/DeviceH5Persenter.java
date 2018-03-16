@@ -7,8 +7,8 @@ import com.het.basic.base.RxManage;
 import com.het.basic.model.DeviceBean;
 import com.het.basic.utils.ToastUtil;
 import com.het.h5.sdk.event.HetH5PlugEvent;
-import com.het.h5.sdk.manager.HtmlFiveManager;
 import com.het.open.lib.api.HetH5Api;
+import com.het.open.lib.manager.base.BaseHtmlFiveFactory;
 import com.het.open.lib.model.DeviceModel;
 import com.het.sdk.demo.base.BaseHetPresenter;
 import com.het.sdk.demo.base.BaseHetView;
@@ -22,7 +22,7 @@ import java.io.File;
 public class DeviceH5Persenter extends BaseHetPresenter<BaseHetView> {
     private static String url = "file:///android_asset/household/virtualScene1/page/index.html";
 
-    private static void loadVirtualUrlFromDeviceBean(HtmlFiveManager htmlFiveManager) {
+    private static void loadVirtualUrlFromDeviceBean(BaseHtmlFiveFactory htmlFiveManager) {
         htmlFiveManager.loadUrl(url);
     }
 
@@ -32,7 +32,7 @@ public class DeviceH5Persenter extends BaseHetPresenter<BaseHetView> {
      * @param context 上下文
      * @param model   设备对象
      */
-    public void loadUrlFromDeviceBean(Context context, DeviceModel model, HtmlFiveManager htmlFiveManager) {
+    public void loadUrlFromDeviceBean(Context context, DeviceModel model, BaseHtmlFiveFactory htmlFiveManager) {
         unRegisterUrl(model);
         RxManage.getInstance().register(HetH5PlugEvent.HET_EVENT_H5_PLUG_GET_LOCAL_URL_SUCCESS + model.getProductId(), o -> {
             if (htmlFiveManager != null) {
@@ -42,6 +42,7 @@ public class DeviceH5Persenter extends BaseHetPresenter<BaseHetView> {
                 htmlFiveManager.loadUrl(path);
             }
         });
+
         RxManage.getInstance().register(HetH5PlugEvent.HET_EVENT_H5_PLUG_GET_LOCAL_URL_FAILED + model.getProductId(), o -> {
             ToastUtil.showToast(context, "h5页面下载失败");
         });

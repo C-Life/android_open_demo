@@ -3,8 +3,8 @@ package com.het.sdk.demo.impl;
 import android.util.Log;
 
 import com.het.basic.base.RxManage;
-import com.het.h5.sdk.manager.HtmlFiveManager;
 import com.het.open.lib.callback.OnUpdateInView;
+import com.het.open.lib.manager.base.BaseHtmlFiveFactory;
 import com.het.sdk.demo.event.DeviceStatusEvent;
 
 /**
@@ -13,15 +13,15 @@ import com.het.sdk.demo.event.DeviceStatusEvent;
  * Desc:
  */
 public class OnUpdateInViewImpl extends OnUpdateInView {
-    private HtmlFiveManager mHtmlFiveManager;
+    private BaseHtmlFiveFactory mHtmlFiveManager;
 
-    public OnUpdateInViewImpl(HtmlFiveManager htmlFiveManager) {
+    public OnUpdateInViewImpl(BaseHtmlFiveFactory htmlFiveManager) {
         this.mHtmlFiveManager = htmlFiveManager;
     }
 
     @Override
     protected void onUpdateConfig(String s) {
-        Log.e("onUpdateConfig",s);
+        Log.e("onUpdateConfig", s);
         if (mHtmlFiveManager != null && s != null) {
             mHtmlFiveManager.updateConfigData(s);
         }
@@ -29,7 +29,7 @@ public class OnUpdateInViewImpl extends OnUpdateInView {
 
     @Override
     protected void onUpdateRun(String s) {
-        Log.e("onUpdateRun",s);
+        Log.e("onUpdateRun", s);
         if (mHtmlFiveManager != null && s != null) {
             mHtmlFiveManager.updateRunData(s);
         }
@@ -37,7 +37,7 @@ public class OnUpdateInViewImpl extends OnUpdateInView {
 
     @Override
     protected void onUpdateWarm(String s) {
-        Log.e("onUpdateWarm",s);
+        Log.e("onUpdateWarm", s);
         if (mHtmlFiveManager != null && s != null) {
             mHtmlFiveManager.updateErrorData(s);
         }

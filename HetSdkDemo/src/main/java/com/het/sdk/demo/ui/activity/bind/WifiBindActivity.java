@@ -1,9 +1,12 @@
 package com.het.sdk.demo.ui.activity.bind;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -61,6 +64,7 @@ public class WifiBindActivity extends BaseHetActivity {
     protected DeviceProductBean deviceProductBean = null;
     private CommonDialog commonDialog;
     private String gudie_url;
+    private int SETTING_GPS = 3;
 
     @Override
     protected int getLayoutId() {
@@ -171,7 +175,7 @@ public class WifiBindActivity extends BaseHetActivity {
     public void onBind(View view) {
         switch (view.getId()) {
             case R.id.bind_next:
-                gotoScanActivity();
+                startBind();
                 break;
         }
     }
@@ -258,9 +262,59 @@ public class WifiBindActivity extends BaseHetActivity {
             webview.destroy();
             webview = null;
         }
+        if (commonDialog != null && commonDialog.isShowing()) {
+            commonDialog.dismiss();
+            commonDialog = null;
+        }
         HeTBindApi.getInstance().getWiFiInputApi().onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (SETTING_GPS == requestCode) {
+            if (isLocationOpen())
+                Logc.i("============ 打开定位成功");
+            else
+                tips(getResources().getString(R.string.bind_open_loc_faild));
+        }
+    }
+
+    private void startBind() {
+        //金立手机 GIONEE GN9012在扫ap的时候必须开启GPS
+        if (!isLocationOpen()) {
+            tips(getResources().getString(R.string.bind_wifi_turn_on_gps));
+            gotoGpsSetting();
+        } else {
+            gotoScanActivity();
+        }
+    }
+
+    /**
+     * 判断位置信息是否开启
+     *
+     * @return
+     */
+    public boolean isLocationOpen() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return true;
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //gps定位
+        boolean isGpsProvider = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //网络定位
+        boolean isNetWorkProvider = manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return isGpsProvider || isNetWorkProvider;
+    }
+
+    /**
+     * 挑战系统设置定位
+     */
+    public void gotoGpsSetting() {
+        // 转到手机设置界面，用户设置GPS
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivityForResult(intent, SETTING_GPS); // 设置完成后返回到原来的界面
+    }
 
     private void gotoScanActivity() {
         String pass = et_pass.getText().toString();
@@ -298,5 +352,4 @@ public class WifiBindActivity extends BaseHetActivity {
     public void onWiFiSetting(View view) {
         gotoWiFiSetting();
     }
-
 }
