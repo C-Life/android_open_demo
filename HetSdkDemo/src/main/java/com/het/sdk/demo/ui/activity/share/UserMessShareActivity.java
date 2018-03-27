@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
 import com.google.gson.reflect.TypeToken;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.StringUtils;
@@ -109,21 +110,21 @@ public class UserMessShareActivity extends BaseHetActivity<ShareDevicePersenter>
         @Override
         public void onShareSuccess(CommonSharePlatform sharePlatform, String msg) {
             UserMessShareActivity.this.runOnUiThread(() -> {
-                ToastUtil.showToast(mContext, "分享成功");
+                ToastUtil.showToast(mContext, msg);
             });
         }
 
         @Override
         public void onShareFialure(CommonSharePlatform sharePlatform, String msg) {
             UserMessShareActivity.this.runOnUiThread(() -> {
-                ToastUtil.showToast(mContext, "分享失败");
+                ToastUtil.showToast(mContext, msg);
             });
         }
 
         @Override
         public void onShareCancel(CommonSharePlatform sharePlatform, String msg) {
             UserMessShareActivity.this.runOnUiThread(() -> {
-                ToastUtil.showToast(mContext, "分享取消");
+                ToastUtil.showToast(mContext, msg);
             });
         }
     };
@@ -167,7 +168,7 @@ public class UserMessShareActivity extends BaseHetActivity<ShareDevicePersenter>
 
     @Override
     public void getUserShareList(String list) {
-        if (!isFinishing()){
+        if (!isFinishing()) {
             Type type = new TypeToken<List<DeviceAuthUserModel>>() {
             }.getType();
             List<DeviceAuthUserModel> models = GsonUtil.getInstance().getGson().fromJson(list, type);
@@ -186,14 +187,14 @@ public class UserMessShareActivity extends BaseHetActivity<ShareDevicePersenter>
 
     @Override
     public void getShareCode(String code, int type) {
-        if (!isFinishing()){
+        if (!isFinishing()) {
             if (StringUtils.isNull(code)) {
                 showToast("获取分享码失败");
                 return;
             }
             Type treeType = new TypeToken<ShareCodeModel>() {
             }.getType();
-            ShareCodeModel codeModel =GsonUtil.getInstance().getGson().fromJson(code, treeType);
+            ShareCodeModel codeModel = GsonUtil.getInstance().getGson().fromJson(code, treeType);
             if (codeModel == null || StringUtils.isNull(codeModel.getShareCode())) {
                 showToast("获取分享码失败");
                 return;
@@ -223,7 +224,7 @@ public class UserMessShareActivity extends BaseHetActivity<ShareDevicePersenter>
         final int TAG_SHARE_QQ_MOMENT = 1;
         QMUIBottomSheet.BottomGridSheetBuilder builder = new QMUIBottomSheet.BottomGridSheetBuilder(this);
         builder.addItem(R.mipmap.common_share_logo_wechat, "分享到微信", TAG_SHARE_WECHAT_FRIEND, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
-                .addItem(R.mipmap.common_share_logo_qq, "分享到QQ", TAG_SHARE_QQ_MOMENT, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
+//                .addItem(R.mipmap.common_share_logo_qq, "分享到QQ", TAG_SHARE_QQ_MOMENT, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
                 .setOnSheetItemClickListener((dialog, itemView) -> {
                     dialog.dismiss();
                     int tag = (int) itemView.getTag();
