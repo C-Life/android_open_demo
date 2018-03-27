@@ -14,6 +14,9 @@ import com.het.sdk.demo.base.BaseHetPresenter;
 
 public class ShareDevicePersenter extends BaseHetPresenter<DeviceShareView> {
 
+    //新版设备分享页面参数
+    private static final String SHARE_CODE_NEWURL = "1";
+
     public void getUserShareList(String deviceId) {
         HetDeviceShareApi.getInstance().getDeviceAuthUser(new IHetCallback() {
             @Override
@@ -78,7 +81,7 @@ public class ShareDevicePersenter extends BaseHetPresenter<DeviceShareView> {
             public void onFailed(int code, String msg) {
                 ((BaseHetActivity) activity).showToast(msg);
             }
-        }, deviceId, shareType);
+        }, deviceId, shareType, SHARE_CODE_NEWURL);
     }
 
 }
