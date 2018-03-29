@@ -1,8 +1,6 @@
 package com.het.sdk.demo.ui.activity.sidebarlayout;
 
-import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,11 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
-import com.het.basic.AppDelegate;
 import com.het.basic.base.RxManage;
 import com.het.basic.utils.GsonUtil;
 import com.het.basic.utils.StringUtils;
-import com.het.basic.utils.permissions.RxPermissions;
 import com.het.log.Logc;
 import com.het.open.lib.api.HetCodeConstants;
 import com.het.open.lib.api.HetDeviceShareApi;
@@ -84,7 +80,6 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
 
     @Override
     protected void initData() {
-        getPermission();
         // Set up the drawer.
         mNavigationDrawerFragment.setConfigUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
         initRxManage();
@@ -358,24 +353,6 @@ public class SidebarMainActivity extends BaseHetActivity<LoginPresenter> impleme
             }
             mCurrentFragment = to;
         }
-    }
-
-    /**
-     * 获取权限
-     */
-    private void getPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            RxPermissions.getInstance(AppDelegate.getAppContext())
-                    .request(Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    .subscribe(grant -> {
-                        if (!grant) {
-                            finish();
-                        }
-                    });
-        }
-
     }
 
     @OnClick({R.id.btnRight})

@@ -1,12 +1,16 @@
 package com.het.sdk.demo.ui.activity.sidebarlayout;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import com.het.basic.AppDelegate;
 import com.het.basic.utils.StringUtils;
+import com.het.basic.utils.permissions.RxPermissions;
 import com.het.log.Logc;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
@@ -39,12 +43,33 @@ public class SplashActivity extends BaseHetActivity {
             }
         }
 
-        //延迟2S跳转
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, SidebarMainActivity.class);
-            startActivity(intent);
-            finish();
-        }, 2000);
+        getPermission();
+
+    }
+
+    /**
+     * 获取权限
+     */
+    private void getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            RxPermissions.getInstance(AppDelegate.getAppContext())
+                    .request(Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                    .subscribe(grant -> {
+                        if (!grant) {
+                            finish();
+                        } else {
+                            //延迟2S跳转
+                            new Handler().postDelayed(() -> {
+                                Intent intent = new Intent(SplashActivity.this, SidebarMainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }, 2000);
+                        }
+                    });
+        }
+
     }
 
     private void jumpToShareCode(String shareCode) {
