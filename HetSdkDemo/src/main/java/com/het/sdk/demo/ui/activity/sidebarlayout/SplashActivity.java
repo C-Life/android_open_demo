@@ -68,6 +68,12 @@ public class SplashActivity extends BaseHetActivity {
                             }, 2000);
                         }
                     });
+        } else {
+            new Handler().postDelayed(() -> {
+                Intent intent = new Intent(SplashActivity.this, SidebarMainActivity.class);
+                startActivity(intent);
+                finish();
+            }, 2000);
         }
 
     }
