@@ -99,7 +99,7 @@ dependencies {
     //百度推送
     compile files('libs/pushservice-5.9.0.59.jar')
     //SDK引用库形式
-    compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.3-SNAPSHOT'
+    compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.4-SNAPSHOT'
 //    compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.3-SNAPSHOT'
 
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'

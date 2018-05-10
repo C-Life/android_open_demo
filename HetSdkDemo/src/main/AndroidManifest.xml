@@ -350,6 +350,15 @@
             android:name=".ui.activity.device.ControlLedActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.h5control.H5ComWifiControlActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.h5control.H5ComNbControlActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.h5control.H5ComZigbeeControlActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.device.BleCommonControlActivity"
             android:screenOrientation="portrait" />
         <activity

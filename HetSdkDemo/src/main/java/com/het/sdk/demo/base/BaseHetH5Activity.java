@@ -37,6 +37,9 @@ import com.tencent.smtt.sdk.WebViewClient;
 
 import butterknife.Bind;
 
+/**
+ * 设备H5控制  旧设备H5控制
+ */
 public abstract class BaseHetH5Activity extends BaseHetActivity implements IAppJavaScriptsInterface {
 
     @Bind(R.id.rl_h5_container)

@@ -19,7 +19,7 @@ import com.het.sdk.demo.utils.UIJsonConfig;
 
 /**
  * Created by liuzh on 2017-10-23.
- * 设备H5控制
+ * 设备H5控制  旧设备H5控制  wifi设备控制建议采用H5ComWifiControlActivity
  */
 
 public class H5ControlLedActivity extends BaseHetH5Activity {
@@ -33,7 +33,7 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
     @Override
     protected void initData() {
         super.initData();
-        RxManage.getInstance().register("Qr_device_url",url->{
+        RxManage.getInstance().register("Qr_device_url", url -> {
             mHtmlFiveManager.loadUrl((String) url);
         });
     }
@@ -41,7 +41,7 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
     @Override
     protected void initTopBarView() {
         mTitleView.setTitle("设备H5控制");
-        mTitleView.setUpTextOption("扫描", v->{
+        mTitleView.setUpTextOption("扫描", v -> {
             startCamera();
         });
         mTitleView.setBackground(UIJsonConfig.getInstance(mContext).setNavBackground_color());
@@ -68,7 +68,7 @@ public class H5ControlLedActivity extends BaseHetH5Activity {
                             jumpToTarget(QrScanActivity.class);
                         }
                     });
-        }else {
+        } else {
             jumpToTarget(QrScanActivity.class);
         }
     }

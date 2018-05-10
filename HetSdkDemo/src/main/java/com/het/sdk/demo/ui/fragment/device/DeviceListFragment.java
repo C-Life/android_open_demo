@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.google.gson.reflect.TypeToken;
 import com.het.basic.base.RxManage;
+import com.het.basic.model.DeviceBean;
 import com.het.basic.utils.GsonUtil;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.model.DeviceModel;
@@ -23,6 +24,7 @@ import com.het.sdk.demo.ui.activity.MainActivity;
 import com.het.sdk.demo.ui.activity.device.BleCommonControlActivity;
 import com.het.sdk.demo.ui.activity.device.ControlLedActivity;
 import com.het.sdk.demo.ui.activity.device.H5ControlLedActivity;
+import com.het.sdk.demo.ui.activity.h5control.H5ComWifiControlActivity;
 import com.het.sdk.demo.ui.activity.sidebarlayout.SidebarMainActivity;
 import com.het.sdk.demo.utils.Constants;
 import com.het.sdk.demo.utils.MacIMEIBindHelper;
@@ -92,9 +94,13 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
                 ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
             } else {//WIFI -- H5控制
                 //H5 控制
-                ((BaseHetActivity) getActivity()).jumpToTarget(H5ControlLedActivity.class, bundle);
+                DeviceBean deviceBean=new DeviceBean();
+                deviceBean.setDeviceId(deviceModel.getDeviceId());
+                deviceBean.setProductId(deviceModel.getProductId());
+                H5ComWifiControlActivity.startH5ComWifiControlActivity(getActivity(),deviceBean);
             }
         });
+
         mAdapter.setISwipeMenuClickListener((var1, var2) -> {
             mPresenter.delDevice(deviceModels.get(var2), new IHetCallback() {
                 @Override
