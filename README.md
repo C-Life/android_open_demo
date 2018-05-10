@@ -33,12 +33,12 @@ SDK 提供了以下功能模块：
 集成了第三方登录的gradle依赖
 
 	//引用库形式 集成了第三方登录(目前只支持微信、QQ和新浪微博)的引用
-	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.3-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.4-SNAPSHOT'
 
 基础SDK的gradle依赖
 
 	//引用库形式
-	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.3-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.4-SNAPSHOT'
 
 模组注册
 
@@ -576,8 +576,8 @@ HetDeviceListApi.getInstance().getSubTypeListProduct() 获取APP支持绑定的�
 | productName | string | 设备型号名称 |
 | productCode | string | 设备型号编码 |
 | productIcon | string | 设备型号图标 |
-| moduleId | number | 模块类型（1-WiFi，2-蓝牙，3-音频，4-GSM，5-红外，6-直连，8-zigbee，9-ap模式） |
-| moduleType | number | 设备型号图标 |
+| moduleId | number | 模块ID |
+| moduleType | number | 模块类型（1-WiFi，2-蓝牙，3-音频，4-GSM，5-红外，6-直连，8-zigbee，9-ap模式） |
 | moduleName | string | 模块名称 |
 | remark | string | 备注 |
 | radiocastName | string | 设备广播名 |
