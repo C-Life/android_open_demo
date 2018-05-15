@@ -387,9 +387,13 @@
     <string name="real_time_data">实时数据</string>
     <string name="send_control_data">发送控制数据</string>
     <string name="history_data">历史数据</string>
-
-
     <string name="code_auth">验证码三方授权</string>
 
+    <string name="detail_type">型号:</string>
+    <string name="detail_mac">MAC:</string>
+    <string name="detail_name">设备名称</string>
+    <string name="detail_share">设备分享给好友</string>
+    <string name="detail_qr">设备二维码扫描调试</string>
+    <string name="detail_error">请选择具体设备再试</string>
 
 </resources>

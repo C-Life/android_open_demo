@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.het.basic.base.RxManage;
 import com.het.basic.model.DeviceBean;
 import com.het.h5.sdk.base.H5CommonBaseControlActivity;
 import com.het.h5.sdk.callback.IMethodCallBack;
@@ -13,6 +14,7 @@ import com.het.log.Logc;
 import com.het.open.lib.api.HetWifiDeviceControlApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
+import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
 import com.tencent.smtt.export.external.interfaces.SslError;
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
@@ -54,6 +56,9 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
                 sslErrorHandler.proceed();//证书忽略
             }
         });
+        RxManage.getInstance().register("Qr_device_url", url -> {
+            this.h5BridgeManager.loadUrl((String) url);
+        });
 
     }
 
@@ -63,6 +68,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
         if (deviceBean != null) {
             HetWifiDeviceControlApi.getInstance().stop(deviceBean.getDeviceId());
         }
+        RxManage.getInstance().unregister("Qr_device_url");
 
     }
 
@@ -120,12 +126,12 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
         HetWifiDeviceControlApi.getInstance().sendDataToDevice(new IHetCallback() {
             @Override
             public void onSuccess(int code, String msg) {
-
+                iMethodCallBack.onSucess(code,msg);
             }
 
             @Override
             public void onFailed(int code, String msg) {
-
+                iMethodCallBack.onFailed(code,msg);
             }
         }, deviceBean.getDeviceId(), data);
 
@@ -134,8 +140,6 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
 
     @Override
     public void onRightClick() {
-
+        DeviceDetailActivity.startDeviceDetailActivity(mContext, deviceBean);
     }
-
-
 }

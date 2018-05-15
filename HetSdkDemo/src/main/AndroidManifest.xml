@@ -392,7 +392,12 @@
         <activity
             android:name=".ui.activity.auth.ThirdAuthActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.bind.MacImeiBindActivity"></activity>
+        <activity
+            android:name=".ui.activity.bind.MacImeiBindActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.device.DeviceDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

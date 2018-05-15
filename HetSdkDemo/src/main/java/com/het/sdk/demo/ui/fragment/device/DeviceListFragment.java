@@ -96,7 +96,12 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
                 //H5 控制
                 DeviceBean deviceBean=new DeviceBean();
                 deviceBean.setDeviceId(deviceModel.getDeviceId());
+                deviceBean.setProductIcon(deviceModel.getProductIcon());
+                deviceBean.setProductCode(deviceModel.getProductCode());
+                deviceBean.setDeviceName(deviceModel.getDeviceName());
+                deviceBean.setMacAddress(deviceModel.getMacAddress());
                 deviceBean.setProductId(deviceModel.getProductId());
+                deviceBean.setShare(deviceModel.getShare());
                 H5ComWifiControlActivity.startH5ComWifiControlActivity(getActivity(),deviceBean);
             }
         });
