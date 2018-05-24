@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.het.basic.base.RxManage;
 import com.het.basic.model.DeviceBean;
 import com.het.h5.sdk.base.H5CommonBaseControlActivity;
 import com.het.h5.sdk.callback.IMethodCallBack;
@@ -13,6 +14,7 @@ import com.het.log.Logc;
 import com.het.open.lib.api.HetNbDeviceControlApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
+import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
 
 
 /**
@@ -42,32 +44,33 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        RxManage.getInstance().register("Qr_device_url", url -> {
+            this.h5BridgeManager.loadUrl((String) url);
+        });
     }
-
 
 
     @Override
     protected void initControlData() {
 
-        HetNbDeviceControlApi.getInstance().start(deviceBean.getDeviceId(),iWifiDeviceData);
+        HetNbDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
     }
 
     @Override
     protected void send(String data, IMethodCallBack iMethodCallBack) {
-        Logc.d(TAG,data);
+        Logc.d(TAG, data);
         if (!TextUtils.isEmpty(data)) {
             HetNbDeviceControlApi.getInstance().sendOfflineDataToDevice(new IHetCallback() {
                 @Override
-                public void onSuccess(int i, String s) {
-
+                public void onSuccess(int code, String msg) {
+                    iMethodCallBack.onSucess(code, msg);
                 }
 
                 @Override
-                public void onFailed(int i, String s) {
-
+                public void onFailed(int code, String msg) {
+                    iMethodCallBack.onFailed(code, msg);
                 }
-            },deviceBean.getDeviceId(),data);
+            }, deviceBean.getDeviceId(), data);
 
         }
     }
@@ -88,27 +91,20 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
     protected void onDestroy() {
         super.onDestroy();
         HetNbDeviceControlApi.getInstance().stop(deviceBean.getDeviceId());
-
+        RxManage.getInstance().unregister("Qr_device_url");
     }
 
 
     @Override
     public void onRightClick() {
-//        Intent intent = new Intent(this, DeviceDetailActivity.class);
-//        intent.putExtra("DeviceBean", deviceBean);
-//        try {
-//            startActivity(intent);
-//        } catch (ActivityNotFoundException e) {
-//            Logc.e(TAG, e);
-//        }
-
+        DeviceDetailActivity.startDeviceDetailActivity(mContext, deviceBean);
     }
 
     IWifiDeviceData iWifiDeviceData = new IWifiDeviceData() {
         @Override
         public void onGetConfigData(String jsonData) {
             Logc.d("onGetConfigData: ", jsonData);
-            if (h5BridgeManager!=null){
+            if (h5BridgeManager != null) {
                 h5BridgeManager.updateConfigData(jsonData);
             }
         }
@@ -116,7 +112,7 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetRunData(String jsonData) {
             Logc.d("onGetRunData: ", jsonData);
-            if (h5BridgeManager!=null){
+            if (h5BridgeManager != null) {
                 h5BridgeManager.updateRunData(jsonData);
             }
         }
@@ -124,14 +120,14 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetErrorData(String jsonData) {
             Logc.d("onGetErrorData: " + jsonData);
-            if (h5BridgeManager!=null){
+            if (h5BridgeManager != null) {
                 h5BridgeManager.updateConfigData(jsonData);
             }
         }
 
         @Override
         public void onDeviceStatues(int onlineStatus) {
-            if (h5BridgeManager!=null){
+            if (h5BridgeManager != null) {
                 h5BridgeManager.updateDeviceState(onlineStatus);
             }
         }
@@ -141,7 +137,6 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
             Logc.d("onDataError: " + msg + " code " + code);
         }
     };
-
 
 
 }

@@ -24,6 +24,7 @@ import com.het.sdk.demo.ui.activity.MainActivity;
 import com.het.sdk.demo.ui.activity.device.BleCommonControlActivity;
 import com.het.sdk.demo.ui.activity.device.ControlLedActivity;
 import com.het.sdk.demo.ui.activity.device.H5ControlLedActivity;
+import com.het.sdk.demo.ui.activity.h5control.H5ComNbControlActivity;
 import com.het.sdk.demo.ui.activity.h5control.H5ComWifiControlActivity;
 import com.het.sdk.demo.ui.activity.sidebarlayout.SidebarMainActivity;
 import com.het.sdk.demo.utils.Constants;
@@ -79,30 +80,29 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
             DeviceModel deviceModel = (DeviceModel) o;
             Bundle bundle = new Bundle();
             bundle.putSerializable("DeviceModel", (DeviceModel) o);
+            DeviceBean deviceBean = new DeviceBean();
+            deviceBean.setDeviceId(deviceModel.getDeviceId());
+            deviceBean.setProductIcon(deviceModel.getProductIcon());
+            deviceBean.setProductCode(deviceModel.getProductCode());
+            deviceBean.setDeviceName(deviceModel.getDeviceName());
+            deviceBean.setMacAddress(deviceModel.getMacAddress());
+            deviceBean.setProductId(deviceModel.getProductId());
+            deviceBean.setShare(deviceModel.getShare());
 
-
-            if (((DeviceModel) o).getModuleType() == 2) {//蓝牙控制
-                //水质检测仪  h5控制（特殊处理）
+            if (((DeviceModel) o).getModuleType() == 2) {//蓝牙控制示例
+                //水质检测仪  h5控制示例（特殊处理）
                 if (deviceModel.getDeviceTypeId() == 70 && deviceModel.getDeviceSubtypeId() == 3) {
                     ((BaseHetActivity) getActivity()).jumpToTarget(H5ControlLedActivity.class, bundle);
                 } else {
-                    //原生控制
+                    //原生蓝牙控制示例
                     ((BaseHetActivity) getActivity()).jumpToTarget(BleCommonControlActivity.class, bundle);
                 }
-            } else if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {//WIFI -- 舒眠灯原生控制
-                //原生 控制
+            } else if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {//WIFI -- 舒眠灯原生控制示例
                 ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
-            } else {//WIFI -- H5控制
-                //H5 控制
-                DeviceBean deviceBean=new DeviceBean();
-                deviceBean.setDeviceId(deviceModel.getDeviceId());
-                deviceBean.setProductIcon(deviceModel.getProductIcon());
-                deviceBean.setProductCode(deviceModel.getProductCode());
-                deviceBean.setDeviceName(deviceModel.getDeviceName());
-                deviceBean.setMacAddress(deviceModel.getMacAddress());
-                deviceBean.setProductId(deviceModel.getProductId());
-                deviceBean.setShare(deviceModel.getShare());
-                H5ComWifiControlActivity.startH5ComWifiControlActivity(getActivity(),deviceBean);
+            } else if (deviceModel.getModuleType() == 4 && deviceModel.getModuleId() == 82) {//nbIot设备 h5控制示例
+                H5ComNbControlActivity.startH5ComNbControlActivity(getActivity(), deviceBean);
+            } else {//WIFI -- H5控制示例
+                H5ComWifiControlActivity.startH5ComWifiControlActivity(getActivity(), deviceBean);
             }
         });
 
