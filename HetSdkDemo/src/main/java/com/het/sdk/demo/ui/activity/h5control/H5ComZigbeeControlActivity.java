@@ -2,9 +2,11 @@ package com.het.sdk.demo.ui.activity.h5control;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.het.basic.base.RxManage;
 import com.het.basic.model.DeviceBean;
 import com.het.h5.sdk.base.H5CommonBaseControlActivity;
 import com.het.h5.sdk.callback.IMethodCallBack;
@@ -13,6 +15,12 @@ import com.het.log.Logc;
 import com.het.open.lib.api.HetZigbeeDeviceControlApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
+import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
+import com.tencent.smtt.export.external.interfaces.SslError;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 /**
  * -----------------------------------------------------------------
@@ -27,7 +35,7 @@ import com.het.open.lib.callback.IWifiDeviceData;
 
 
 public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
-    private final String TAG =  H5ComZigbeeControlActivity.class.getSimpleName();
+    private final String TAG = H5ComZigbeeControlActivity.class.getSimpleName();
 
 
     public static void startH5ComZigbeeControlActivity(Context context, DeviceBean deviceBean) {
@@ -41,33 +49,51 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.mWebView.setWebViewClient(new WebViewClient() {
+            //是否在webview内加载页面
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    view.loadUrl(request.getUrl().toString());
+                } else {
+                    view.loadUrl(request.toString());
+                }
+                return true;
+            }
 
+            @Override
+            public void onReceivedSslError(WebView var1, SslErrorHandler sslErrorHandler, SslError var3) {
+                sslErrorHandler.proceed();//证书忽略
+            }
+        });
+        RxManage.getInstance().register("Qr_device_url", url -> {
+            this.h5BridgeManager.loadUrl((String) url);
+        });
 
     }
-
 
 
     @Override
     protected void initControlData() {
 
-        HetZigbeeDeviceControlApi.getInstance().start(deviceBean.getDeviceId(),iWifiDeviceData);
+        HetZigbeeDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
     }
 
     @Override
     protected void send(String data, IMethodCallBack iMethodCallBack) {
-        Logc.d(TAG,data);
+        Logc.d(TAG, data);
         if (!TextUtils.isEmpty(data)) {
             HetZigbeeDeviceControlApi.getInstance().sendDataToDevice(new IHetCallback() {
                 @Override
                 public void onSuccess(int i, String s) {
-
+                    iMethodCallBack.onSucess(i, s);
                 }
 
                 @Override
                 public void onFailed(int i, String s) {
-
+                    iMethodCallBack.onSucess(i, s);
                 }
-            },deviceBean.getDeviceId(),data);
+            }, deviceBean.getDeviceId(), data);
 
         }
     }
@@ -88,50 +114,52 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     protected void onDestroy() {
         super.onDestroy();
         HetZigbeeDeviceControlApi.getInstance().stop(deviceBean.getDeviceId());
-
+        RxManage.getInstance().unregister("Qr_device_url");
     }
 
 
     @Override
     public void onRightClick() {
-//        Intent intent = new Intent(this, DeviceDetailActivity.class);
-//        intent.putExtra("DeviceBean", deviceBean);
-//        try {
-//            startActivity(intent);
-//        } catch (ActivityNotFoundException e) {
-//            Logc.e(TAG, e);
-//        }
-
+        DeviceDetailActivity.startDeviceDetailActivity(mContext, deviceBean);
     }
 
     private IWifiDeviceData iWifiDeviceData = new IWifiDeviceData() {
         @Override
         public void onGetConfigData(String jsonData) {
             Logc.d("onGetConfigData: ", jsonData);
-            if (h5BridgeManager!=null){
-                h5BridgeManager.updateConfigData(jsonData);
+            if (!TextUtils.isEmpty(jsonData)) {
+                if (h5BridgeManager != null) {
+                    h5BridgeManager.updateConfigData(jsonData);
+                }
             }
+
         }
 
         @Override
         public void onGetRunData(String jsonData) {
             Logc.d("onGetRunData: ", jsonData);
-            if (h5BridgeManager!=null){
-                h5BridgeManager.updateRunData(jsonData);
+            if (!TextUtils.isEmpty(jsonData)) {
+                if (h5BridgeManager != null) {
+                    h5BridgeManager.updateConfigData(jsonData);
+                }
             }
+
         }
 
         @Override
         public void onGetErrorData(String jsonData) {
             Logc.d("onGetErrorData: " + jsonData);
-            if (h5BridgeManager!=null){
-                h5BridgeManager.updateConfigData(jsonData);
+            if (!TextUtils.isEmpty(jsonData)) {
+                if (h5BridgeManager != null) {
+                    h5BridgeManager.updateErrorData(jsonData);
+                }
             }
+
         }
 
         @Override
         public void onDeviceStatues(int onlineStatus) {
-            if (h5BridgeManager!=null){
+            if (h5BridgeManager != null) {
                 h5BridgeManager.updateDeviceState(onlineStatus);
             }
         }

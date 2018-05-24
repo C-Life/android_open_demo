@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.het.basic.base.RxManage;
 import com.het.basic.model.DeviceBean;
@@ -81,25 +82,34 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetConfigData(String jsonData) {
             Logc.d("onGetConfigData: ", jsonData);
-            if (h5BridgeManager != null) {
-                h5BridgeManager.updateConfigData(jsonData);
+            if (!TextUtils.isEmpty(jsonData)){
+                if (h5BridgeManager != null) {
+                    h5BridgeManager.updateConfigData(jsonData);
+                }
             }
+
         }
 
         @Override
         public void onGetRunData(String jsonData) {
             Logc.d("onGetRunData: ", jsonData);
-            if (h5BridgeManager != null) {
-                h5BridgeManager.updateRunData(jsonData);
+            if (!TextUtils.isEmpty(jsonData)){
+                if (h5BridgeManager != null) {
+                    h5BridgeManager.updateRunData(jsonData);
+                }
             }
+
         }
 
         @Override
         public void onGetErrorData(String jsonData) {
             Logc.d("onGetErrorData: " + jsonData);
-            if (h5BridgeManager != null) {
-                h5BridgeManager.updateConfigData(jsonData);
+            if (!TextUtils.isEmpty(jsonData)){
+                if (h5BridgeManager != null) {
+                    h5BridgeManager.updateErrorData(jsonData);
+                }
             }
+
         }
 
         @Override
