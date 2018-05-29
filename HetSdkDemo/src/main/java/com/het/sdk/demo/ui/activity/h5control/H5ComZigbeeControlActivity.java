@@ -2,7 +2,6 @@ package com.het.sdk.demo.ui.activity.h5control;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -16,11 +15,6 @@ import com.het.open.lib.api.HetZigbeeDeviceControlApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
 import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
-import com.tencent.smtt.export.external.interfaces.SslError;
-import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
-import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 
 /**
  * -----------------------------------------------------------------
@@ -49,23 +43,6 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mWebView.setWebViewClient(new WebViewClient() {
-            //是否在webview内加载页面
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view.loadUrl(request.getUrl().toString());
-                } else {
-                    view.loadUrl(request.toString());
-                }
-                return true;
-            }
-
-            @Override
-            public void onReceivedSslError(WebView var1, SslErrorHandler sslErrorHandler, SslError var3) {
-                sslErrorHandler.proceed();//证书忽略
-            }
-        });
         RxManage.getInstance().register("Qr_device_url", url -> {
             this.h5BridgeManager.loadUrl((String) url);
         });
