@@ -17,6 +17,8 @@ public class MacIMEIBindHelper {
 
     public static final int BIND_TYPE_MAC = 6;
 
+    public static final int BIND_TYPE_MZigBee = 8;
+
     private MacIMEIBindHelper() {
         //no instance
     }
@@ -38,7 +40,7 @@ public class MacIMEIBindHelper {
     }
 
     public boolean isBindTypeMacOrIMEI(int type) {
-        return type == BIND_TYPE_MAC || type == BIND_TYPE_IMEI;
+        return type == BIND_TYPE_MAC || type == BIND_TYPE_IMEI || type == BIND_TYPE_MZigBee;
     }
 
     private OnQrScanListener mOnQrScanListener;
@@ -83,7 +85,6 @@ public class MacIMEIBindHelper {
     public interface OnBindListener {
         /**
          * 设备绑定成功的回调
-         *
          */
         void bindSuccess(String deviceBean);
     }
