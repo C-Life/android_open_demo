@@ -153,10 +153,10 @@ public class QrScanActivity extends BaseHetActivity implements QRCodeView.Delega
             finish();
             return;
         }
-        if (!StringUtils.isNull(bean.getM()) || !StringUtils.isNull(bean.getI())) { //绑定gprs设备
+        if (!StringUtils.isNull(bean.getM()) || !StringUtils.isNull(bean.getI())) { //直连绑定
             startGprsBind(bean);
-        } else if (bean.getA() != 0) {//wifi 蓝牙绑定
-            startQrDeviceBind(url);
+        } else if (bean.getA() != 0) {//查询之后进行绑定
+            startQrDeviceBind(url, bean);
         }
     }
 
@@ -173,8 +173,17 @@ public class QrScanActivity extends BaseHetActivity implements QRCodeView.Delega
                     QrScanActivity.this.finish();
                     return;
                 }
+            } else {
+                if (s != null && !StringUtils.isNull(s.getMsg())) {
+                    ToastUtil.showToast(QrScanActivity.this, s.getMsg());
+                }
+                QrScanActivity.this.finish();
             }
         }, e -> {
+            if (!StringUtils.isNull(e.getMessage())) {
+                ToastUtil.showToast(QrScanActivity.this, e.getMessage());
+            }
+            QrScanActivity.this.finish();
         });
     }
 
@@ -183,7 +192,7 @@ public class QrScanActivity extends BaseHetActivity implements QRCodeView.Delega
      *
      * @param url 扫描结果
      */
-    private void startQrDeviceBind(String url) {
+    private void startQrDeviceBind(String url, QrCodeModel qrCodeModel) {
         HetQrCodeApi.getInstance().dealQrCode(new IHetCallback() {
             @Override
             public void onSuccess(int code, String msg) {
@@ -204,10 +213,13 @@ public class QrScanActivity extends BaseHetActivity implements QRCodeView.Delega
                 Bundle bund = new Bundle();
                 bund.putSerializable(VALUE_KEY, deviceProductBean);
 
-                if (deviceProductBean.getBindType() == 1 || deviceProductBean.getBindType() == 9) {
+                if (deviceProductBean.getBindType() == 1 || deviceProductBean.getBindType() == 9) {//WIFI绑定
                     AppTools.startForwardActivity(QrScanActivity.this, WifiBindActivity.class, bund, Boolean.valueOf(true));
-                } else if (deviceProductBean.getBindType() == 2) {
+                } else if (deviceProductBean.getBindType() == 2) {//BLE绑定
                     AppTools.startForwardActivity(QrScanActivity.this, BleBindActivity.class, bund, Boolean.valueOf(true));
+                } else {//直连绑定
+                    MacImeiBindActivity.startBindAty(mContext, deviceProductBean, qrCodeModel);
+                    finish();
                 }
             }
 
