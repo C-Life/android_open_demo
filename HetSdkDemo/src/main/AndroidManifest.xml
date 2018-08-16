@@ -359,6 +359,9 @@
             android:name=".ui.activity.h5control.H5ComZigbeeControlActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.h5control.H5ComBle3AControlActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.device.BleCommonControlActivity"
             android:screenOrientation="portrait" />
         <activity

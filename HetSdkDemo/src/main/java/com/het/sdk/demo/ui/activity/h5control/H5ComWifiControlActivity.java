@@ -2,13 +2,12 @@ package com.het.sdk.demo.ui.activity.h5control;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.het.basic.base.RxManage;
-import com.het.basic.model.DeviceBean;
 import com.het.h5.sdk.base.H5CommonBaseControlActivity;
+import com.het.h5.sdk.bean.H5PackParamBean;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
@@ -16,11 +15,7 @@ import com.het.open.lib.api.HetWifiDeviceControlApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
 import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
-import com.tencent.smtt.export.external.interfaces.SslError;
-import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
-import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+import com.het.sdk.demo.utils.SDKAppUtil;
 
 /**
  * wifi设备h5控制界面容器
@@ -29,12 +24,11 @@ import com.tencent.smtt.sdk.WebViewClient;
 public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
     private final String TAG = H5ComWifiControlActivity.class.getSimpleName();
 
-    public static void startH5ComWifiControlActivity(Context context, DeviceBean deviceBean) {
+    public static void startH5ComWifiControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComWifiControlActivity.class);
-        intent.putExtra(H5VersionUtil.DEVICE_BEAN, deviceBean);
+        intent.putExtra(H5VersionUtil.H5_PACK_PARAM_BEAN, h5PackParamBean);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
-
     }
 
     @Override
@@ -49,7 +43,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (deviceBean != null) {
+        if (h5PackParamBean.getDeviceBean() != null) {
             HetWifiDeviceControlApi.getInstance().stop(deviceBean.getDeviceId());
         }
         RxManage.getInstance().unregister("Qr_device_url");
@@ -58,14 +52,19 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
 
     @Override
     protected void initControlData() {
-        HetWifiDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
+        if (SDKAppUtil.isSupportUdp(deviceBean)) {
+            HetWifiDeviceControlApi.getInstance().startWithUdp(deviceBean, iWifiDeviceData);
+        } else {
+            Logc.e(TAG, "not support UDP");
+            HetWifiDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
+        }
     }
 
     private IWifiDeviceData iWifiDeviceData = new IWifiDeviceData() {
         @Override
         public void onGetConfigData(String jsonData) {
             Logc.d("onGetConfigData: ", jsonData);
-            if (!TextUtils.isEmpty(jsonData)){
+            if (!TextUtils.isEmpty(jsonData)) {
                 if (h5BridgeManager != null) {
                     h5BridgeManager.updateConfigData(jsonData);
                 }
@@ -76,7 +75,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetRunData(String jsonData) {
             Logc.d("onGetRunData: ", jsonData);
-            if (!TextUtils.isEmpty(jsonData)){
+            if (!TextUtils.isEmpty(jsonData)) {
                 if (h5BridgeManager != null) {
                     h5BridgeManager.updateRunData(jsonData);
                 }
@@ -87,7 +86,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetErrorData(String jsonData) {
             Logc.d("onGetErrorData: " + jsonData);
-            if (!TextUtils.isEmpty(jsonData)){
+            if (!TextUtils.isEmpty(jsonData)) {
                 if (h5BridgeManager != null) {
                     h5BridgeManager.updateErrorData(jsonData);
                 }
@@ -119,14 +118,14 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
         HetWifiDeviceControlApi.getInstance().sendDataToDevice(new IHetCallback() {
             @Override
             public void onSuccess(int code, String msg) {
-                iMethodCallBack.onSucess(code,msg);
+                iMethodCallBack.onSucess(code, msg);
             }
 
             @Override
             public void onFailed(int code, String msg) {
-                iMethodCallBack.onFailed(code,msg);
+                iMethodCallBack.onFailed(code, msg);
             }
-        }, deviceBean.getDeviceId(), data);
+        }, h5PackParamBean.getDeviceBean().getDeviceId(), data);
 
 
     }

@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -29,6 +30,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.het.basic.model.DeviceBean;
 import com.het.log.Logc;
 import com.het.sdk.demo.AppApplication;
 
@@ -86,6 +88,18 @@ public class SDKAppUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * @param deviceBean 设备信息
+     * @return 是否支持小循环
+     */
+    public static boolean isSupportUdp(DeviceBean deviceBean) {
+        if (TextUtils.isEmpty(deviceBean.getDeviceId())) return false;
+        if (TextUtils.isEmpty(deviceBean.getMacAddress())) return false;
+        if (deviceBean.getProductId() == 0) return false;
+        if (TextUtils.isEmpty(deviceBean.getUserKey())) return false;
+        return true;
     }
 
     /**

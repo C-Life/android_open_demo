@@ -2,13 +2,12 @@ package com.het.sdk.demo.ui.activity.h5control;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.het.basic.base.RxManage;
-import com.het.basic.model.DeviceBean;
 import com.het.h5.sdk.base.H5CommonBaseControlActivity;
+import com.het.h5.sdk.bean.H5PackParamBean;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
@@ -16,11 +15,6 @@ import com.het.open.lib.api.HetNbDeviceControlApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
 import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
-import com.tencent.smtt.export.external.interfaces.SslError;
-import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
-import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 
 
 /**
@@ -38,9 +32,9 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
     private final String TAG = H5ComNbControlActivity.class.getSimpleName();
 
 
-    public static void startH5ComNbControlActivity(Context context, DeviceBean deviceBean) {
+    public static void startH5ComNbControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComNbControlActivity.class);
-        intent.putExtra(H5VersionUtil.DEVICE_BEAN, deviceBean);
+        intent.putExtra(H5VersionUtil.H5_PACK_PARAM_BEAN ,h5PackParamBean);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -75,7 +69,7 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
                 public void onFailed(int code, String msg) {
                     iMethodCallBack.onFailed(code, msg);
                 }
-            }, deviceBean.getDeviceId(), data);
+            }, h5PackParamBean.getDeviceBean().getDeviceId(), data);
 
         }
     }

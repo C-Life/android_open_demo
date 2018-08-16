@@ -33,12 +33,12 @@ SDK 提供了以下功能模块：
 集成了第三方登录的gradle依赖
 
 	//引用库形式 集成了第三方登录(目前只支持微信、QQ和新浪微博)的引用
-	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.4-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdk:1.1.5-SNAPSHOT'
 
 基础SDK的gradle依赖
 
 	//引用库形式
-	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.4-SNAPSHOT'
+	compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.5-SNAPSHOT'
 
 模组注册
 
@@ -781,7 +781,7 @@ HetCommonBleBindApi.getInstance().startBind() 启动蓝牙设备扫描绑定。�
 
  ![](https://i.imgur.com/b4qGgZi.png)
 
-具体的接口调用说明：
+接口调用示例：
 
 	HetCommonBleBindApi.getInstance().startBind(this, "" + deviceProductBean1.getProductId(), new ICommonBleBind() {
 	            @Override
@@ -817,6 +817,31 @@ HetCommonBleBindApi.getInstance().startBind() 启动蓝牙设备扫描绑定。�
 
 	//扫描到设备列表，选择其中一个设备，绑定到服务器
 	HetCommonBleBindApi.getInstance().bindToServer(deviceProductBean);
+
+#### 4.3.3.直连设备绑定
+开放平台同时也支持NBIoT、ZigBee、GPRS和内嵌android系统等多种物联网解决方案。采用直连绑定方式连接开放平台。  
+具体步骤：  
+
+* 设备上电连接开放平台注册MAC或IMEI码
+* 输入设备MAC或IMEI码
+* 调用HetGprsBindApi.getInstance().startBind 进行设备绑定
+
+
+接口调用示例：
+
+ 	HetGprsBindApi.getInstance().startBind(new IHetCallback() {
+            @Override
+            public void onSuccess(int code, String msg) {
+
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                CommonToast.showToast(MacImeiBindActivity.this, msg);
+                hideDialog();
+            }
+        }, mMac, mImei, mProductId);
+
 
 
 **绑定无法绑定？这里给出设备无法绑定的几种检查方法：**
@@ -1226,7 +1251,27 @@ WIFI设备控制具体可以分成3个步骤：
 
 第一步：设置接收设备数据的监听
 
-	HetWifiDeviceControApi.getInstance().start(deviceModel.getDeviceId(), deviceModel.getMacAddress());
+检查wifi设备是否支持UDP
+
+	/**
+     * @param deviceBean 设备信息
+     * @return 是否支持小循环
+     */
+    public static boolean isSupportUdp(DeviceBean deviceBean) {
+        if (TextUtils.isEmpty(deviceBean.getDeviceId())) return false;
+        if (TextUtils.isEmpty(deviceBean.getMacAddress())) return false;
+        if (deviceBean.getProductId() == 0) return false;
+        if (TextUtils.isEmpty(deviceBean.getUserKey())) return false;
+        return true;
+    }
+
+设置控制监听  
+
+	//支持小循环
+	HetWifiDeviceControlApi.getInstance().startWithUdp(deviceBean, iWifiDeviceData);
+
+	//不支持小循环
+	HetWifiDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
 	private IWifiDeviceData iWifiDeviceData = new IWifiDeviceData() {
 	        @Override
 	        public void onGetConfigData(String jsonData) {
@@ -1807,125 +1852,24 @@ SDK封装了H5插件下载和原生与H5通讯接口，开发者可以轻松实�
 
 开发者需要在开放平台上传完整的H5开发包待审核，审核通过之后才可以正常使用。
 
-### 3.2.初始化webView和H5交互接口
+### 3.2.H5控制
+根据设备类型，SDK提供了对应的H5控制接口。使用实例请参考提供的DEMO示例。
 
-#### 3.2.1.初始化webView
+#### 3.2.1.WIFI设备  
 
-SDK采用了X5内核的浏览服务，添加方式有2种：
-第一种：通过xml方式创建布局
+	H5ComWifiControlActivity.startH5ComWifiControlActivity(getActivity(), h5PackParamBean);
 
-	<com.tencent.smtt.sdk.WebView
-	        android:id="@+id/device_h5_web"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        />
+#### 3.2.2.蓝牙(3A协议)设备 
 
-	WebView webView = (WebView) findViewById(R.id.device_h5_web);
-第二种：代码动态创建
-		WebView webView = new WebView(mContext);
+	H5ComBle3AControlActivity.startH5Ble3AControlActivity(mContext,h5PackParamBean);
 
+#### 3.2.3.NBIoT设备  
+ 
+	H5ComNbControlActivity.startH5ComNbControlActivity(mContext,h5PackParamBean);
 
-注意：将源码和XML里的系统包和类替换为SDK里的包和类，如：
-android.webkit.WebChromeClient 替换成 com.tencent.smtt.sdk.WebChromeClient 。
+#### 3.2.4.ZigBee设备  
 
-#### 3.2.2.初始化H5交互接口
-
-	HtmlFiveManager htmlFiveManager = new HtmlFiveManager(activity, webView, iAppJavaScriptsInterface);
-
-HtmlFiveManager是封装了H5与Android原生的交互接口，通过IAppJavaScriptsInterface来暴露H5接口给原生和从原生获取数据。
-
-	IAppJavaScriptsInterface iAppJavaScriptsInterface = new IAppJavaScriptsInterface() {
-    	@Override
-    	public void send(String data, final IMethodCallBack methodCallBack) {
-        	//H5 het.send()调用的原生接口  这里可以实现设备发送控制命令
-    	}
-
-    	@Override
-    	public String getModeJson() {
-        	//H5 het.ready() 获取的原生信息
-        	return null;
-    	}
-
-    	@Override
-    	public void onWebViewCreate() {
-        	//界面加载完成时回调
-    	}
-
-    	@Override
-    	public void tips(String str) {
-        	//H5 het.toast()调用的原生接口
-    	}
-
-    	@Override
-    	public void setTitle(String title) {
-        	//H5 het.setTitle()调用的原生接口
-    	}
-
-    	@Override
-    	public void onLoadH5Failed(int errCode, String errMsg) {
-        	//界面加载失败时回调
-    	}
-
-    	@Override
-    	public void h5SendDataToNative(int i, String s, String s1, IH5CallBack ih5CallBack) {
-        	//H5 发送数据到 App 端
-    	}
-
-    	@Override
-    	public void h5GetDataFromNative(int i, String s, IH5CallBack ih5CallBack) {
-    	    //H5 从 App 端获取数据
-    	}
-	};
-
-### 3.3.加载H5插件
-
-	HetH5Api.getInstance().getH5ControlPlug(context,deviceBean);
-
-SDK会加载最新的H5插件（下载和检查更新）。加载成功会抛出HetH5PlugEvent.HET_EVENT_H5_PLUG_GET_LOCAL_URL_SUCCESS事件，加载失败会抛出HetH5PlugEvent.HET_EVENT_H5_PLUG_GET_LOCAL_URL_FAILED事件。
-
-### 3.4.监听H5插件加载成功与失败
-
-     RxManage.getInstance().register(HetH5PlugEvent.HET_EVENT_H5_PLUG_GET_LOCAL_URL_SUCCESS + model.getProductId(), o -> {
-            if (htmlFiveManager != null) {
-                String localPath = (String) o;
-                String path = Uri.fromFile(new File(localPath)).toString();
-                path += "/index.html";
-                htmlFiveManager.loadUrl(path);
-            }
-        });
-
-H5插件加载成功，调用htmlFiveManager.loadUrl(path); 加载H5页面展示UI。
-
-
-### 3.5.上传设备数据给H5
-
-上传运行数据：
-
-	htmlFiveManager.updateRunData(json);
-上传控制数据：
-
-	htmlFiveManager.updateConfigData(json);
-上传异常数据：
-
-	htmlFiveManager.updateErrorData(json);
-
-### 3.6.退出释放资源
-
-	@Override
-    public void onDestroy() {
-		if (webView != null) {
-    		webView.removeJavascriptInterface("bindJavaScript");
-    		if (webView.getSettings() != null) {
-        		webView.getSettings().setJavaScriptEnabled(false);
-    		}
-    		webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-    		webView.clearHistory();
-    		((ViewGroup)  webView.getParent()).removeView(mDevice_h5_web);
-    		webView.destroy();
-    		webView = null;
-		}
-	}
-
+	H5ComZigbeeControlActivity.startH5ComZigbeeControlActivity(mContext,h5PackParamBean);
 
 # 补充说明
 ## 1.SDK 第三方库支持

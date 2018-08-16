@@ -47,7 +47,6 @@ public class MacImeiBindActivity extends BaseHetActivity {
     private String mImei;
 
     public static void startBindAty(Context context, DeviceProductBean bean, QrCodeModel qrCodeModel) {
-        Logc.d("---------->QrBind, startBindAty");
         Intent intent = new Intent(context, MacImeiBindActivity.class);
         intent.putExtra(DEVICE_PRODUCT, bean);
         if (qrCodeModel != null) {
@@ -69,7 +68,6 @@ public class MacImeiBindActivity extends BaseHetActivity {
 
     @Override
     protected void initData() {
-        Logc.d("---------->QrBind, initData");
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(DEVICE_PRODUCT)) {
             initInfo((DeviceProductBean) extras.getSerializable(DEVICE_PRODUCT));
