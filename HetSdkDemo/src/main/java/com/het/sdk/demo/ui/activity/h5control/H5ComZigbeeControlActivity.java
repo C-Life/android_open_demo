@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.het.basic.base.RxManage;
-import com.het.basic.model.DeviceBean;
 import com.het.h5.sdk.base.H5CommonBaseControlActivity;
+import com.het.h5.sdk.bean.H5PackParamBean;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
@@ -31,14 +31,12 @@ import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
 public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     private final String TAG = H5ComZigbeeControlActivity.class.getSimpleName();
 
-
-    public static void startH5ComZigbeeControlActivity(Context context, DeviceBean deviceBean) {
+    public static void startH5ComZigbeeControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComZigbeeControlActivity.class);
-        intent.putExtra(H5VersionUtil.DEVICE_BEAN, deviceBean);
+        intent.putExtra(H5VersionUtil.H5_PACK_PARAM_BEAN, h5PackParamBean);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,6 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
         RxManage.getInstance().register("Qr_device_url", url -> {
             this.h5BridgeManager.loadUrl((String) url);
         });
-
     }
 
 

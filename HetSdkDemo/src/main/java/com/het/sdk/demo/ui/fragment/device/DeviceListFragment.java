@@ -26,6 +26,7 @@ import com.het.sdk.demo.ui.activity.device.ControlLedActivity;
 import com.het.sdk.demo.ui.activity.h5control.H5ComBle3AControlActivity;
 import com.het.sdk.demo.ui.activity.h5control.H5ComNbControlActivity;
 import com.het.sdk.demo.ui.activity.h5control.H5ComWifiControlActivity;
+import com.het.sdk.demo.ui.activity.h5control.H5ComZigbeeControlActivity;
 import com.het.sdk.demo.ui.activity.sidebarlayout.SidebarMainActivity;
 import com.het.sdk.demo.utils.Constants;
 import com.het.sdk.demo.utils.MacIMEIBindHelper;
@@ -90,23 +91,25 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
             deviceBean.setUserKey(deviceModel.getUserKey());
             deviceBean.setShare(deviceModel.getShare());
 
+            H5PackParamBean h5PackParamBean = new H5PackParamBean();
+            h5PackParamBean.setDeviceBean(deviceBean);
+
             if (((DeviceModel) o).getModuleType() == 2) {//蓝牙控制
-                H5PackParamBean h5PackParamBean=new H5PackParamBean();
-                h5PackParamBean.setDeviceBean(deviceBean);
-                H5ComBle3AControlActivity.startH5Ble3AControlActivity(mContext,h5PackParamBean);
+
+                H5ComBle3AControlActivity.startH5Ble3AControlActivity(mContext, h5PackParamBean);
             } else if (deviceModel.getDeviceTypeId() == 14 && deviceModel.getDeviceSubtypeId() == 3) {//WIFI -- 舒眠灯原生控制
                 //原生 控制
                 ((BaseHetActivity) getActivity()).jumpToTarget(ControlLedActivity.class, bundle);
             } else if (deviceModel.getModuleType() == 4 && deviceModel.getModuleId() == 82) {//NB
-                H5PackParamBean h5PackParamBean=new H5PackParamBean();
-                h5PackParamBean.setDeviceBean(deviceBean);
+
                 H5ComNbControlActivity.startH5ComNbControlActivity(getActivity(), h5PackParamBean);
+            } else if (deviceModel.getModuleType() == 8) {//ZigBee
+
+                H5ComZigbeeControlActivity.startH5ComZigbeeControlActivity(getActivity(), h5PackParamBean);
             } else {//WIFI -- H5控制
-                H5PackParamBean h5PackParamBean=new H5PackParamBean();
-                h5PackParamBean.setDeviceBean(deviceBean);
+
                 H5ComWifiControlActivity.startH5ComWifiControlActivity(getActivity(), h5PackParamBean);
             }
-
         });
 
         mAdapter.setISwipeMenuClickListener((var1, var2) -> {
