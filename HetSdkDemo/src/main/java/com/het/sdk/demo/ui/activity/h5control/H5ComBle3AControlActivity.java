@@ -136,7 +136,7 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
 
     private synchronized void updataRealData(String json){
         if (deviceBean!=null){
-            String path="v1/device/data/common/upload";
+            String path="/v1/device/data/common/upload";
             String  deviceId=deviceBean.getDeviceId();
             TreeMap<String, String> params=new TreeMap<>();
             params.put("deviceId", deviceId);

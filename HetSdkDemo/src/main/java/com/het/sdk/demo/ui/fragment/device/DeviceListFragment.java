@@ -90,6 +90,8 @@ public class DeviceListFragment extends BaseHetFragment<LoginPresenter> implemen
             deviceBean.setProductId(deviceModel.getProductId());
             deviceBean.setUserKey(deviceModel.getUserKey());
             deviceBean.setShare(deviceModel.getShare());
+            deviceBean.setDeviceTypeId(deviceModel.getDeviceTypeId());
+            deviceBean.setDeviceSubtypeId(deviceModel.getDeviceSubtypeId());
 
             H5PackParamBean h5PackParamBean = new H5PackParamBean();
             h5PackParamBean.setDeviceBean(deviceBean);
