@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.het.basic.base.RxManage;
+import com.het.basic.utils.ToastUtil;
 import com.het.bluetoothbase.utils.HexUtil;
 import com.het.bluetoothoperate.manager.BluetoothDeviceManager;
 import com.het.bluetoothoperate.mode.CmdIndexConstant;
@@ -17,6 +18,7 @@ import com.het.h5.sdk.callback.IH5BleHistroyCallBack;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
+import com.het.open.lib.api.HetThirdCloudAuthApi;
 import com.het.open.lib.callback.ICtrlCallback;
 import com.het.open.lib.callback.OnUpdateBleDataInView;
 import com.het.open.lib.callback.OnUpdateBleDataInViewImpl;
@@ -108,7 +110,7 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                     }
                     updataRealData(json);
 
-                }else if (type== CmdIndexConstant.HET_COMMAND_RUN_DATA_DEV ){
+                }else if (type==CmdIndexConstant.HET_COMMAND_RUN_DATA_DEV ){
                     sendBLEStatusData(json);
                 }
 
@@ -124,6 +126,14 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
             if (power > -1 && power <= 100) {
                 sendBLEPower(power);
             }
+        }
+
+        @Override
+        protected void onDeviceError(String error)  {
+            super.onDeviceError(error);
+            Logc.e(TAG, ":----error " + error);
+            //上报蓝牙设备电量
+//            ToastUtil.showToast(mContext,error);
         }
     };
 
@@ -176,7 +186,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         });
         deviceControlDelegate.onCreate(bleConfig);
         deviceControlDelegate.setOnUpdateBleDataInView(onUpdateBleDataInView);
-
     }
 
     @Override
@@ -210,7 +219,7 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
     @Override
     protected void getBLERealTimeDataCom(IH5BleCallBack ih5CallBack) {
         ih5BleCallBack = ih5CallBack;
-        Logc.d(TAG,"getBLERealTimeData1111");
+        Logc.d(TAG,"getBLERealTimeData");
         if (deviceControlDelegate != null) {
             if (!deviceControlDelegate.getConnected()) {
                 if (ih5BleCallBack!=null){
@@ -235,13 +244,36 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         }
     }
 
+    /**
+     * 同步BLE时间
+     * @param ih5CallBack H5回调
+     */
+    @Override
+    protected void setBLETimeDataCom(IH5BleCallBack ih5CallBack) {
+        ih5BleCallBack = ih5CallBack;
+        Logc.d(TAG, "setBLETimeData");
+        byte[] bytes = {0x00};/*0x00 utc  0x01 local time*/
+        if (deviceControlDelegate != null) {
+            if (!deviceControlDelegate.getConnected()) {
+                if (ih5BleCallBack != null) {
+                    ih5BleCallBack.onFailed("ble not connect");
+                }
+                reConnectBle();
+            } else {
+                if (deviceControlDelegate != null) {
+                    deviceControlDelegate.send(CmdIndexConstant.HET_COMMAND_SET_TIME_APP, bytes, iCtrlCallback, false);
+                }
+            }
+        }
+    }
+
     @Override
     protected void getBLEHistoryDataCom(IH5BleHistroyCallBack ih5BleHistroyCallBack) {
         Logc.d(TAG, "getBLEHistoryData");
         this.curh5BleHistroyCallBack=ih5BleHistroyCallBack;
         if (deviceControlDelegate != null) {
             if (deviceControlDelegate.getConnected()){
-               getHistroyData();
+                getHistroyData();
             }else {
                 if (ih5BleHistroyCallBack!=null){
                     ih5BleHistroyCallBack.onFailed("ble not connect");
@@ -293,6 +325,9 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         @Override
         public void onSucess() {
             Logc.d(TAG, "success");
+            if (ih5BleCallBack != null) {
+                ih5BleCallBack.onSucess(null);
+            }
         }
 
         @Override
