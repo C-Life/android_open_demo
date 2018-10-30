@@ -125,7 +125,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
             public void onFailed(int code, String msg) {
                 iMethodCallBack.onFailed(code, msg);
             }
-        }, h5PackParamBean.getDeviceBean().getDeviceId(), data);
+        }, h5PackParamBean.getDeviceBean(), data);
 
 
     }

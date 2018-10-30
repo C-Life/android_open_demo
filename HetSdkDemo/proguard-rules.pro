@@ -35,7 +35,6 @@
 ###################################################################################
 
 -dontwarn okio.**
--dontwarn com.thoughtworks.xstream.io.xml.StaxWriter
 -dontwarn java.nio.file.Files
 -dontwarn java.nio.file.Path
 -dontwarn java.nio.file.OpenOption
@@ -45,7 +44,6 @@
 -dontwarn com.android.volley.toolbox.**
 -dontwarn android.support.**
 -dontwarn com.google.android.gms.**
--dontwarn com.thoughtworks.xstream.**
 #----------------------------------------------------------------------------
 
 #---------------------------------默认保留区---------------------------------
@@ -150,6 +148,10 @@
 -dontwarn cn.sharesdk.**
 -dontwarn **.R$*
 
+#xstream
+-dontwarn com.thoughtworks.xstream.**
+-keep class com.thoughtworks.xstream.** {*;}
+
 #===========nineoldandroids-2.4.0.jar===========
 -keep public class com.nineoldandroids.** {*;}
 
@@ -179,10 +181,6 @@
 -keep class com.baidu.**{*; }
 #==============百度推送结束==============#
 
-#===========okhttp===========
--dontwarn com.squareup.okhttp3.**
--keep class com.squareup.okhttp3.** { *;}
--dontwarn okio.**
 # Retrofit
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
@@ -234,12 +232,6 @@
 -keepclassmembers class * {
     native <methods>;
 }
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
--dontwarn okhttp3.**
--dontwarn javax.annotation.**
--dontwarn com.android.volley.toolbox.**
--dontwarn com.facebook.infer.**
 
 # Keep our interfaces so they can be used by other ProGuard rules.
 # See http://sourceforge.net/p/proguard/bugs/466/
@@ -309,7 +301,6 @@
     <init>(java.lang.Throwable);
 }
 
-
 #==========EventBus==========
 -keepclassmembers class ** {
     public void onEvent*(**);
@@ -317,7 +308,6 @@
 -keepclassmembers class ** {
 public void xxxxxx(**);
 }
-
 
 #==========gson==========
 -keep class com.google.gson.** {*;}
@@ -338,8 +328,6 @@ static final long serialVersionUID;
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
-
-
 
 # ==========support-v4==========
 -dontwarn android.support.v4.**
@@ -404,10 +392,6 @@ static final long serialVersionUID;
 -keep public class com.het.basic.data.api.utils.** { *; }
 -keep public class com.het.basic.data.http.retrofit2.RetrofitManager { *; }
 -keep public class com.het.basic.data.http.okhttp.listener.DownloadProgressListener { *; }
-
-#====xstream库====
--dontwarn com.thoughtworks.xstream.**
--keep class com.thoughtworks.xstream.io.xml.** { *; }
 
 #-keep class com.third.factory.Const  { *; }
 -keep class com.hiflying.smartlink.SmartLinkedModule  { *; }
@@ -506,16 +490,18 @@ static final long serialVersionUID;
 	public <methods>;
 }
 
-# OkHttp
+#===========okhttp===========
+-dontwarn com.squareup.okhttp3.**
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp3.** { *;}
 -keep class okio.**{*;}
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
 
+-dontwarn com.android.volley.toolbox.**
+-dontwarn com.facebook.infer.**
 -dontwarn java.nio.file.*
 -dontwarn javax.annotation.**
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
-

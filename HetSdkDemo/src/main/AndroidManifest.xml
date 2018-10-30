@@ -320,6 +320,13 @@
 
         <!-- =====================百度推送结束=========================== -->
 
+        <!-- ====activeandroid 适配 Android8.0 ===== android:authorities="your package"==== -->
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.het.sdk.demo"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
 
         <!-- 以下是demoApp使用的Activity -->
         <activity
