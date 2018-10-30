@@ -67,14 +67,12 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         RxManage.getInstance().register("Qr_device_url", url -> {
             this.h5BridgeManager.loadUrl((String) url);
         });
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         RxManage.getInstance().unregister("Qr_device_url");
-
     }
 
     OnUpdateBleDataInView onUpdateBleDataInView = new OnUpdateBleDataInViewImpl() {
@@ -91,7 +89,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                 if (ih5BleCallBack != null) {
                     ih5BleCallBack.onSucess(dataJson);
                 }
-
             }
         }
 
@@ -113,13 +110,12 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                     h5BridgeManager.updateConfigData(json);
                 } else if (type == CmdIndexConstant.HET_COMMAND_CONFIG_DATA_DEV) {//控制数据
                     //协议数据转Json 下发H5
-                    if (!TextUtils.isEmpty(json)){
+                    if (!TextUtils.isEmpty(json)) {
                         h5BridgeManager.updateConfigData(json);
                     }
                 }
 
             }
-
         }
 
         @Override
@@ -136,15 +132,9 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         protected void onDeviceError(String error) {
             super.onDeviceError(error);
             Logc.e(TAG, ":----error " + error);
-            //上报蓝牙设备电量
 //            ToastUtil.showToast(mContext,error);
         }
     };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     protected void send(String data, IMethodCallBack methodCallBack) {
         if (deviceControlDelegate != null) {
@@ -175,9 +165,7 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                 });
             }
         }
-
     }
-
 
     @Override
     protected void initBleManagerCom() {
@@ -204,7 +192,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         if (deviceControlDelegate != null) {
             deviceControlDelegate.onDestroy();
             deviceControlDelegate = null;
-
         }
     }
 
@@ -219,8 +206,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
             }
             reConnectCount = 0;
         }
-
-
     }
 
     @Override
@@ -239,7 +224,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                 }
             }
         }
-
     }
 
     @Override
@@ -287,11 +271,8 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                     ih5BleHistroyCallBack.onFailed("ble not connect");
                 }
                 reConnectBle();
-                //hashSetSendData.add(CmdIndexConstant.HET_COMMAND_GET_HISTORY_DATA_APP);
             }
-
         }
-
     }
 
     private void getHistroyData() {
@@ -318,7 +299,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                         curh5BleHistroyCallBack.onProgess(i);
                     }
                 }
-
             }
         }, iCtrlCallback, false);
     }
@@ -327,7 +307,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
     protected void clearBleHistroyDateCom() {
 
     }
-
 
     private ICtrlCallback iCtrlCallback = new ICtrlCallback() {
         @Override
@@ -360,7 +339,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
             }
         }
     };
-
 
     @Override
     public void onRightClick() {
