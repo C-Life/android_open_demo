@@ -41,22 +41,22 @@ import java.util.TreeMap;
  **/
 
 public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
-    private final String TAG =  H5ComBle3AControlActivity.class.getSimpleName();
+    private final String TAG = H5ComBle3AControlActivity.class.getSimpleName();
     /**
      * 蓝牙控制代理类
      */
     private BleControlDelegate deviceControlDelegate;
     private BleConfig bleConfig;
     private IH5BleCallBack ih5BleCallBack;
-    private HashSet<Integer> hashSetSendData =new HashSet<Integer>();
+    private HashSet<Integer> hashSetSendData = new HashSet<Integer>();
     private IH5BleHistroyCallBack curh5BleHistroyCallBack;
-    private boolean hasConnectFlag=false;
-    private final int RE_CONNECT_TIME=6;
-    private int reConnectCount=0;
+    private boolean hasConnectFlag = false;
+    private final int RE_CONNECT_TIME = 6;
+    private int reConnectCount = 0;
 
     public static void startH5Ble3AControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComBle3AControlActivity.class);
-        intent.putExtra(H5VersionUtil.H5_PACK_PARAM_BEAN ,h5PackParamBean);
+        intent.putExtra(H5VersionUtil.H5_PACK_PARAM_BEAN, h5PackParamBean);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -100,16 +100,22 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
             Logc.d(TAG, ":----type " + type + "xml :=== json  " + json);
             if (!TextUtils.isEmpty(json)) {
                 //在开放平台配置蓝牙xml数据，回调协议解析后的json数据给
-                if (type == CmdIndexConstant.HET_COMMAND_GET_REAL_TIME_DATA_DEV) {
+                if (type == CmdIndexConstant.HET_COMMAND_GET_REAL_TIME_DATA_DEV) {//实时数据数据
                     //实时数据
                     if (ih5BleCallBack != null) {
                         Logc.d(TAG, "上报jiso:" + json);
                         ih5BleCallBack.onSucess(json);
                     }
                     updataRealData(json);
-
-                }else if (type== CmdIndexConstant.HET_COMMAND_RUN_DATA_DEV ){
+                    h5BridgeManager.updateConfigData(json);
+                } else if (type == CmdIndexConstant.HET_COMMAND_RUN_DATA_DEV) {//状态数据
                     sendBLEStatusData(json);
+                    h5BridgeManager.updateConfigData(json);
+                } else if (type == CmdIndexConstant.HET_COMMAND_CONFIG_DATA_DEV) {//控制数据
+                    //协议数据转Json 下发H5
+                    if (!TextUtils.isEmpty(json)){
+                        h5BridgeManager.updateConfigData(json);
+                    }
                 }
 
             }
@@ -125,34 +131,46 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                 sendBLEPower(power);
             }
         }
+
+        @Override
+        protected void onDeviceError(String error) {
+            super.onDeviceError(error);
+            Logc.e(TAG, ":----error " + error);
+            //上报蓝牙设备电量
+//            ToastUtil.showToast(mContext,error);
+        }
     };
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
-    private synchronized void updataRealData(String json){
-        if (deviceBean!=null){
-            String path="v1/device/data/common/upload";
-            String  deviceId=deviceBean.getDeviceId();
-            TreeMap<String, String> params=new TreeMap<>();
+    protected void send(String data, IMethodCallBack methodCallBack) {
+        if (deviceControlDelegate != null) {
+            deviceControlDelegate.send(CmdIndexConstant.HET_COMMAND_CONFIG_DATA_APP, data, iCtrlCallback, false);
+        }
+    }
+
+    private synchronized void updataRealData(String json) {
+        if (deviceBean != null) {
+            String path = "/v1/device/data/common/upload";
+            String deviceId = deviceBean.getDeviceId();
+            TreeMap<String, String> params = new TreeMap<>();
             params.put("deviceId", deviceId);
             params.put("json", json);
             params.put("dataType", "2");
             params.put("protocolVersion", "");
-            if (h5BridgeManager!=null){
+            if (h5BridgeManager != null) {
                 h5BridgeManager.relNativeProxyHttp(path, params, 0, 1, new IMethodCallBack() {
                     @Override
                     public void onSucess(int i, Object o) {
-                        Logc.d(TAG,i+"");
+                        Logc.d(TAG, i + "");
                     }
 
                     @Override
                     public void onFailed(int i, Object o) {
-                        Logc.e(TAG,i+"");
+                        Logc.e(TAG, i + "");
                     }
                 });
             }
@@ -163,8 +181,8 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
 
     @Override
     protected void initBleManagerCom() {
-        hasConnectFlag=false;
-        reConnectCount=0;
+        hasConnectFlag = false;
+        reConnectCount = 0;
         BluetoothDeviceManager.getInstance().init(this);
         deviceControlDelegate = new BleControlDelegate();
         bleConfig = new BleConfig();
@@ -176,7 +194,6 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         });
         deviceControlDelegate.onCreate(bleConfig);
         deviceControlDelegate.setOnUpdateBleDataInView(onUpdateBleDataInView);
-
     }
 
     @Override
@@ -194,15 +211,14 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
     /**
      * 重连蓝牙设备
      */
-    public synchronized void reConnectBle(){
+    public synchronized void reConnectBle() {
         reConnectCount++;
-        if (reConnectCount==RE_CONNECT_TIME){
-            if (deviceControlDelegate!=null){
+        if (reConnectCount == RE_CONNECT_TIME) {
+            if (deviceControlDelegate != null) {
                 deviceControlDelegate.onCreate(bleConfig);
             }
-            reConnectCount=0;
+            reConnectCount = 0;
         }
-
 
 
     }
@@ -210,14 +226,14 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
     @Override
     protected void getBLERealTimeDataCom(IH5BleCallBack ih5CallBack) {
         ih5BleCallBack = ih5CallBack;
-        Logc.d(TAG,"getBLERealTimeData1111");
+        Logc.d(TAG, "getBLERealTimeData");
         if (deviceControlDelegate != null) {
             if (!deviceControlDelegate.getConnected()) {
-                if (ih5BleCallBack!=null){
+                if (ih5BleCallBack != null) {
                     ih5BleCallBack.onFailed("ble not connect");
                 }
                 reConnectBle();
-            }else {
+            } else {
                 if (deviceControlDelegate != null) {
                     deviceControlDelegate.send(CmdIndexConstant.HET_COMMAND_GET_REAL_TIME_DATA_APP, null, iCtrlCallback, false);
                 }
@@ -228,22 +244,46 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
 
     @Override
     protected void getBLETimeDataCom(IH5BleCallBack ih5CallBack) {
-        Logc.d(TAG,"getBLETimeData");
+        Logc.d(TAG, "getBLETimeData");
         ih5BleCallBack = ih5CallBack;
         if (deviceControlDelegate != null) {
             deviceControlDelegate.send(CmdIndexConstant.HET_COMMAND_GET_TIME_APP, null, iCtrlCallback, false);
         }
     }
 
+    /**
+     * 同步BLE时间
+     *
+     * @param ih5CallBack H5回调
+     */
+    @Override
+    protected void setBLETimeDataCom(IH5BleCallBack ih5CallBack) {
+        ih5BleCallBack = ih5CallBack;
+        Logc.d(TAG, "setBLETimeData");
+        byte[] bytes = {0x00};/*0x00 utc  0x01 local time*/
+        if (deviceControlDelegate != null) {
+            if (!deviceControlDelegate.getConnected()) {
+                if (ih5BleCallBack != null) {
+                    ih5BleCallBack.onFailed("ble not connect");
+                }
+                reConnectBle();
+            } else {
+                if (deviceControlDelegate != null) {
+                    deviceControlDelegate.send(CmdIndexConstant.HET_COMMAND_SET_TIME_APP, bytes, iCtrlCallback, false);
+                }
+            }
+        }
+    }
+
     @Override
     protected void getBLEHistoryDataCom(IH5BleHistroyCallBack ih5BleHistroyCallBack) {
         Logc.d(TAG, "getBLEHistoryData");
-        this.curh5BleHistroyCallBack=ih5BleHistroyCallBack;
+        this.curh5BleHistroyCallBack = ih5BleHistroyCallBack;
         if (deviceControlDelegate != null) {
-            if (deviceControlDelegate.getConnected()){
-               getHistroyData();
-            }else {
-                if (ih5BleHistroyCallBack!=null){
+            if (deviceControlDelegate.getConnected()) {
+                getHistroyData();
+            } else {
+                if (ih5BleHistroyCallBack != null) {
                     ih5BleHistroyCallBack.onFailed("ble not connect");
                 }
                 reConnectBle();
@@ -254,12 +294,12 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
 
     }
 
-    private void getHistroyData(){
+    private void getHistroyData() {
         Logc.d(TAG, "getHistroyData");
         deviceControlDelegate.send(CmdIndexConstant.HET_COMMAND_GET_HISTORY_DATA_APP, new IHetHistoryListener() {
             @Override
             public void receiveFinish(byte[] bytes) {
-                if (curh5BleHistroyCallBack!= null) {
+                if (curh5BleHistroyCallBack != null) {
                     curh5BleHistroyCallBack.onSucess(bytes);
                 }
             }
@@ -293,6 +333,9 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
         @Override
         public void onSucess() {
             Logc.d(TAG, "success");
+            if (ih5BleCallBack != null) {
+                ih5BleCallBack.onSucess(null);
+            }
         }
 
         @Override

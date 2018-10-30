@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "com.het.sdk.demo"
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 3
-        versionName "1.0.6"
+        minSdkVersion 18
+        targetSdkVersion 27
+        versionCode 4
+        versionName "1.0.6.1"
 
         ndk {
             abiFilters 'armeabi'
@@ -25,7 +25,7 @@ android {
     }
 
     dexOptions {
-//        javaMaxHeapSize "4g"
+        javaMaxHeapSize "4g"
         preDexLibraries = false
     }
 
@@ -103,7 +103,7 @@ dependencies {
 //    compile 'com.github.szhittech:HetCLifeOpenSdkBase:1.0.5-SNAPSHOT'
 
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    compile 'com.github.szhittech:hetrecyclersdk:1.0.8-SNAPSHOT'
+    compile 'com.github.szhittech:hetrecyclersdk:1.1.0-SNAPSHOT'
 
     //乐鑫信息科技(esptouchmodule) 模组ID：7
     compile 'com.github.szhittech:esptouchmodule:1.0.1-SNAPSHOT'
