@@ -65,7 +65,6 @@
         <activity
             android:name=".ui.activity.sidebarlayout.SidebarMainActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
 
         <!-- ====================分享开始 ========================== -->
