@@ -14,6 +14,7 @@
     <string name="color">颜色</string>
     <string name="water_shortage_notification1">加湿器已经因缺水自动暂停了,注意加水不能超过最高刻度线</string>
     <string name="press_again">再按一次退出程序</string>
+    <string name="evn_string">当前环境域名:</string>
 
     <string name="ble_history_start">同步历史数据...</string>
     <string name="ble_success">同步成功</string>
@@ -307,6 +308,7 @@
     <string name="privacy">隐私政策</string>
     <string name="feedback">意见反馈</string>
     <string name="setting_questions">常见问题</string>
+    <string name="app_version">当前版本</string>
     <string name="share_device_user">好友设备权限管理</string>
     <string name="face_to_faca">面对面分享</string>
     <string name="share_remind">其他人将通过分享获得设备的控制权限，请勿将设备分享给陌生人</string>
@@ -395,5 +397,13 @@
     <string name="detail_share">设备分享</string>
     <string name="detail_qr">扫描C-life自助接入</string>
     <string name="detail_error">请选择具体设备再试</string>
+
+
+    <string name="bind_please_jump_mainapp">请切换到App主页面</string>
+    <string name="bind_reminder">温馨提示</string>
+    <string name="bind_please_conn_ap">请连接热点：</string>
+    <string name="bind_please_conn_device">请连接设备热点</string>
+    <string name="bind_please_conn_ap_pass">密码：</string>
+    <string name="bind_togo_conn_ap">去连接</string>
 
 </resources>

@@ -341,13 +341,15 @@ public class WifiBindActivity extends BaseHetActivity {
 
 
     private void gotoWiFiSetting() {
-        if (android.os.Build.VERSION.SDK_INT > 10) {
-            // 3.0以上打开设置界面，也可以直接用ACTION_WIRELESS_SETTINGS打开到wifi界面
-            startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
-        } else {
-            startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+        Intent intent = new Intent();
+        if(android.os.Build.VERSION.SDK_INT >= 11){
+            intent .setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
+        }else{
+            intent .setClassName("com.android.settings" ,"com.android.settings.wifi.WifiSettings");
         }
+        startActivity( intent);
     }
+
 
     public void onWiFiSetting(View view) {
         gotoWiFiSetting();

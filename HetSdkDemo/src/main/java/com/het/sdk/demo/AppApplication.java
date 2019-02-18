@@ -6,7 +6,7 @@ import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.broadcom.cooee.CooeeModuleImpl;
-import com.espressif.iot.esptouch.EsptouchModuleV4Impl;
+import com.espressif.iot.esptouch.EsptouchModuleImpl;
 import com.ezconnect.marvell.MarvellV1WiFiImpl;
 import com.ezconnect.marvell.MarvellV2WiFiImpl;
 import com.het.RealtekModuleImpl;
@@ -128,7 +128,7 @@ public class AppApplication extends MultiDexApplication {
             ModuleManager.getInstance().registerModule(ElianModuleImpl.class, getApplicationContext());//信驰达_MTK7681底层库
             ModuleManager.getInstance().registerModule(MarvellV1WiFiImpl.class, getApplicationContext());//Marvell(marvellmodule)
             ModuleManager.getInstance().registerModule(MarvellV2WiFiImpl.class, getApplicationContext());//Marvell(marvellmodule)
-            ModuleManager.getInstance().registerModule(EsptouchModuleV4Impl.class, getApplicationContext());//乐鑫信息科技(esptouchmodule)
+            ModuleManager.getInstance().registerModule(EsptouchModuleImpl.class, getApplicationContext());//乐鑫信息科技(esptouchmodule)
             ModuleManager.getInstance().registerModule(CooeeModuleImpl.class, getApplicationContext());//博通(cooeemodule)
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.het.sdk.demo.base;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -190,5 +191,11 @@ public abstract class BaseHetActivity<P extends BaseHetPresenter> extends HetBas
         return null != this.mProgressDialog && this.mProgressDialog.isShowing();
     }
 
+    protected void closeActivity() {
+        if(this instanceof Activity) {
+            this.finish();
+        }
+
+    }
 
 }
