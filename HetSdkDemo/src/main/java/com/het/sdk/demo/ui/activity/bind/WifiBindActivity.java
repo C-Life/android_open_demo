@@ -88,6 +88,20 @@ public class WifiBindActivity extends BaseHetActivity {
 
         }
 
+
+
+        savepas.setChecked(SharePreferencesUtil.getBoolean(mContext, "savePwd"));
+
+        savepas.setOnCheckedChangeListener((buttonView, isChecked) -> SharePreferencesUtil.putBoolean(mContext, "savePwd", isChecked));
+        if (!isLocationOpen()) {
+            tips(getResources().getString(R.string.bind_wifi_turn_on_gps));
+            gotoGpsSetting();
+        }else {
+            getSsId();
+        }
+    }
+
+    private void getSsId(){
         HeTBindApi.getInstance().getWiFiInputApi().setOnWiFiStatusListener(this, sSidInfoBean -> {
             if (sSidInfoBean == null)
                 return;
@@ -105,12 +119,7 @@ public class WifiBindActivity extends BaseHetActivity {
                 checkWiFiStatus();
             }
         });
-
-        savepas.setChecked(SharePreferencesUtil.getBoolean(mContext, "savePwd"));
-
-        savepas.setOnCheckedChangeListener((buttonView, isChecked) -> SharePreferencesUtil.putBoolean(mContext, "savePwd", isChecked));
     }
-
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -274,8 +283,10 @@ public class WifiBindActivity extends BaseHetActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (SETTING_GPS == requestCode) {
-            if (isLocationOpen())
+            if (isLocationOpen()){
+                getSsId();
                 Logc.i("============ 打开定位成功");
+            }
             else
                 tips(getResources().getString(R.string.bind_open_loc_faild));
         }
@@ -341,15 +352,19 @@ public class WifiBindActivity extends BaseHetActivity {
 
 
     private void gotoWiFiSetting() {
-        Intent intent = new Intent();
-        if(android.os.Build.VERSION.SDK_INT >= 11){
-            intent .setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
-        }else{
-            intent .setClassName("com.android.settings" ,"com.android.settings.wifi.WifiSettings");
+        if (!isLocationOpen()) {
+            tips(getResources().getString(R.string.bind_wifi_turn_on_gps));
+            gotoGpsSetting();
+        } else {
+            Intent intent = new Intent();
+            if(android.os.Build.VERSION.SDK_INT >= 11){
+                intent .setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
+            }else{
+                intent .setClassName("com.android.settings" ,"com.android.settings.wifi.WifiSettings");
+            }
+            startActivity( intent);
         }
-        startActivity( intent);
     }
-
 
     public void onWiFiSetting(View view) {
         gotoWiFiSetting();
