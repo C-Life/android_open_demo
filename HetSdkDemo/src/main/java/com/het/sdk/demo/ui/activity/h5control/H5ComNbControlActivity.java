@@ -52,7 +52,7 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void initControlData() {
 
-        HetNbDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
+        HetNbDeviceControlApi.getInstance().start(deviceBean, iWifiDeviceData);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
                 public void onFailed(int code, String msg) {
                     iMethodCallBack.onFailed(code, msg);
                 }
-            }, h5PackParamBean.getDeviceBean().getDeviceId(), data);
+            }, deviceBean, data);
 
         }
     }

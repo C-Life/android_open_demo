@@ -56,7 +56,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
             HetWifiDeviceControlApi.getInstance().startWithUdp(deviceBean, iWifiDeviceData);
         } else {
             Logc.e(TAG, "not support UDP");
-            HetWifiDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
+            HetWifiDeviceControlApi.getInstance().start(deviceBean, iWifiDeviceData);
         }
     }
 
@@ -125,7 +125,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
             public void onFailed(int code, String msg) {
                 iMethodCallBack.onFailed(code, msg);
             }
-        }, h5PackParamBean.getDeviceBean(), data);
+        }, deviceBean, data);
 
 
     }

@@ -50,7 +50,7 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void initControlData() {
 
-        HetZigbeeDeviceControlApi.getInstance().start(deviceBean.getDeviceId(), iWifiDeviceData);
+        HetZigbeeDeviceControlApi.getInstance().start(deviceBean, iWifiDeviceData);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
                 public void onFailed(int i, String s) {
                     iMethodCallBack.onSucess(i, s);
                 }
-            }, deviceBean.getDeviceId(), data);
+            }, deviceBean, data);
 
         }
     }
