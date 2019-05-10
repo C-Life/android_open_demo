@@ -6,28 +6,27 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.het.basic.base.RxManage;
-import com.het.basic.utils.ToastUtil;
 import com.het.bluetoothbase.utils.HexUtil;
 import com.het.bluetoothoperate.manager.BluetoothDeviceManager;
 import com.het.bluetoothoperate.mode.CmdIndexConstant;
 import com.het.bluetoothoperate.proxy.IHetHistoryListener;
 import com.het.h5.sdk.base.H5BaseBleControlActivity;
 import com.het.h5.sdk.bean.H5PackParamBean;
+import com.het.h5.sdk.callback.IH5ArchieveInterface;
 import com.het.h5.sdk.callback.IH5BleCallBack;
 import com.het.h5.sdk.callback.IH5BleHistroyCallBack;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
-import com.het.open.lib.api.HetThirdCloudAuthApi;
 import com.het.open.lib.callback.ICtrlCallback;
 import com.het.open.lib.callback.OnUpdateBleDataInView;
 import com.het.open.lib.callback.OnUpdateBleDataInViewImpl;
 import com.het.open.lib.control.BleControlDelegate;
 import com.het.open.lib.model.BleConfig;
 import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
+import com.het.xml.protocol.ProtocolManager;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashSet;
 import java.util.TreeMap;
 
 
@@ -52,6 +51,7 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
     private IH5BleCallBack ih5BleCallBack;
     private IH5BleHistroyCallBack curh5BleHistroyCallBack;
     private int newestStatus = 0;//最新的蓝牙连接状态，在H5加载完成时把状态传给H5
+    private String bleStatusString;
 
     public static void startH5Ble3AControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComBle3AControlActivity.class);
@@ -62,6 +62,38 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setIh5ArchieveInterfaceImpl(new IH5ArchieveInterface() {
+            @Override
+            public void sendData(String data, IMethodCallBack methodCallBack) {
+                send(data, methodCallBack);
+            }
+
+            @Override
+            public void onWebViewShow() {
+                initControlData();
+            }
+
+            @Override
+            public void onWebViewCreate() {
+                String configData = ProtocolManager.getInstance().getConfigJson(deviceBean.getProductId());
+                Logc.i("protocol config :" + configData);
+                Logc.i("status data :" + bleStatusString);
+                Logc.i("newestStatus :" + newestStatus);
+                //初始化数据
+                if (h5BridgeManager == null) return;
+                //初始化控制数据
+                if (!TextUtils.isEmpty(configData)) {
+                    h5BridgeManager.updateConfigData(configData);
+                }
+                //初始化状态数据
+                if (!TextUtils.isEmpty(bleStatusString)) {
+                    sendBLEStatusData(bleStatusString);
+                }
+                //初始化链接状态
+                sendBleState(newestStatus);
+            }
+        });
+
         super.onCreate(savedInstanceState);
         RxManage.getInstance().register("Qr_device_url", url -> {
             this.h5BridgeManager.loadUrl((String) url);
@@ -103,9 +135,13 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                         ih5BleCallBack.onSucess(json);
                     }
                     updataRealData(json);
-
                 } else if (type == CmdIndexConstant.HET_COMMAND_RUN_DATA_DEV) {
+                    //状态数据
+                    bleStatusString = json;
                     sendBLEStatusData(json);
+                }else if (type == CmdIndexConstant.HET_COMMAND_CONFIG_DATA_DEV){
+                    //控制数据
+                    h5BridgeManager.updateConfigData(json);
                 }
             }
         }
