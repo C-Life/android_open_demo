@@ -52,6 +52,7 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
     private IH5BleHistroyCallBack curh5BleHistroyCallBack;
     private int newestStatus = 0;//最新的蓝牙连接状态，在H5加载完成时把状态传给H5
     private String bleStatusString;
+    private String configString;
 
     public static void startH5Ble3AControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComBle3AControlActivity.class);
@@ -75,21 +76,22 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
 
             @Override
             public void onWebViewCreate() {
-                String configData = ProtocolManager.getInstance().getConfigJson(deviceBean.getProductId());
+                String configData = ProtocolManager.getInstance().getDeviceJson(deviceBean.getProductId(),(short) CmdIndexConstant.HET_COMMAND_CONFIG_DATA_APP);
                 Logc.i("protocol config :" + configData);
+                Logc.i("config :" + configString);
                 Logc.i("status data :" + bleStatusString);
                 Logc.i("newestStatus :" + newestStatus);
                 //初始化数据
                 if (h5BridgeManager == null) return;
                 //初始化控制数据
-                if (!TextUtils.isEmpty(configData)) {
-                    h5BridgeManager.updateConfigData(configData);
+                if (!TextUtils.isEmpty(configString) || !TextUtils.isEmpty(configData)) {
+                    h5BridgeManager.updateConfigData(!TextUtils.isEmpty(configString) ? configString : configData);
                 }
                 //初始化状态数据
                 if (!TextUtils.isEmpty(bleStatusString)) {
                     sendBLEStatusData(bleStatusString);
                 }
-                //初始化链接状态
+                //初始化状态
                 sendBleState(newestStatus);
             }
         });
@@ -141,6 +143,7 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                     sendBLEStatusData(json);
                 }else if (type == CmdIndexConstant.HET_COMMAND_CONFIG_DATA_DEV){
                     //控制数据
+                    configString = json;
                     h5BridgeManager.updateConfigData(json);
                 }
             }
