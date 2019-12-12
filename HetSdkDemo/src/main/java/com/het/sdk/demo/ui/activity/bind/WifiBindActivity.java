@@ -1,5 +1,7 @@
 package com.het.sdk.demo.ui.activity.bind;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -21,13 +23,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.het.basic.AppDelegate;
 import com.het.basic.utils.SharePreferencesUtil;
 import com.het.basic.utils.StringUtils;
+import com.het.basic.utils.SystemInfoUtils;
+import com.het.basic.utils.ToastUtil;
 import com.het.bind.logic.HeTBindApi;
 import com.het.bind.logic.bean.SSidInfoBean;
 import com.het.bind.logic.bean.device.DeviceProductBean;
+import com.het.bind.logic.utils.ShadowBleActivity;
 import com.het.bind.logic.utils.Utils;
+import com.het.bluetoothbase.ViseBluetooth;
+import com.het.bluetoothbase.utils.BleUtil;
 import com.het.log.Logc;
+import com.het.open.lib.model.DeviceSubModel;
 import com.het.sdk.demo.R;
 import com.het.sdk.demo.base.BaseHetActivity;
 import com.het.sdk.demo.utils.UIJsonConfig;
@@ -66,6 +75,8 @@ public class WifiBindActivity extends BaseHetActivity {
     private String gudie_url;
     private int SETTING_GPS = 3;
 
+    private final int OPEN_BLE = 190;
+
     @Override
     protected int getLayoutId() {
 
@@ -88,20 +99,6 @@ public class WifiBindActivity extends BaseHetActivity {
 
         }
 
-
-
-        savepas.setChecked(SharePreferencesUtil.getBoolean(mContext, "savePwd"));
-
-        savepas.setOnCheckedChangeListener((buttonView, isChecked) -> SharePreferencesUtil.putBoolean(mContext, "savePwd", isChecked));
-        if (!isLocationOpen()) {
-            tips(getResources().getString(R.string.bind_wifi_turn_on_gps));
-            gotoGpsSetting();
-        }else {
-            getSsId();
-        }
-    }
-
-    private void getSsId(){
         HeTBindApi.getInstance().getWiFiInputApi().setOnWiFiStatusListener(this, sSidInfoBean -> {
             if (sSidInfoBean == null)
                 return;
@@ -119,7 +116,12 @@ public class WifiBindActivity extends BaseHetActivity {
                 checkWiFiStatus();
             }
         });
+
+        savepas.setChecked(SharePreferencesUtil.getBoolean(mContext, "savePwd"));
+
+        savepas.setOnCheckedChangeListener((buttonView, isChecked) -> SharePreferencesUtil.putBoolean(mContext, "savePwd", isChecked));
     }
+
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -278,17 +280,54 @@ public class WifiBindActivity extends BaseHetActivity {
         HeTBindApi.getInstance().getWiFiInputApi().onDestroy();
     }
 
+
+    private void openBel(Activity activity) {
+        String model = SystemInfoUtils.getModelName();
+        if (model.equalsIgnoreCase("ZTE B2015")) {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            bluetoothAdapter.enable();
+        } else {
+            Intent mIntent = new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE");
+            activity.startActivityForResult(mIntent, OPEN_BLE);
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (SETTING_GPS == requestCode) {
-            if (isLocationOpen()){
-                getSsId();
+            if (isLocationOpen())
                 Logc.i("============ 打开定位成功");
-            }
             else
                 tips(getResources().getString(R.string.bind_open_loc_faild));
+        } else if (OPEN_BLE == requestCode) {
+            if (resultCode == -1) {
+                try {
+                    if (BleUtil.isSupportBle(AppDelegate.getAppContext())) {
+                        if (BleUtil.isBleEnable(AppDelegate.getAppContext())) {
+                            String pass = et_pass.getText().toString();
+                            boolean isSave = savepas.isChecked();
+                            SSidInfoBean sSidInfoBean = HeTBindApi.getInstance().getWiFiInputApi().saveWiFiPassword(pass, isSave);//mPresenter.saveWiFiPassword(pass, isSave);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("SSidInfoBean", sSidInfoBean);
+                            bundle.putSerializable(VALUE_KEY, deviceProductBean);
+                            Intent intent = new Intent(this, SmartLinkConfigActivity.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        } else {
+                            ToastUtil.showToast(this, "请先打开蓝牙");
+                        }
+                    } else {
+                        ToastUtil.showToast(this, "请先打开蓝牙");
+                    }
+                } catch (Exception var6) {
+                    var6.printStackTrace();
+                }
+            } else if (resultCode == 0) {
+                ToastUtil.showToast(this, "请先打开蓝牙");
+            }
         }
     }
 
@@ -337,36 +376,35 @@ public class WifiBindActivity extends BaseHetActivity {
             tips(getResources().getString(R.string.bind_wifi_pass_no_null));
             return;
         }
+
+        if (deviceProductBean.getModuleId() == 64
+                && BleUtil.isSupportBle(AppDelegate.getAppContext())
+                && !BleUtil.isBleEnable(AppDelegate.getAppContext())) {
+            openBel(this);
+            return;
+        }
         boolean isSave = savepas.isChecked();
         SSidInfoBean sSidInfoBean = HeTBindApi.getInstance().getWiFiInputApi().saveWiFiPassword(pass, isSave);//mPresenter.saveWiFiPassword(pass, isSave);
         Bundle bundle = new Bundle();
         bundle.putSerializable("SSidInfoBean", sSidInfoBean);
         bundle.putSerializable(VALUE_KEY, deviceProductBean);
         Intent intent = new Intent(this, SmartLinkConfigActivity.class);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
+        intent.putExtras(bundle);
         startActivity(intent);
 
     }
 
-
     private void gotoWiFiSetting() {
-        if (!isLocationOpen()) {
-            tips(getResources().getString(R.string.bind_wifi_turn_on_gps));
-            gotoGpsSetting();
+        if (android.os.Build.VERSION.SDK_INT > 10) {
+            // 3.0以上打开设置界面，也可以直接用ACTION_WIRELESS_SETTINGS打开到wifi界面
+            startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
         } else {
-            Intent intent = new Intent();
-            if(android.os.Build.VERSION.SDK_INT >= 11){
-                intent .setClassName("com.android.settings", "com.android.settings.Settings$WifiSettingsActivity");
-            }else{
-                intent .setClassName("com.android.settings" ,"com.android.settings.wifi.WifiSettings");
-            }
-            startActivity( intent);
+            startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
         }
     }
 
     public void onWiFiSetting(View view) {
         gotoWiFiSetting();
     }
+
 }

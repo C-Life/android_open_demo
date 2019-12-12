@@ -12,7 +12,8 @@ import com.het.h5.sdk.callback.IH5ArchieveInterface;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
-import com.het.open.lib.api.HetNbDeviceControlApi;
+import com.het.open.lib.api.AbsDeviceControl;
+import com.het.open.lib.api.DeviceContolStrategyApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
 import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
@@ -35,10 +36,11 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
     private String configString;
     private String runString;
     private int onlineStatusString = 0;
+    private AbsDeviceControl absDeviceControl;
 
     public static void startH5ComNbControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComNbControlActivity.class);
-        intent.putExtra(H5VersionUtil.H5_PACK_PARAM_BEAN ,h5PackParamBean);
+        intent.putExtra(H5VersionUtil.H5_PACK_PARAM_BEAN, h5PackParamBean);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -58,6 +60,9 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
 
             @Override
             public void onWebViewCreate() {
+                //设置H5导航栏的高度
+                sendNavigationBarHeight();
+
                 String runData = ProtocolManager.getInstance().getRunJson(deviceBean.getProductId());
                 String configData = ProtocolManager.getInstance().getConfigJson(deviceBean.getProductId());
                 //初始化数据
@@ -81,15 +86,17 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
 
     @Override
     protected void initControlData() {
-
-        HetNbDeviceControlApi.getInstance().start(deviceBean, iWifiDeviceData);
+        absDeviceControl = DeviceContolStrategyApi.getInstance().provideDeviceControl(DeviceContolStrategyApi.DeviceType.NB);
+        if (absDeviceControl != null) {
+            absDeviceControl.start(deviceBean, iWifiDeviceData);
+        }
     }
 
     @Override
     protected void send(String data, IMethodCallBack iMethodCallBack) {
         Logc.d(TAG, data);
-        if (!TextUtils.isEmpty(data)) {
-            HetNbDeviceControlApi.getInstance().sendOfflineDataToDevice(new IHetCallback() {
+        if (!TextUtils.isEmpty(data) && absDeviceControl != null) {
+            absDeviceControl.send(new IHetCallback() {
                 @Override
                 public void onSuccess(int code, String msg) {
                     iMethodCallBack.onSucess(code, msg);
@@ -113,13 +120,14 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        HetNbDeviceControlApi.getInstance().stop(deviceBean.getDeviceId());
+        if (deviceBean != null && absDeviceControl != null) {
+            absDeviceControl.stop(deviceBean.getDeviceId());
+        }
         RxManage.getInstance().unregister("Qr_device_url");
     }
 
@@ -133,7 +141,7 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetConfigData(String jsonData) {
             Logc.d("onGetConfigData: ", jsonData);
-            if (!TextUtils.isEmpty(jsonData)){
+            if (!TextUtils.isEmpty(jsonData)) {
                 configString = jsonData;
                 if (h5BridgeManager != null) {
                     h5BridgeManager.updateConfigData(jsonData);
@@ -145,7 +153,7 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetRunData(String jsonData) {
             Logc.d("onGetRunData: ", jsonData);
-            if (!TextUtils.isEmpty(jsonData)){
+            if (!TextUtils.isEmpty(jsonData)) {
                 runString = jsonData;
                 if (h5BridgeManager != null) {
                     h5BridgeManager.updateRunData(jsonData);
@@ -157,7 +165,7 @@ public class H5ComNbControlActivity extends H5CommonBaseControlActivity {
         @Override
         public void onGetErrorData(String jsonData) {
             Logc.d("onGetErrorData: " + jsonData);
-            if (!TextUtils.isEmpty(jsonData)){
+            if (!TextUtils.isEmpty(jsonData)) {
                 if (h5BridgeManager != null) {
                     h5BridgeManager.updateErrorData(jsonData);
                 }

@@ -76,6 +76,9 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
 
             @Override
             public void onWebViewCreate() {
+                //设置H5导航栏的高度
+                sendNavigationBarHeight();
+
                 String configData = ProtocolManager.getInstance().getDeviceJson(deviceBean.getProductId(),(short) CmdIndexConstant.HET_COMMAND_CONFIG_DATA_APP);
                 Logc.i("protocol config :" + configData);
                 Logc.i("config :" + configString);
@@ -136,11 +139,17 @@ public class H5ComBle3AControlActivity extends H5BaseBleControlActivity {
                         Logc.d(TAG, "上报jiso:" + json);
                         ih5BleCallBack.onSucess(json);
                     }
+                    //上传实时数据
                     updataRealData(json);
+                    //将实时数据当做控制指令下发到H5
+                    configString = json;
+                    h5BridgeManager.updateConfigData(json);
                 } else if (type == CmdIndexConstant.HET_COMMAND_RUN_DATA_DEV) {
-                    //状态数据
                     bleStatusString = json;
+                    //状态数据下发到H5
                     sendBLEStatusData(json);
+                    //将状态数据当做控制指令下发到H5
+                    h5BridgeManager.updateConfigData(json);
                 }else if (type == CmdIndexConstant.HET_COMMAND_CONFIG_DATA_DEV){
                     //控制数据
                     configString = json;

@@ -12,7 +12,8 @@ import com.het.h5.sdk.callback.IH5ArchieveInterface;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
-import com.het.open.lib.api.HetZigbeeDeviceControlApi;
+import com.het.open.lib.api.AbsDeviceControl;
+import com.het.open.lib.api.DeviceContolStrategyApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
 import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
@@ -35,6 +36,7 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     private String configString;
     private String runString;
     private int onlineStatusString = 0;
+    private AbsDeviceControl absDeviceControl;
 
     public static void startH5ComZigbeeControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComZigbeeControlActivity.class);
@@ -58,6 +60,9 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
 
             @Override
             public void onWebViewCreate() {
+                //设置H5导航栏的高度
+                sendNavigationBarHeight();
+
                 String runData = ProtocolManager.getInstance().getRunJson(deviceBean.getProductId());
                 String configData = ProtocolManager.getInstance().getConfigJson(deviceBean.getProductId());
                 //初始化数据
@@ -81,14 +86,22 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void initControlData() {
 
-        HetZigbeeDeviceControlApi.getInstance().start(deviceBean, iWifiDeviceData);
+        if (deviceBean.getModuleId() == 190) {
+            absDeviceControl = DeviceContolStrategyApi.getInstance().provideDeviceControl(DeviceContolStrategyApi.DeviceType.ZIGBEE3);
+        } else {
+            absDeviceControl = DeviceContolStrategyApi.getInstance().provideDeviceControl(DeviceContolStrategyApi.DeviceType.ZIGBEE2);
+        }
+
+        if (absDeviceControl != null) {
+            absDeviceControl.start(deviceBean, iWifiDeviceData);
+        }
     }
 
     @Override
     protected void send(String data, IMethodCallBack iMethodCallBack) {
         Logc.d(TAG, data);
-        if (!TextUtils.isEmpty(data)) {
-            HetZigbeeDeviceControlApi.getInstance().sendDataToDevice(new IHetCallback() {
+        if (!TextUtils.isEmpty(data) && absDeviceControl != null) {
+            absDeviceControl.send(new IHetCallback() {
                 @Override
                 public void onSuccess(int i, String s) {
                     iMethodCallBack.onSucess(i, s);
@@ -118,7 +131,9 @@ public class H5ComZigbeeControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        HetZigbeeDeviceControlApi.getInstance().stop(deviceBean.getDeviceId());
+        if (deviceBean != null && absDeviceControl != null){
+            absDeviceControl.stop(deviceBean.getDeviceId());
+        }
         RxManage.getInstance().unregister("Qr_device_url");
     }
 

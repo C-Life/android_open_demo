@@ -8,12 +8,12 @@ import android.text.TextUtils;
 import com.het.basic.base.RxManage;
 import com.het.h5.sdk.base.H5CommonBaseControlActivity;
 import com.het.h5.sdk.bean.H5PackParamBean;
-import com.het.h5.sdk.biz.H5BridgeInterfaceArchieve;
 import com.het.h5.sdk.callback.IH5ArchieveInterface;
 import com.het.h5.sdk.callback.IMethodCallBack;
 import com.het.h5.sdk.utils.H5VersionUtil;
 import com.het.log.Logc;
-import com.het.open.lib.api.HetWifiDeviceControlApi;
+import com.het.open.lib.api.AbsDeviceControl;
+import com.het.open.lib.api.DeviceContolStrategyApi;
 import com.het.open.lib.callback.IHetCallback;
 import com.het.open.lib.callback.IWifiDeviceData;
 import com.het.sdk.demo.ui.activity.device.DeviceDetailActivity;
@@ -29,6 +29,7 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
     private String configString;
     private String runString;
     private int onlineStatusString = 0;
+    private AbsDeviceControl absDeviceControl;
 
     public static void startH5ComWifiControlActivity(Context context, H5PackParamBean h5PackParamBean) {
         Intent intent = new Intent(context, H5ComWifiControlActivity.class);
@@ -48,10 +49,14 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
             @Override
             public void onWebViewShow() {
                 initControlData();
+
             }
 
             @Override
             public void onWebViewCreate() {
+                //设置H5导航栏的高度
+                sendNavigationBarHeight();
+
                 String runData = ProtocolManager.getInstance().getRunJson(deviceBean.getProductId());
                 String configData = ProtocolManager.getInstance().getConfigJson(deviceBean.getProductId());
                 Logc.i("protocol config :" + configData);
@@ -80,8 +85,8 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (deviceBean != null) {
-            HetWifiDeviceControlApi.getInstance().stop(deviceBean.getDeviceId());
+        if (deviceBean != null && absDeviceControl != null) {
+            absDeviceControl.stop(deviceBean.getDeviceId());
         }
         RxManage.getInstance().unregister("Qr_device_url");
 
@@ -90,10 +95,13 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
     @Override
     protected void initControlData() {
         if (SDKAppUtil.isSupportUdp(deviceBean)) {
-            HetWifiDeviceControlApi.getInstance().startWithUdp(deviceBean, iWifiDeviceData);
+            absDeviceControl = DeviceContolStrategyApi.getInstance().provideDeviceControl(DeviceContolStrategyApi.DeviceType.UDP);
         } else {
-            Logc.e(TAG, "not support UDP");
-            HetWifiDeviceControlApi.getInstance().start(deviceBean, iWifiDeviceData);
+            absDeviceControl = DeviceContolStrategyApi.getInstance().provideDeviceControl(DeviceContolStrategyApi.DeviceType.WIFI);
+        }
+
+        if (absDeviceControl != null) {
+            absDeviceControl.start(deviceBean, iWifiDeviceData);
         }
     }
 
@@ -155,17 +163,20 @@ public class H5ComWifiControlActivity extends H5CommonBaseControlActivity {
      */
     @Override
     protected void send(String data, IMethodCallBack iMethodCallBack) {
-        HetWifiDeviceControlApi.getInstance().sendDataToDevice(new IHetCallback() {
-            @Override
-            public void onSuccess(int code, String msg) {
-                iMethodCallBack.onSucess(code, msg);
-            }
+        if (absDeviceControl != null) {
+            absDeviceControl.send(new IHetCallback() {
+                @Override
+                public void onSuccess(int code, String msg) {
+                    iMethodCallBack.onSucess(code, msg);
+                }
 
-            @Override
-            public void onFailed(int code, String msg) {
-                iMethodCallBack.onFailed(code, msg);
-            }
-        }, deviceBean, data);
+                @Override
+                public void onFailed(int code, String msg) {
+                    iMethodCallBack.onFailed(code, msg);
+                }
+            }, deviceBean, data);
+
+        }
 
 
     }
